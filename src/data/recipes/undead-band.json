@@ -1,0 +1,15 @@
+{
+    "name": "undead-band",
+    "species": "undead",
+    "captain": {
+        "tile": 323,
+        "playbook": "*"
+    },
+    "members": [
+        { "class": "Skeleton" },
+        { "class": "Skeleton" },
+        { "class": "Skeleton" },
+        { "class": "Ghoul" },
+        { "class": "Ghost" }
+    ]
+}

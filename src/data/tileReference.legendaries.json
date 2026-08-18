@@ -1,0 +1,37 @@
+{
+  "_meta": {
+    "pack": "original (PixelLab)",
+    "key": "tileReference.legendaries",
+    "mode": "images",
+    "dir": "art/items/legendary",
+    "tileSize": 64,
+    "view": "side / item-icon",
+    "license": "Original art generated via PixelLab from text prompts only (no third-party pack used as input). Owned outright — free to ship.",
+    "generated": "2026-06-07",
+    "note": "Legendary equipment icons tied to the §14 Legendary special-slot catalog. Each entry's `special` is the affix it represents; the same base sprite is reused by quality tier (a Legendary rolls one special on top of its 4-stat lean).",
+    "referenceDoc": "documents/v3_item_lore_overhaul.md (§14)"
+  },
+
+  "weapons": {
+    "emberBrand":   { "file": "ember_brand.png",  "name": "Ember Brand",    "slot": "mainhand", "type": "sword",    "special": "emberBrand",    "note": "On-hit chance to apply Burning. Bound fire Element." },
+    "lifedrinker":  { "file": "lifedrinker.png",  "name": "Lifedrinker",    "slot": "mainhand", "type": "dagger",   "special": "lifedrink",     "note": "Heals for a % of damage dealt. Void-tinged blade." },
+    "executioner":  { "file": "executioner.png",  "name": "The Executioner","slot": "mainhand", "type": "greataxe", "special": "executioner",   "note": "Bonus/true damage to enemies below 25% HP. Reaver headsman's axe." },
+    "riftedge":     { "file": "riftedge.png",     "name": "Riftedge",       "slot": "mainhand", "type": "sword",    "special": "hollowTouched", "note": "Empowered in darkness / near a Void rift, with self-curse risk. Court of the Hollow / Cult gear." },
+    "dawnbreaker":  { "file": "dawnbreaker.png",  "name": "Dawnbreaker",    "slot": "mainhand", "type": "mace",     "special": "lightbound",    "note": "Bonus damage vs. void-corrupted/undead; minor self-heal on cleanse. The Light's blessing; Realm clergy." },
+    "stormcleave":  { "file": "stormcleave.png",  "name": "Stormcleave",    "slot": "mainhand", "type": "war-axe",  "special": "cleaving",      "note": "Melee hits also strike adjacent enemies. Storm Element." },
+    "farWhisper":   { "file": "far_whisper.png",  "name": "The Far Whisper","slot": "mainhand", "type": "bow",      "special": "huntersMark",   "note": "+crit / bonus damage vs. unaware foes. Elf/ranger." }
+  },
+
+  "armor": {
+    "bramblecoat":  { "file": "bramblecoat.png",  "name": "Bramblecoat",    "slot": "body", "type": "bodyArmor", "special": "thornmail", "note": "Reflects a % of melee damage taken." },
+    "wardenplate":  { "file": "wardenplate.png",  "name": "Wardenplate",    "slot": "body", "type": "bodyArmor", "special": "bulwark",   "note": "Chance to fully negate a hit / gain Shield. The Warden." },
+    "beaconCrown":  { "file": "beacon_crown.png", "name": "Beacon Crown",   "slot": "head", "type": "helmet",    "special": "lightbearer","note": "+light radius even with no torch — counters the darkness mechanic. Ties to Light's Beacon." },
+    "revenantMail": { "file": "revenant_mail.png","name": "Revenant Mail",  "slot": "body", "type": "bodyArmor", "special": "lastBreath","note": "Survive one lethal blow per run at 1 HP. Ties to death/revival." }
+  },
+
+  "accessories": {
+    "midasBand":       { "file": "midas_band.png",       "name": "Midas Band",        "slot": "accessory", "type": "ring",   "special": "fortune",    "note": "+gold / better loot find." },
+    "descentPendant":  { "file": "descent_pendant.png",  "name": "Descent Pendant",   "slot": "accessory", "type": "amulet", "special": "deepening",  "note": "Grows stronger each floor you descend." },
+    "berserkersCharm": { "file": "berserkers_charm.png", "name": "Berserker's Charm", "slot": "accessory", "type": "amulet", "special": "berserkers", "note": "Damage rises as your HP falls. Reaver rage." }
+  }
+}

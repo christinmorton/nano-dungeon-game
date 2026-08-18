@@ -1,0 +1,18 @@
+{
+    "_meta": {
+        "pack": "Effect and Bullet 16x16 — fire variant",
+        "key": "tileReference.fx-fire",
+        "mode": "spritesheet",
+        "browseAllFrames": true,
+        "sheet": "fx/fire.png",
+        "tileSize": 16,
+        "spacing": 0,
+        "margin": 0,
+        "columns": 36,
+        "rows": 13,
+        "total": 468,
+        "view": "16x16 projectile + impact effect sheet (fire)",
+        "license": "User-provided pack (resources/Effect and Bullet 16x16). Confirm redistribution/use terms before shipping.",
+        "note": "Colored bullets/projectiles + small hit effects for spell/attack polish (fire palette). 16px grid (36x13 = 468 frames), whole grid browsable by frame index. Not terrain — for projectile.tint/attackTile art + effect frames. VERIFY frames visually in the Atlas before wiring."
+    }
+}

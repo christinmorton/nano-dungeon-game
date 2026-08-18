@@ -1,0 +1,76 @@
+{
+    "starting": {
+        "scripts": [
+            { "weight": 1, "monsters": 0, "items": 0 }
+        ]
+    },
+    "ending": {
+        "scripts": [
+            { "weight": 5, "monsters": 2, "items": 0 },
+            { "weight": 3, "monsters": 3, "items": 1 }
+        ]
+    },
+    "treasure": {
+        "scripts": [
+            { "weight": 1, "monsters": 0, "items": 4 },
+            { "weight": 1, "monsters": 1, "items": 3 }
+        ]
+    },
+    "combat": {
+        "scripts": [
+            { "weight": 4, "monsters": 1, "items": 0 },
+            { "weight": 3, "monsters": 2, "items": 0 },
+            { "weight": 3, "monsters": 2, "items": 1 },
+            { "weight": 2, "monsters": 3, "items": 0 },
+            { "weight": 2, "monsters": 1, "items": 1 },
+            { "weight": 1, "monsters": 0, "items": 1 }
+        ]
+    },
+    "bats-only": {
+        "scripts": [
+            { "weight": 1, "monsters": 3, "items": 0, "enemyTypes": ["Bat"] },
+            { "weight": 1, "monsters": 4, "items": 0, "enemyTypes": ["Bat"] }
+        ]
+    },
+    "skeletons-only": {
+        "scripts": [
+            { "weight": 1, "monsters": 3, "items": 0, "enemyTypes": ["Skeleton"] },
+            { "weight": 1, "monsters": 2, "items": 1, "enemyTypes": ["Skeleton"] }
+        ]
+    },
+    "orcs-only": {
+        "scripts": [
+            { "weight": 1, "monsters": 2, "items": 0, "enemyTypes": ["Orc"] },
+            { "weight": 1, "monsters": 2, "items": 1, "enemyTypes": ["Orc"] }
+        ]
+    },
+    "trolls-only": {
+        "scripts": [
+            { "weight": 1, "monsters": 1, "items": 0, "enemyTypes": ["Troll"] },
+            { "weight": 1, "monsters": 2, "items": 1, "enemyTypes": ["Troll"] }
+        ]
+    },
+    "shrine": {
+        "scripts": [
+            { "weight": 1, "monsters": 0, "items": 0, "props": ["Shrine"] }
+        ]
+    },
+    "shop": {
+        "scripts": [
+            { "weight": 1, "monsters": 0, "items": 0, "props": ["Shopkeeper"] }
+        ]
+    },
+    "rest": {
+        "scripts": [
+            { "weight": 1, "monsters": 0, "items": 0, "props": ["Campfire", "Tent"] }
+        ]
+    },
+    "random": {
+        "scripts": [
+            { "weight": 4, "monsters": 0, "items": 0 },
+            { "weight": 6, "monsters": 1, "items": 0 },
+            { "weight": 4, "monsters": 2, "items": 1 },
+            { "weight": 1, "monsters": 0, "items": 5 }
+        ]
+    }
+}

@@ -1,0 +1,197 @@
+{
+  "_meta": {
+    "pack": "original (PixelLab)",
+    "key": "tileReference.heroes",
+    "mode": "images",
+    "dir": "art/heroes",
+    "tileSize": 48,
+    "view": "top-down (south pose)",
+    "license": "Original art generated via PixelLab from text prompts only — owned, free to ship.",
+    "note": "Original heroes sprites. Single south-facing pose per actor (the engine renders one static sprite + tween). Skin-tone variants live under per-actor sub-groups. See documents/v3_actor_art_coverage_audit.md.",
+    "referenceDoc": "documents/v3_actor_art_coverage_audit.md"
+  },
+  "baseFemale": {
+    "skin1Porcelain": {
+      "file": "base_female/skin_1_porcelain.png",
+      "note": "art/heroes/base_female/skin_1_porcelain.png"
+    },
+    "skin2Light": {
+      "file": "base_female/skin_2_light.png",
+      "note": "art/heroes/base_female/skin_2_light.png"
+    },
+    "skin3Tan": {
+      "file": "base_female/skin_3_tan.png",
+      "note": "art/heroes/base_female/skin_3_tan.png"
+    },
+    "skin4Brown": {
+      "file": "base_female/skin_4_brown.png",
+      "note": "art/heroes/base_female/skin_4_brown.png"
+    },
+    "skin5Deep": {
+      "file": "base_female/skin_5_deep.png",
+      "note": "art/heroes/base_female/skin_5_deep.png"
+    }
+  },
+  "heroes": {
+    "baseFemale": {
+      "file": "base_female_south.png",
+      "note": "art/heroes/base_female_south.png"
+    },
+    "baseMale": {
+      "file": "base_male_south.png",
+      "note": "art/heroes/base_male_south.png"
+    }
+  },
+  "baseMale": {
+    "skin1Porcelain": {
+      "file": "base_male/skin_1_porcelain.png",
+      "note": "art/heroes/base_male/skin_1_porcelain.png"
+    },
+    "skin2Light": {
+      "file": "base_male/skin_2_light.png",
+      "note": "art/heroes/base_male/skin_2_light.png"
+    },
+    "skin3Tan": {
+      "file": "base_male/skin_3_tan.png",
+      "note": "art/heroes/base_male/skin_3_tan.png"
+    },
+    "skin4Brown": {
+      "file": "base_male/skin_4_brown.png",
+      "note": "art/heroes/base_male/skin_4_brown.png"
+    },
+    "skin5Deep": {
+      "file": "base_male/skin_5_deep.png",
+      "note": "art/heroes/base_male/skin_5_deep.png"
+    }
+  },
+  "classes": {
+    "clericFemale": {
+      "file": "classes/cleric_female_south.png",
+      "note": "art/heroes/classes/cleric_female_south.png"
+    },
+    "cleric": {
+      "file": "classes/cleric_south.png",
+      "note": "art/heroes/classes/cleric_south.png"
+    },
+    "dwarfFemale": {
+      "file": "classes/dwarf_female_south.png",
+      "note": "art/heroes/classes/dwarf_female_south.png"
+    },
+    "dwarf": {
+      "file": "classes/dwarf_south.png",
+      "note": "art/heroes/classes/dwarf_south.png"
+    },
+    "rangerFemale": {
+      "file": "classes/ranger_female_south.png",
+      "note": "art/heroes/classes/ranger_female_south.png"
+    },
+    "ranger": {
+      "file": "classes/ranger_south.png",
+      "note": "art/heroes/classes/ranger_south.png"
+    },
+    "warriorFemale": {
+      "file": "classes/warrior_female_south.png",
+      "note": "art/heroes/classes/warrior_female_south.png"
+    },
+    "warrior": {
+      "file": "classes/warrior_south.png",
+      "note": "art/heroes/classes/warrior_south.png"
+    },
+    "wizardFemale": {
+      "file": "classes/wizard_female_south.png",
+      "note": "art/heroes/classes/wizard_female_south.png"
+    },
+    "wizard": {
+      "file": "classes/wizard_south.png",
+      "note": "art/heroes/classes/wizard_south.png"
+    }
+  },
+  "rangerFemale": {
+    "skin1Porcelain": {
+      "file": "classes/ranger_female/skin_1_porcelain.png",
+      "note": "art/heroes/classes/ranger_female/skin_1_porcelain.png"
+    },
+    "skin2Light": {
+      "file": "classes/ranger_female/skin_2_light.png",
+      "note": "art/heroes/classes/ranger_female/skin_2_light.png"
+    },
+    "skin3Tan": {
+      "file": "classes/ranger_female/skin_3_tan.png",
+      "note": "art/heroes/classes/ranger_female/skin_3_tan.png"
+    },
+    "skin4Brown": {
+      "file": "classes/ranger_female/skin_4_brown.png",
+      "note": "art/heroes/classes/ranger_female/skin_4_brown.png"
+    },
+    "skin5Deep": {
+      "file": "classes/ranger_female/skin_5_deep.png",
+      "note": "art/heroes/classes/ranger_female/skin_5_deep.png"
+    }
+  },
+  "rangerMale": {
+    "skin1Porcelain": {
+      "file": "classes/ranger_male/skin_1_porcelain.png",
+      "note": "art/heroes/classes/ranger_male/skin_1_porcelain.png"
+    },
+    "skin2Light": {
+      "file": "classes/ranger_male/skin_2_light.png",
+      "note": "art/heroes/classes/ranger_male/skin_2_light.png"
+    },
+    "skin3Tan": {
+      "file": "classes/ranger_male/skin_3_tan.png",
+      "note": "art/heroes/classes/ranger_male/skin_3_tan.png"
+    },
+    "skin4Brown": {
+      "file": "classes/ranger_male/skin_4_brown.png",
+      "note": "art/heroes/classes/ranger_male/skin_4_brown.png"
+    },
+    "skin5Deep": {
+      "file": "classes/ranger_male/skin_5_deep.png",
+      "note": "art/heroes/classes/ranger_male/skin_5_deep.png"
+    }
+  },
+  "warriorFemale": {
+    "skin1Porcelain": {
+      "file": "classes/warrior_female/skin_1_porcelain.png",
+      "note": "art/heroes/classes/warrior_female/skin_1_porcelain.png"
+    },
+    "skin2Light": {
+      "file": "classes/warrior_female/skin_2_light.png",
+      "note": "art/heroes/classes/warrior_female/skin_2_light.png"
+    },
+    "skin3Tan": {
+      "file": "classes/warrior_female/skin_3_tan.png",
+      "note": "art/heroes/classes/warrior_female/skin_3_tan.png"
+    },
+    "skin4Brown": {
+      "file": "classes/warrior_female/skin_4_brown.png",
+      "note": "art/heroes/classes/warrior_female/skin_4_brown.png"
+    },
+    "skin5Deep": {
+      "file": "classes/warrior_female/skin_5_deep.png",
+      "note": "art/heroes/classes/warrior_female/skin_5_deep.png"
+    }
+  },
+  "warriorMale": {
+    "skin1Porcelain": {
+      "file": "classes/warrior_male/skin_1_porcelain.png",
+      "note": "art/heroes/classes/warrior_male/skin_1_porcelain.png"
+    },
+    "skin2Light": {
+      "file": "classes/warrior_male/skin_2_light.png",
+      "note": "art/heroes/classes/warrior_male/skin_2_light.png"
+    },
+    "skin3Tan": {
+      "file": "classes/warrior_male/skin_3_tan.png",
+      "note": "art/heroes/classes/warrior_male/skin_3_tan.png"
+    },
+    "skin4Brown": {
+      "file": "classes/warrior_male/skin_4_brown.png",
+      "note": "art/heroes/classes/warrior_male/skin_4_brown.png"
+    },
+    "skin5Deep": {
+      "file": "classes/warrior_male/skin_5_deep.png",
+      "note": "art/heroes/classes/warrior_male/skin_5_deep.png"
+    }
+  }
+}

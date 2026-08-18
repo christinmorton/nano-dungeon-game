@@ -1,0 +1,79 @@
+# ---------------------------------------------------------------------------
+# Art assets — deliberately NOT committed.
+#
+# The game runs on a mix of purchased packs, CC0 packs and generated art. Some
+# licences forbid redistribution outright (32rogues: "You may not redistribute
+# or resell it"), and a public repo is redistribution.
+#
+# The files stay on disk so the game runs locally; git simply never sees them.
+# These rules are blanket-by-extension on purpose so art cannot be committed by
+# accident, whatever directory it lands in.
+# ---------------------------------------------------------------------------
+
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.webp
+*.bmp
+*.tga
+*.aseprite
+*.ase
+*.psd
+*.xcf
+*.afdesign
+
+# Third-party packs in full — including their bundled licences and indexes
+**/public/32rogues-0.5.0/
+**/public/rpgitems-retro/
+**/public/7soulsrpggraphics_iconpack/
+**/public/48_Free_Minerals_Pixel_Art_Icons_Pack/
+**/public/2D-Pixel-Art-Character-Template/
+**/public/CharacterTemplates_DesireFantasy/
+**/public/Top-Down Asset Pack (Oct 2025)/
+**/public/kenney_1-bit-pack/
+
+# Generated, VFX and environment art
+**/public/art/
+**/public/fx/
+**/public/lighting/
+**/public/tilesets/
+**/public/traps/
+**/public/assets/fonts/
+
+# Escape hatch: README screenshots are permitted use (showing the game running
+# is fine; shipping the source files is not).
+!docs/screenshots/
+!docs/screenshots/**
+
+
+# ---------------------------------------------------------------------------
+# Build output and dependencies
+# ---------------------------------------------------------------------------
+node_modules
+dist
+dist-ssr
+*.local
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.sw?
+
+# Scratch
+.fallow/
+notes.txt
+
+# Python bytecode
+__pycache__/
+*.py[cod]

@@ -1,0 +1,18 @@
+{
+    "_meta": {
+        "pack": "Castle Town tileset — exterior / overworld",
+        "key": "tileReference.castletown",
+        "mode": "spritesheet",
+        "browseAllFrames": true,
+        "sheet": "tilesets/castletown/ts_castleTown.png",
+        "tileSize": 16,
+        "spacing": 0,
+        "margin": 0,
+        "columns": 24,
+        "rows": 27,
+        "total": 648,
+        "view": "top-down castle-town exterior / overworld tileset (streets, walls, buildings, terrain)",
+        "license": "User-provided pack (resources/b4f1209…). Confirm redistribution/use terms before shipping.",
+        "note": "GRID VERIFIED 2026-08-06 (grid drawn over the PNG at 5x — lines land exactly on tile edges; 384x432 / 16 = 24x27 = 648 frames, no remainder). Castle-town OVERWORLD/exterior tileset. ROW-BAND TRIAGE (the §8 step-5 pass, before per-object naming): rows 0-2 roofs + balustrades/pillars; rows 3-6 stone facades with windows, a large arch (cols 12-14), brick walls, doors; rows 7-9 cobblestone floor (cols 0-5), hedges (cols 6-11), dark void (cols 12-14), doors/wooden windows (cols 18-23); rows 10-12 ledges, dirt, flowerbeds, hedges, barrels/pots, chests/crates; rows 13-18 PAVEMENT (orange brick, tan brick, checkered, grey paving, an ornate circular plaza at cols 15-17, white marble) plus wall-cap/border pieces; rows 19-26 street furniture — benches, table+stools, lamppost, the large tree (cols 9-14 / rows 19-25, registered as region 'town-tree-large'), topiary, planters, barrels, crates, a fountain/well (cols 15-17), flower pots. WARNING when sizing regions here: this sheet uses opaque near-BLACK shadow pixels that look identical to transparent background on a dark backdrop — cycle the sheet view's backdrop (B) or the object gets clipped."
+    }
+}

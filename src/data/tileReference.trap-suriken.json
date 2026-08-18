@@ -1,0 +1,18 @@
+{
+ "_meta": {
+  "pack": "Side-scroller Trap pack (selected, repurposed as top-down traps)",
+  "key": "tileReference.trap-suriken",
+  "mode": "spritesheet",
+  "browseAllFrames": true,
+  "sheet": "traps/suriken.png",
+  "tileSize": 32,
+  "spacing": 0,
+  "margin": 0,
+  "columns": 8,
+  "rows": 1,
+  "total": 8,
+  "view": "trap animation frames (Suriken.png)",
+  "license": "User-provided pack (resources/Trap). Side-scroller asset repurposed. Confirm redistribution/use terms before shipping.",
+  "note": "Trap 'Suriken.png' (256x32). Frame 32px inferred from strip height (8x1=8 frames)."
+ }
+}

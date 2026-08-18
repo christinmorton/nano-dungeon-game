@@ -1,0 +1,17 @@
+export default {
+    itemClass: 'RangedWeapon',
+    weaponCategory: 'arcane',
+    throwable: false,
+    name: "Apprentice Wand",
+    description: "A focusing wand of plain arcane make — no Element bound, just shaped will.",
+    tile: 768,
+    art: { sheet: "32rogues-items", name: "crystalStaff" },
+    damageType: 'magic',
+    attackPowerStat: 'magicPower',
+    attackTile: 567,
+    damageColor: 0xc084fc,
+    damageMin: 1,
+    damageMax: 4,
+    range: 5,
+    minRange: 1,
+}

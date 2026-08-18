@@ -1,0 +1,213 @@
+{
+  "_meta": {
+    "pack": "original (PixelLab)",
+    "key": "tileReference.npcs",
+    "mode": "images",
+    "dir": "art/npcs",
+    "tileSize": 48,
+    "view": "top-down (south pose)",
+    "license": "Original art generated via PixelLab from text prompts only — owned, free to ship.",
+    "note": "Original npcs sprites. Single south-facing pose per actor (the engine renders one static sprite + tween). Skin-tone variants live under per-actor sub-groups. See documents/v3_actor_art_coverage_audit.md.",
+    "referenceDoc": "documents/v3_actor_art_coverage_audit.md"
+  },
+  "npcs": {
+    "beggarFemale": {
+      "file": "beggar_female_south.png",
+      "note": "art/npcs/beggar_female_south.png"
+    },
+    "beggar": {
+      "file": "beggar_south.png",
+      "note": "art/npcs/beggar_south.png"
+    },
+    "blacksmithFemale": {
+      "file": "blacksmith_female_south.png",
+      "note": "art/npcs/blacksmith_female_south.png"
+    },
+    "blacksmith": {
+      "file": "blacksmith_south.png",
+      "note": "art/npcs/blacksmith_south.png"
+    },
+    "child": {
+      "file": "child_south.png",
+      "note": "art/npcs/child_south.png"
+    },
+    "elderFemale": {
+      "file": "elder_female_south.png",
+      "note": "art/npcs/elder_female_south.png"
+    },
+    "elder": {
+      "file": "elder_south.png",
+      "note": "art/npcs/elder_south.png"
+    },
+    "farmerFemale": {
+      "file": "farmer_female_south.png",
+      "note": "art/npcs/farmer_female_south.png"
+    },
+    "farmer": {
+      "file": "farmer_south.png",
+      "note": "art/npcs/farmer_south.png"
+    },
+    "girl": {
+      "file": "girl_south.png",
+      "note": "art/npcs/girl_south.png"
+    },
+    "guardFemale": {
+      "file": "guard_female_south.png",
+      "note": "art/npcs/guard_female_south.png"
+    },
+    "guard": {
+      "file": "guard_south.png",
+      "note": "art/npcs/guard_south.png"
+    },
+    "innkeeperFemale": {
+      "file": "innkeeper_female_south.png",
+      "note": "art/npcs/innkeeper_female_south.png"
+    },
+    "innkeeper": {
+      "file": "innkeeper_south.png",
+      "note": "art/npcs/innkeeper_south.png"
+    },
+    "matron": {
+      "file": "matron_south.png",
+      "note": "art/npcs/matron_south.png"
+    },
+    "priestFemale": {
+      "file": "priest_female_south.png",
+      "note": "art/npcs/priest_female_south.png"
+    },
+    "priest": {
+      "file": "priest_south.png",
+      "note": "art/npcs/priest_south.png"
+    },
+    "satyr": {
+      "file": "satyr_south.png",
+      "note": "art/npcs/satyr_south.png"
+    },
+    "shopkeeperFemale": {
+      "file": "shopkeeper_female_south.png",
+      "note": "art/npcs/shopkeeper_female_south.png"
+    },
+    "shopkeeper": {
+      "file": "shopkeeper_south.png",
+      "note": "art/npcs/shopkeeper_south.png"
+    },
+    "villagerFemale": {
+      "file": "villager_female_south.png",
+      "note": "art/npcs/villager_female_south.png"
+    },
+    "villagerMale": {
+      "file": "villager_male_south.png",
+      "note": "art/npcs/villager_male_south.png"
+    }
+  },
+  "child": {
+    "skin1Porcelain": {
+      "file": "child/skin_1_porcelain.png",
+      "note": "art/npcs/child/skin_1_porcelain.png"
+    },
+    "skin2Light": {
+      "file": "child/skin_2_light.png",
+      "note": "art/npcs/child/skin_2_light.png"
+    },
+    "skin3Tan": {
+      "file": "child/skin_3_tan.png",
+      "note": "art/npcs/child/skin_3_tan.png"
+    },
+    "skin4Brown": {
+      "file": "child/skin_4_brown.png",
+      "note": "art/npcs/child/skin_4_brown.png"
+    },
+    "skin5Deep": {
+      "file": "child/skin_5_deep.png",
+      "note": "art/npcs/child/skin_5_deep.png"
+    }
+  },
+  "girl": {
+    "skin1Porcelain": {
+      "file": "girl/skin_1_porcelain.png",
+      "note": "art/npcs/girl/skin_1_porcelain.png"
+    },
+    "skin2Light": {
+      "file": "girl/skin_2_light.png",
+      "note": "art/npcs/girl/skin_2_light.png"
+    },
+    "skin3Tan": {
+      "file": "girl/skin_3_tan.png",
+      "note": "art/npcs/girl/skin_3_tan.png"
+    },
+    "skin4Brown": {
+      "file": "girl/skin_4_brown.png",
+      "note": "art/npcs/girl/skin_4_brown.png"
+    },
+    "skin5Deep": {
+      "file": "girl/skin_5_deep.png",
+      "note": "art/npcs/girl/skin_5_deep.png"
+    }
+  },
+  "satyr": {
+    "skin1Porcelain": {
+      "file": "satyr/skin_1_porcelain.png",
+      "note": "art/npcs/satyr/skin_1_porcelain.png"
+    },
+    "skin2Light": {
+      "file": "satyr/skin_2_light.png",
+      "note": "art/npcs/satyr/skin_2_light.png"
+    },
+    "skin3Tan": {
+      "file": "satyr/skin_3_tan.png",
+      "note": "art/npcs/satyr/skin_3_tan.png"
+    },
+    "skin4Brown": {
+      "file": "satyr/skin_4_brown.png",
+      "note": "art/npcs/satyr/skin_4_brown.png"
+    },
+    "skin5Deep": {
+      "file": "satyr/skin_5_deep.png",
+      "note": "art/npcs/satyr/skin_5_deep.png"
+    }
+  },
+  "villagerFemale": {
+    "skin1Porcelain": {
+      "file": "villager_female/skin_1_porcelain.png",
+      "note": "art/npcs/villager_female/skin_1_porcelain.png"
+    },
+    "skin2Light": {
+      "file": "villager_female/skin_2_light.png",
+      "note": "art/npcs/villager_female/skin_2_light.png"
+    },
+    "skin3Tan": {
+      "file": "villager_female/skin_3_tan.png",
+      "note": "art/npcs/villager_female/skin_3_tan.png"
+    },
+    "skin4Brown": {
+      "file": "villager_female/skin_4_brown.png",
+      "note": "art/npcs/villager_female/skin_4_brown.png"
+    },
+    "skin5Deep": {
+      "file": "villager_female/skin_5_deep.png",
+      "note": "art/npcs/villager_female/skin_5_deep.png"
+    }
+  },
+  "villagerMale": {
+    "skin1Porcelain": {
+      "file": "villager_male/skin_1_porcelain.png",
+      "note": "art/npcs/villager_male/skin_1_porcelain.png"
+    },
+    "skin2Light": {
+      "file": "villager_male/skin_2_light.png",
+      "note": "art/npcs/villager_male/skin_2_light.png"
+    },
+    "skin3Tan": {
+      "file": "villager_male/skin_3_tan.png",
+      "note": "art/npcs/villager_male/skin_3_tan.png"
+    },
+    "skin4Brown": {
+      "file": "villager_male/skin_4_brown.png",
+      "note": "art/npcs/villager_male/skin_4_brown.png"
+    },
+    "skin5Deep": {
+      "file": "villager_male/skin_5_deep.png",
+      "note": "art/npcs/villager_male/skin_5_deep.png"
+    }
+  }
+}

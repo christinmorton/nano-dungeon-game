@@ -1,0 +1,21 @@
+// Throwables (§10a) — thrown-at-a-tile AoE consumables. SYSTEM SHIPPED (#47.1):
+// items/ThrowableItem.js reads throwRange / aoeRadius / damage / damageFlavor /
+// status / zone and resolves throw + detonate + lingering ZoneEffect via
+// modules/hazards/. See known-issues #47.
+const R = (name) => ({ sheet: "32rogues-items", name })
+
+export default {
+    alchemistsFire: { itemClass: 'Throwable', name: "Alchemist's Fire", description: "A flask of clinging fire — bursts on impact and leaves the ground burning a moment.", tile: 670, art: R("orangePotion"), droppable: true, throwRange: 5, aoeRadius: 1, damage: { min: 3, max: 6 }, damageFlavor: "fire", status: "Burning", zone: { type: "fire", duration: 2 } },
+    frostFlask: { itemClass: 'Throwable', name: "Frost Flask", description: "Bottled cold that shatters into a freezing burst — slows what it doesn't still.", tile: 670, art: R("bluePotion"), droppable: true, throwRange: 5, aoeRadius: 1, damage: { min: 2, max: 4 }, damageFlavor: "ice", status: "Slow" },
+    acidFlask: { itemClass: 'Throwable', name: "Acid Flask", description: "Corrosive sludge that eats armor and flesh alike.", tile: 670, art: R("brightGreenPotion"), droppable: true, throwRange: 4, aoeRadius: 1, damage: { min: 2, max: 4 }, status: ["Acid", "Sunder"] },
+    oilFlask: { itemClass: 'Throwable', name: "Oil Flask", description: "Spreads a slick across the floor. Harmless — until something lights it.", tile: 670, art: R("brownVial"), droppable: true, throwRange: 5, aoeRadius: 2, zone: { type: "oil", duration: 6, applies: "Oil-Slicked" } },
+    smokeBomb: { itemClass: 'Throwable', name: "Smoke Bomb", description: "A choking cloud that blinds sightlines — cover to slip a fight or break pursuit.", tile: 670, art: R("blackPotion"), droppable: true, throwRange: 4, aoeRadius: 2, zone: { type: "smoke", duration: 3, applies: "blocks line-of-sight" } },
+    flashPowder: { itemClass: 'Throwable', name: "Flash Powder", description: "A blinding crack of light — staggers everything looking at it.", tile: 670, art: R("pinkVial"), droppable: true, throwRange: 4, aoeRadius: 2, status: "Blind" },
+    caltropsPouch: { itemClass: 'Throwable', name: "Caltrops Pouch", description: "Scatters iron spikes across a patch of floor — slow and bleed to any who cross.", tile: 670, art: R("brownVial"), droppable: true, throwRange: 3, aoeRadius: 1, zone: { type: "caltrops", duration: 8, onEnter: ["Bleed", "Slow"] } },
+    holyWater: { itemClass: 'Throwable', name: "Vial of Holy Water", description: "Blessed by the Mending. Sears the Void-touched, cleanses minor curses, lifts a weak dark.", tile: 670, art: R("bluePotion"), droppable: true, throwRange: 4, aoeRadius: 1, damage: { min: 2, max: 5 }, damageFlavor: "holy", status: "cleanse/sear" },
+    hollowVial: { itemClass: 'Throwable', name: "Hollow Vial", description: "Scavenged Cult ordnance — a fistful of the wound, corked. Curses what it splashes.", tile: 670, art: R("purplePotion"), droppable: true, throwRange: 5, aoeRadius: 1, damage: { min: 1, max: 4 }, damageFlavor: "curse", status: ["Cursed", "Blight"] },
+    chokingSpores: { itemClass: 'Throwable', name: "Choking Spores", description: "A burst sac of toxic spores that hangs in the air, poisoning all who breathe it.", tile: 670, art: R("greenPotion"), droppable: true, throwRange: 4, aoeRadius: 2, zone: { type: "gas", duration: 4, onEnter: "Poison" } },
+    webFlask: { itemClass: 'Throwable', name: "Web Flask", description: "Bursts into clinging strands — roots anything caught in the splash.", tile: 670, art: R("brightGreenPotion"), droppable: true, throwRange: 4, aoeRadius: 1, zone: { type: "web", duration: 3, onEnter: "Root" } },
+    thunderstone: { itemClass: 'Throwable', name: "Thunderstone", description: "A charged stone that cracks like a storm on impact — stuns the struck.", tile: 670, art: { sheet: "minerals", file: "Icon20.png" }, droppable: true, throwRange: 5, aoeRadius: 1, damage: { min: 2, max: 3 }, damageFlavor: "lightning", status: "Stun" },
+    flaskOfWater: { itemClass: 'Throwable', name: "Flask of Water", description: "Plain water — useless alone, but a Wet target burns for nothing and freezes solid.", tile: 670, art: R("bluePotion"), droppable: true, throwRange: 4, aoeRadius: 1, status: "Wet" },
+}

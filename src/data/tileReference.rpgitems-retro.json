@@ -1,0 +1,1813 @@
+{
+ "_meta": {
+  "pack": "RPG Items Retro Pack",
+  "key": "tileReference.rpgitems-retro",
+  "mode": "images",
+  "dir": "rpgitems-retro",
+  "tileSize": 16,
+  "view": "top-down 16x16 item icons",
+  "license": "User-provided pack (resources/rpgitems_retropack_windows). Confirm redistribution/use terms before shipping.",
+  "note": "595 individual 16x16 item icons across 8 categories (Accessory/Armor/CraftingGathering/Food/Misc/Potions/Shields/Weapons). images-mode: each entry is one PNG (file = 'Category/Name.png'). Browse in the Atlas + attach to items via the Items tab (assetRef -> item art). Crafting&Gathering renamed CraftingGathering to drop the URL-hostile ampersand."
+ },
+ "Accessory": {
+  "Accessory_01": {
+   "file": "Accessory/Accessory_01.png"
+  },
+  "Accessory_02": {
+   "file": "Accessory/Accessory_02.png"
+  },
+  "Accessory_03": {
+   "file": "Accessory/Accessory_03.png"
+  },
+  "Accessory_04": {
+   "file": "Accessory/Accessory_04.png"
+  },
+  "Accessory_05": {
+   "file": "Accessory/Accessory_05.png"
+  },
+  "Accessory_06": {
+   "file": "Accessory/Accessory_06.png"
+  },
+  "Accessory_07": {
+   "file": "Accessory/Accessory_07.png"
+  },
+  "Accessory_08": {
+   "file": "Accessory/Accessory_08.png"
+  },
+  "Accessory_09": {
+   "file": "Accessory/Accessory_09.png"
+  },
+  "Accessory_10": {
+   "file": "Accessory/Accessory_10.png"
+  },
+  "Accessory_11": {
+   "file": "Accessory/Accessory_11.png"
+  },
+  "Accessory_12": {
+   "file": "Accessory/Accessory_12.png"
+  },
+  "Accessory_13": {
+   "file": "Accessory/Accessory_13.png"
+  },
+  "Accessory_14": {
+   "file": "Accessory/Accessory_14.png"
+  },
+  "Accessory_15": {
+   "file": "Accessory/Accessory_15.png"
+  },
+  "Accessory_16": {
+   "file": "Accessory/Accessory_16.png"
+  },
+  "Accessory_17": {
+   "file": "Accessory/Accessory_17.png"
+  },
+  "Accessory_18": {
+   "file": "Accessory/Accessory_18.png"
+  },
+  "Accessory_19": {
+   "file": "Accessory/Accessory_19.png"
+  },
+  "Accessory_20": {
+   "file": "Accessory/Accessory_20.png"
+  },
+  "Accessory_21": {
+   "file": "Accessory/Accessory_21.png"
+  },
+  "Accessory_22": {
+   "file": "Accessory/Accessory_22.png"
+  },
+  "Accessory_23": {
+   "file": "Accessory/Accessory_23.png"
+  },
+  "Accessory_24": {
+   "file": "Accessory/Accessory_24.png"
+  },
+  "Accessory_25": {
+   "file": "Accessory/Accessory_25.png"
+  }
+ },
+ "Armor": {
+  "Armor_01": {
+   "file": "Armor/Armor_01.png"
+  },
+  "Armor_02": {
+   "file": "Armor/Armor_02.png"
+  },
+  "Armor_03": {
+   "file": "Armor/Armor_03.png"
+  },
+  "Armor_04": {
+   "file": "Armor/Armor_04.png"
+  },
+  "Armor_05": {
+   "file": "Armor/Armor_05.png"
+  },
+  "Armor_06": {
+   "file": "Armor/Armor_06.png"
+  },
+  "Armor_07": {
+   "file": "Armor/Armor_07.png"
+  },
+  "Armor_08": {
+   "file": "Armor/Armor_08.png"
+  },
+  "Armor_09": {
+   "file": "Armor/Armor_09.png"
+  },
+  "Armor_10": {
+   "file": "Armor/Armor_10.png"
+  },
+  "Armor_100": {
+   "file": "Armor/Armor_100.png"
+  },
+  "Armor_101": {
+   "file": "Armor/Armor_101.png"
+  },
+  "Armor_102": {
+   "file": "Armor/Armor_102.png"
+  },
+  "Armor_103": {
+   "file": "Armor/Armor_103.png"
+  },
+  "Armor_104": {
+   "file": "Armor/Armor_104.png"
+  },
+  "Armor_105": {
+   "file": "Armor/Armor_105.png"
+  },
+  "Armor_106": {
+   "file": "Armor/Armor_106.png"
+  },
+  "Armor_107": {
+   "file": "Armor/Armor_107.png"
+  },
+  "Armor_108": {
+   "file": "Armor/Armor_108.png"
+  },
+  "Armor_109": {
+   "file": "Armor/Armor_109.png"
+  },
+  "Armor_11": {
+   "file": "Armor/Armor_11.png"
+  },
+  "Armor_110": {
+   "file": "Armor/Armor_110.png"
+  },
+  "Armor_111": {
+   "file": "Armor/Armor_111.png"
+  },
+  "Armor_112": {
+   "file": "Armor/Armor_112.png"
+  },
+  "Armor_113": {
+   "file": "Armor/Armor_113.png"
+  },
+  "Armor_114": {
+   "file": "Armor/Armor_114.png"
+  },
+  "Armor_115": {
+   "file": "Armor/Armor_115.png"
+  },
+  "Armor_116": {
+   "file": "Armor/Armor_116.png"
+  },
+  "Armor_117": {
+   "file": "Armor/Armor_117.png"
+  },
+  "Armor_118": {
+   "file": "Armor/Armor_118.png"
+  },
+  "Armor_119": {
+   "file": "Armor/Armor_119.png"
+  },
+  "Armor_12": {
+   "file": "Armor/Armor_12.png"
+  },
+  "Armor_120": {
+   "file": "Armor/Armor_120.png"
+  },
+  "Armor_121": {
+   "file": "Armor/Armor_121.png"
+  },
+  "Armor_122": {
+   "file": "Armor/Armor_122.png"
+  },
+  "Armor_123": {
+   "file": "Armor/Armor_123.png"
+  },
+  "Armor_124": {
+   "file": "Armor/Armor_124.png"
+  },
+  "Armor_125": {
+   "file": "Armor/Armor_125.png"
+  },
+  "Armor_126": {
+   "file": "Armor/Armor_126.png"
+  },
+  "Armor_127": {
+   "file": "Armor/Armor_127.png"
+  },
+  "Armor_128": {
+   "file": "Armor/Armor_128.png"
+  },
+  "Armor_129": {
+   "file": "Armor/Armor_129.png"
+  },
+  "Armor_13": {
+   "file": "Armor/Armor_13.png"
+  },
+  "Armor_130": {
+   "file": "Armor/Armor_130.png"
+  },
+  "Armor_131": {
+   "file": "Armor/Armor_131.png"
+  },
+  "Armor_132": {
+   "file": "Armor/Armor_132.png"
+  },
+  "Armor_133": {
+   "file": "Armor/Armor_133.png"
+  },
+  "Armor_134": {
+   "file": "Armor/Armor_134.png"
+  },
+  "Armor_135": {
+   "file": "Armor/Armor_135.png"
+  },
+  "Armor_136": {
+   "file": "Armor/Armor_136.png"
+  },
+  "Armor_137": {
+   "file": "Armor/Armor_137.png"
+  },
+  "Armor_138": {
+   "file": "Armor/Armor_138.png"
+  },
+  "Armor_139": {
+   "file": "Armor/Armor_139.png"
+  },
+  "Armor_14": {
+   "file": "Armor/Armor_14.png"
+  },
+  "Armor_140": {
+   "file": "Armor/Armor_140.png"
+  },
+  "Armor_141": {
+   "file": "Armor/Armor_141.png"
+  },
+  "Armor_142": {
+   "file": "Armor/Armor_142.png"
+  },
+  "Armor_143": {
+   "file": "Armor/Armor_143.png"
+  },
+  "Armor_144": {
+   "file": "Armor/Armor_144.png"
+  },
+  "Armor_145": {
+   "file": "Armor/Armor_145.png"
+  },
+  "Armor_146": {
+   "file": "Armor/Armor_146.png"
+  },
+  "Armor_147": {
+   "file": "Armor/Armor_147.png"
+  },
+  "Armor_15": {
+   "file": "Armor/Armor_15.png"
+  },
+  "Armor_16": {
+   "file": "Armor/Armor_16.png"
+  },
+  "Armor_17": {
+   "file": "Armor/Armor_17.png"
+  },
+  "Armor_18": {
+   "file": "Armor/Armor_18.png"
+  },
+  "Armor_19": {
+   "file": "Armor/Armor_19.png"
+  },
+  "Armor_20": {
+   "file": "Armor/Armor_20.png"
+  },
+  "Armor_21": {
+   "file": "Armor/Armor_21.png"
+  },
+  "Armor_22": {
+   "file": "Armor/Armor_22.png"
+  },
+  "Armor_23": {
+   "file": "Armor/Armor_23.png"
+  },
+  "Armor_24": {
+   "file": "Armor/Armor_24.png"
+  },
+  "Armor_25": {
+   "file": "Armor/Armor_25.png"
+  },
+  "Armor_26": {
+   "file": "Armor/Armor_26.png"
+  },
+  "Armor_27": {
+   "file": "Armor/Armor_27.png"
+  },
+  "Armor_28": {
+   "file": "Armor/Armor_28.png"
+  },
+  "Armor_29": {
+   "file": "Armor/Armor_29.png"
+  },
+  "Armor_30": {
+   "file": "Armor/Armor_30.png"
+  },
+  "Armor_31": {
+   "file": "Armor/Armor_31.png"
+  },
+  "Armor_32": {
+   "file": "Armor/Armor_32.png"
+  },
+  "Armor_33": {
+   "file": "Armor/Armor_33.png"
+  },
+  "Armor_34": {
+   "file": "Armor/Armor_34.png"
+  },
+  "Armor_35": {
+   "file": "Armor/Armor_35.png"
+  },
+  "Armor_36": {
+   "file": "Armor/Armor_36.png"
+  },
+  "Armor_37": {
+   "file": "Armor/Armor_37.png"
+  },
+  "Armor_38": {
+   "file": "Armor/Armor_38.png"
+  },
+  "Armor_39": {
+   "file": "Armor/Armor_39.png"
+  },
+  "Armor_40": {
+   "file": "Armor/Armor_40.png"
+  },
+  "Armor_41": {
+   "file": "Armor/Armor_41.png"
+  },
+  "Armor_42": {
+   "file": "Armor/Armor_42.png"
+  },
+  "Armor_43": {
+   "file": "Armor/Armor_43.png"
+  },
+  "Armor_44": {
+   "file": "Armor/Armor_44.png"
+  },
+  "Armor_45": {
+   "file": "Armor/Armor_45.png"
+  },
+  "Armor_46": {
+   "file": "Armor/Armor_46.png"
+  },
+  "Armor_47": {
+   "file": "Armor/Armor_47.png"
+  },
+  "Armor_48": {
+   "file": "Armor/Armor_48.png"
+  },
+  "Armor_49": {
+   "file": "Armor/Armor_49.png"
+  },
+  "Armor_50": {
+   "file": "Armor/Armor_50.png"
+  },
+  "Armor_51": {
+   "file": "Armor/Armor_51.png"
+  },
+  "Armor_52": {
+   "file": "Armor/Armor_52.png"
+  },
+  "Armor_53": {
+   "file": "Armor/Armor_53.png"
+  },
+  "Armor_54": {
+   "file": "Armor/Armor_54.png"
+  },
+  "Armor_55": {
+   "file": "Armor/Armor_55.png"
+  },
+  "Armor_56": {
+   "file": "Armor/Armor_56.png"
+  },
+  "Armor_57": {
+   "file": "Armor/Armor_57.png"
+  },
+  "Armor_58": {
+   "file": "Armor/Armor_58.png"
+  },
+  "Armor_59": {
+   "file": "Armor/Armor_59.png"
+  },
+  "Armor_60": {
+   "file": "Armor/Armor_60.png"
+  },
+  "Armor_61": {
+   "file": "Armor/Armor_61.png"
+  },
+  "Armor_62": {
+   "file": "Armor/Armor_62.png"
+  },
+  "Armor_63": {
+   "file": "Armor/Armor_63.png"
+  },
+  "Armor_64": {
+   "file": "Armor/Armor_64.png"
+  },
+  "Armor_65": {
+   "file": "Armor/Armor_65.png"
+  },
+  "Armor_66": {
+   "file": "Armor/Armor_66.png"
+  },
+  "Armor_67": {
+   "file": "Armor/Armor_67.png"
+  },
+  "Armor_68": {
+   "file": "Armor/Armor_68.png"
+  },
+  "Armor_69": {
+   "file": "Armor/Armor_69.png"
+  },
+  "Armor_70": {
+   "file": "Armor/Armor_70.png"
+  },
+  "Armor_71": {
+   "file": "Armor/Armor_71.png"
+  },
+  "Armor_72": {
+   "file": "Armor/Armor_72.png"
+  },
+  "Armor_73": {
+   "file": "Armor/Armor_73.png"
+  },
+  "Armor_74": {
+   "file": "Armor/Armor_74.png"
+  },
+  "Armor_75": {
+   "file": "Armor/Armor_75.png"
+  },
+  "Armor_76": {
+   "file": "Armor/Armor_76.png"
+  },
+  "Armor_77": {
+   "file": "Armor/Armor_77.png"
+  },
+  "Armor_78": {
+   "file": "Armor/Armor_78.png"
+  },
+  "Armor_79": {
+   "file": "Armor/Armor_79.png"
+  },
+  "Armor_80": {
+   "file": "Armor/Armor_80.png"
+  },
+  "Armor_81": {
+   "file": "Armor/Armor_81.png"
+  },
+  "Armor_82": {
+   "file": "Armor/Armor_82.png"
+  },
+  "Armor_83": {
+   "file": "Armor/Armor_83.png"
+  },
+  "Armor_84": {
+   "file": "Armor/Armor_84.png"
+  },
+  "Armor_85": {
+   "file": "Armor/Armor_85.png"
+  },
+  "Armor_86": {
+   "file": "Armor/Armor_86.png"
+  },
+  "Armor_87": {
+   "file": "Armor/Armor_87.png"
+  },
+  "Armor_88": {
+   "file": "Armor/Armor_88.png"
+  },
+  "Armor_89": {
+   "file": "Armor/Armor_89.png"
+  },
+  "Armor_90": {
+   "file": "Armor/Armor_90.png"
+  },
+  "Armor_91": {
+   "file": "Armor/Armor_91.png"
+  },
+  "Armor_92": {
+   "file": "Armor/Armor_92.png"
+  },
+  "Armor_93": {
+   "file": "Armor/Armor_93.png"
+  },
+  "Armor_94": {
+   "file": "Armor/Armor_94.png"
+  },
+  "Armor_95": {
+   "file": "Armor/Armor_95.png"
+  },
+  "Armor_96": {
+   "file": "Armor/Armor_96.png"
+  },
+  "Armor_97": {
+   "file": "Armor/Armor_97.png"
+  },
+  "Armor_98": {
+   "file": "Armor/Armor_98.png"
+  },
+  "Armor_99": {
+   "file": "Armor/Armor_99.png"
+  },
+  "Armor_preview": {
+   "file": "Armor/Armor_preview.png"
+  }
+ },
+ "CraftingGathering": {
+  "CraftingDust_01": {
+   "file": "CraftingGathering/CraftingDust_01.png"
+  },
+  "CraftingDust_02": {
+   "file": "CraftingGathering/CraftingDust_02.png"
+  },
+  "CraftingDust_03": {
+   "file": "CraftingGathering/CraftingDust_03.png"
+  },
+  "CraftingDust_04": {
+   "file": "CraftingGathering/CraftingDust_04.png"
+  },
+  "CraftingDust_05": {
+   "file": "CraftingGathering/CraftingDust_05.png"
+  },
+  "CraftingDust_06": {
+   "file": "CraftingGathering/CraftingDust_06.png"
+  },
+  "CraftingDust_07": {
+   "file": "CraftingGathering/CraftingDust_07.png"
+  },
+  "CraftingDust_08": {
+   "file": "CraftingGathering/CraftingDust_08.png"
+  },
+  "CraftingDust_09": {
+   "file": "CraftingGathering/CraftingDust_09.png"
+  },
+  "CraftingDust_10": {
+   "file": "CraftingGathering/CraftingDust_10.png"
+  },
+  "Crafting_01": {
+   "file": "CraftingGathering/Crafting_01.png"
+  },
+  "Crafting_02": {
+   "file": "CraftingGathering/Crafting_02.png"
+  },
+  "Crafting_03": {
+   "file": "CraftingGathering/Crafting_03.png"
+  },
+  "Crafting_04": {
+   "file": "CraftingGathering/Crafting_04.png"
+  },
+  "Crafting_05": {
+   "file": "CraftingGathering/Crafting_05.png"
+  },
+  "Crafting_06": {
+   "file": "CraftingGathering/Crafting_06.png"
+  },
+  "Crafting_07": {
+   "file": "CraftingGathering/Crafting_07.png"
+  },
+  "Crafting_08": {
+   "file": "CraftingGathering/Crafting_08.png"
+  },
+  "Crafting_09": {
+   "file": "CraftingGathering/Crafting_09.png"
+  },
+  "Crafting_10": {
+   "file": "CraftingGathering/Crafting_10.png"
+  },
+  "Crafting_100": {
+   "file": "CraftingGathering/Crafting_100.png"
+  },
+  "Crafting_101": {
+   "file": "CraftingGathering/Crafting_101.png"
+  },
+  "Crafting_102": {
+   "file": "CraftingGathering/Crafting_102.png"
+  },
+  "Crafting_103": {
+   "file": "CraftingGathering/Crafting_103.png"
+  },
+  "Crafting_104": {
+   "file": "CraftingGathering/Crafting_104.png"
+  },
+  "Crafting_105": {
+   "file": "CraftingGathering/Crafting_105.png"
+  },
+  "Crafting_106": {
+   "file": "CraftingGathering/Crafting_106.png"
+  },
+  "Crafting_107": {
+   "file": "CraftingGathering/Crafting_107.png"
+  },
+  "Crafting_108": {
+   "file": "CraftingGathering/Crafting_108.png"
+  },
+  "Crafting_109": {
+   "file": "CraftingGathering/Crafting_109.png"
+  },
+  "Crafting_11": {
+   "file": "CraftingGathering/Crafting_11.png"
+  },
+  "Crafting_110": {
+   "file": "CraftingGathering/Crafting_110.png"
+  },
+  "Crafting_111": {
+   "file": "CraftingGathering/Crafting_111.png"
+  },
+  "Crafting_112": {
+   "file": "CraftingGathering/Crafting_112.png"
+  },
+  "Crafting_113": {
+   "file": "CraftingGathering/Crafting_113.png"
+  },
+  "Crafting_114": {
+   "file": "CraftingGathering/Crafting_114.png"
+  },
+  "Crafting_115": {
+   "file": "CraftingGathering/Crafting_115.png"
+  },
+  "Crafting_116": {
+   "file": "CraftingGathering/Crafting_116.png"
+  },
+  "Crafting_117": {
+   "file": "CraftingGathering/Crafting_117.png"
+  },
+  "Crafting_118": {
+   "file": "CraftingGathering/Crafting_118.png"
+  },
+  "Crafting_119": {
+   "file": "CraftingGathering/Crafting_119.png"
+  },
+  "Crafting_12": {
+   "file": "CraftingGathering/Crafting_12.png"
+  },
+  "Crafting_13": {
+   "file": "CraftingGathering/Crafting_13.png"
+  },
+  "Crafting_14": {
+   "file": "CraftingGathering/Crafting_14.png"
+  },
+  "Crafting_15": {
+   "file": "CraftingGathering/Crafting_15.png"
+  },
+  "Crafting_16": {
+   "file": "CraftingGathering/Crafting_16.png"
+  },
+  "Crafting_17": {
+   "file": "CraftingGathering/Crafting_17.png"
+  },
+  "Crafting_18": {
+   "file": "CraftingGathering/Crafting_18.png"
+  },
+  "Crafting_19": {
+   "file": "CraftingGathering/Crafting_19.png"
+  },
+  "Crafting_20": {
+   "file": "CraftingGathering/Crafting_20.png"
+  },
+  "Crafting_21": {
+   "file": "CraftingGathering/Crafting_21.png"
+  },
+  "Crafting_22": {
+   "file": "CraftingGathering/Crafting_22.png"
+  },
+  "Crafting_23": {
+   "file": "CraftingGathering/Crafting_23.png"
+  },
+  "Crafting_24": {
+   "file": "CraftingGathering/Crafting_24.png"
+  },
+  "Crafting_25": {
+   "file": "CraftingGathering/Crafting_25.png"
+  },
+  "Crafting_26": {
+   "file": "CraftingGathering/Crafting_26.png"
+  },
+  "Crafting_27": {
+   "file": "CraftingGathering/Crafting_27.png"
+  },
+  "Crafting_28": {
+   "file": "CraftingGathering/Crafting_28.png"
+  },
+  "Crafting_29": {
+   "file": "CraftingGathering/Crafting_29.png"
+  },
+  "Crafting_30": {
+   "file": "CraftingGathering/Crafting_30.png"
+  },
+  "Crafting_31": {
+   "file": "CraftingGathering/Crafting_31.png"
+  },
+  "Crafting_32": {
+   "file": "CraftingGathering/Crafting_32.png"
+  },
+  "Crafting_33": {
+   "file": "CraftingGathering/Crafting_33.png"
+  },
+  "Crafting_34": {
+   "file": "CraftingGathering/Crafting_34.png"
+  },
+  "Crafting_35": {
+   "file": "CraftingGathering/Crafting_35.png"
+  },
+  "Crafting_36": {
+   "file": "CraftingGathering/Crafting_36.png"
+  },
+  "Crafting_37": {
+   "file": "CraftingGathering/Crafting_37.png"
+  },
+  "Crafting_38": {
+   "file": "CraftingGathering/Crafting_38.png"
+  },
+  "Crafting_39": {
+   "file": "CraftingGathering/Crafting_39.png"
+  },
+  "Crafting_40": {
+   "file": "CraftingGathering/Crafting_40.png"
+  },
+  "Crafting_41": {
+   "file": "CraftingGathering/Crafting_41.png"
+  },
+  "Crafting_42": {
+   "file": "CraftingGathering/Crafting_42.png"
+  },
+  "Crafting_43": {
+   "file": "CraftingGathering/Crafting_43.png"
+  },
+  "Crafting_44": {
+   "file": "CraftingGathering/Crafting_44.png"
+  },
+  "Crafting_45": {
+   "file": "CraftingGathering/Crafting_45.png"
+  },
+  "Crafting_46": {
+   "file": "CraftingGathering/Crafting_46.png"
+  },
+  "Crafting_47": {
+   "file": "CraftingGathering/Crafting_47.png"
+  },
+  "Crafting_48": {
+   "file": "CraftingGathering/Crafting_48.png"
+  },
+  "Crafting_49": {
+   "file": "CraftingGathering/Crafting_49.png"
+  },
+  "Crafting_50": {
+   "file": "CraftingGathering/Crafting_50.png"
+  },
+  "Crafting_51": {
+   "file": "CraftingGathering/Crafting_51.png"
+  },
+  "Crafting_52": {
+   "file": "CraftingGathering/Crafting_52.png"
+  },
+  "Crafting_53": {
+   "file": "CraftingGathering/Crafting_53.png"
+  },
+  "Crafting_54": {
+   "file": "CraftingGathering/Crafting_54.png"
+  },
+  "Crafting_55": {
+   "file": "CraftingGathering/Crafting_55.png"
+  },
+  "Crafting_56": {
+   "file": "CraftingGathering/Crafting_56.png"
+  },
+  "Crafting_57": {
+   "file": "CraftingGathering/Crafting_57.png"
+  },
+  "Crafting_58": {
+   "file": "CraftingGathering/Crafting_58.png"
+  },
+  "Crafting_59": {
+   "file": "CraftingGathering/Crafting_59.png"
+  },
+  "Crafting_60": {
+   "file": "CraftingGathering/Crafting_60.png"
+  },
+  "Crafting_61": {
+   "file": "CraftingGathering/Crafting_61.png"
+  },
+  "Crafting_62": {
+   "file": "CraftingGathering/Crafting_62.png"
+  },
+  "Crafting_63": {
+   "file": "CraftingGathering/Crafting_63.png"
+  },
+  "Crafting_64": {
+   "file": "CraftingGathering/Crafting_64.png"
+  },
+  "Crafting_65": {
+   "file": "CraftingGathering/Crafting_65.png"
+  },
+  "Crafting_66": {
+   "file": "CraftingGathering/Crafting_66.png"
+  },
+  "Crafting_67": {
+   "file": "CraftingGathering/Crafting_67.png"
+  },
+  "Crafting_68": {
+   "file": "CraftingGathering/Crafting_68.png"
+  },
+  "Crafting_69": {
+   "file": "CraftingGathering/Crafting_69.png"
+  },
+  "Crafting_70": {
+   "file": "CraftingGathering/Crafting_70.png"
+  },
+  "Crafting_71": {
+   "file": "CraftingGathering/Crafting_71.png"
+  },
+  "Crafting_72": {
+   "file": "CraftingGathering/Crafting_72.png"
+  },
+  "Crafting_73": {
+   "file": "CraftingGathering/Crafting_73.png"
+  },
+  "Crafting_74": {
+   "file": "CraftingGathering/Crafting_74.png"
+  },
+  "Crafting_75": {
+   "file": "CraftingGathering/Crafting_75.png"
+  },
+  "Crafting_76": {
+   "file": "CraftingGathering/Crafting_76.png"
+  },
+  "Crafting_77": {
+   "file": "CraftingGathering/Crafting_77.png"
+  },
+  "Crafting_78": {
+   "file": "CraftingGathering/Crafting_78.png"
+  },
+  "Crafting_79": {
+   "file": "CraftingGathering/Crafting_79.png"
+  },
+  "Crafting_80": {
+   "file": "CraftingGathering/Crafting_80.png"
+  },
+  "Crafting_81": {
+   "file": "CraftingGathering/Crafting_81.png"
+  },
+  "Crafting_82": {
+   "file": "CraftingGathering/Crafting_82.png"
+  },
+  "Crafting_83": {
+   "file": "CraftingGathering/Crafting_83.png"
+  },
+  "Crafting_84": {
+   "file": "CraftingGathering/Crafting_84.png"
+  },
+  "Crafting_85": {
+   "file": "CraftingGathering/Crafting_85.png"
+  },
+  "Crafting_86": {
+   "file": "CraftingGathering/Crafting_86.png"
+  },
+  "Crafting_87": {
+   "file": "CraftingGathering/Crafting_87.png"
+  },
+  "Crafting_88": {
+   "file": "CraftingGathering/Crafting_88.png"
+  },
+  "Crafting_89": {
+   "file": "CraftingGathering/Crafting_89.png"
+  },
+  "Crafting_90": {
+   "file": "CraftingGathering/Crafting_90.png"
+  },
+  "Crafting_91": {
+   "file": "CraftingGathering/Crafting_91.png"
+  },
+  "Crafting_92": {
+   "file": "CraftingGathering/Crafting_92.png"
+  },
+  "Crafting_93": {
+   "file": "CraftingGathering/Crafting_93.png"
+  },
+  "Crafting_94": {
+   "file": "CraftingGathering/Crafting_94.png"
+  },
+  "Crafting_95": {
+   "file": "CraftingGathering/Crafting_95.png"
+  },
+  "Crafting_96": {
+   "file": "CraftingGathering/Crafting_96.png"
+  },
+  "Crafting_97": {
+   "file": "CraftingGathering/Crafting_97.png"
+  },
+  "Crafting_98": {
+   "file": "CraftingGathering/Crafting_98.png"
+  },
+  "Crafting_99": {
+   "file": "CraftingGathering/Crafting_99.png"
+  }
+ },
+ "Food": {
+  "Food_01": {
+   "file": "Food/Food_01.png"
+  },
+  "Food_02": {
+   "file": "Food/Food_02.png"
+  },
+  "Food_03": {
+   "file": "Food/Food_03.png"
+  },
+  "Food_04": {
+   "file": "Food/Food_04.png"
+  },
+  "Food_05": {
+   "file": "Food/Food_05.png"
+  },
+  "Food_06": {
+   "file": "Food/Food_06.png"
+  },
+  "Food_07": {
+   "file": "Food/Food_07.png"
+  },
+  "Food_08": {
+   "file": "Food/Food_08.png"
+  },
+  "Food_09": {
+   "file": "Food/Food_09.png"
+  },
+  "Food_10": {
+   "file": "Food/Food_10.png"
+  },
+  "Food_11": {
+   "file": "Food/Food_11.png"
+  },
+  "Food_12": {
+   "file": "Food/Food_12.png"
+  },
+  "Food_13": {
+   "file": "Food/Food_13.png"
+  },
+  "Food_14": {
+   "file": "Food/Food_14.png"
+  },
+  "Food_15": {
+   "file": "Food/Food_15.png"
+  },
+  "Food_16": {
+   "file": "Food/Food_16.png"
+  },
+  "Food_17": {
+   "file": "Food/Food_17.png"
+  },
+  "Food_18": {
+   "file": "Food/Food_18.png"
+  },
+  "Food_19": {
+   "file": "Food/Food_19.png"
+  },
+  "Food_20": {
+   "file": "Food/Food_20.png"
+  },
+  "Food_21": {
+   "file": "Food/Food_21.png"
+  },
+  "Food_22": {
+   "file": "Food/Food_22.png"
+  },
+  "Food_23": {
+   "file": "Food/Food_23.png"
+  },
+  "Food_24": {
+   "file": "Food/Food_24.png"
+  },
+  "Food_25": {
+   "file": "Food/Food_25.png"
+  },
+  "Food_26": {
+   "file": "Food/Food_26.png"
+  },
+  "Food_27": {
+   "file": "Food/Food_27.png"
+  },
+  "Food_28": {
+   "file": "Food/Food_28.png"
+  },
+  "Food_29": {
+   "file": "Food/Food_29.png"
+  },
+  "Food_30": {
+   "file": "Food/Food_30.png"
+  },
+  "Food_31": {
+   "file": "Food/Food_31.png"
+  },
+  "Food_32": {
+   "file": "Food/Food_32.png"
+  },
+  "Food_33": {
+   "file": "Food/Food_33.png"
+  },
+  "Food_34": {
+   "file": "Food/Food_34.png"
+  },
+  "Food_35": {
+   "file": "Food/Food_35.png"
+  },
+  "Food_36": {
+   "file": "Food/Food_36.png"
+  },
+  "Food_37": {
+   "file": "Food/Food_37.png"
+  },
+  "Food_38": {
+   "file": "Food/Food_38.png"
+  },
+  "Food_39": {
+   "file": "Food/Food_39.png"
+  },
+  "Food_40": {
+   "file": "Food/Food_40.png"
+  },
+  "Food_41": {
+   "file": "Food/Food_41.png"
+  },
+  "Food_42": {
+   "file": "Food/Food_42.png"
+  },
+  "Food_43": {
+   "file": "Food/Food_43.png"
+  },
+  "Food_44": {
+   "file": "Food/Food_44.png"
+  },
+  "Food_45": {
+   "file": "Food/Food_45.png"
+  },
+  "Food_46": {
+   "file": "Food/Food_46.png"
+  },
+  "Food_48": {
+   "file": "Food/Food_48.png"
+  },
+  "Food_49": {
+   "file": "Food/Food_49.png"
+  },
+  "Food_50": {
+   "file": "Food/Food_50.png"
+  },
+  "Food_51": {
+   "file": "Food/Food_51.png"
+  },
+  "Food_52": {
+   "file": "Food/Food_52.png"
+  },
+  "Food_preview": {
+   "file": "Food/Food_preview.png"
+  }
+ },
+ "Misc": {
+  "Misc_01": {
+   "file": "Misc/Misc_01.png"
+  },
+  "Misc_02": {
+   "file": "Misc/Misc_02.png"
+  },
+  "Misc_03": {
+   "file": "Misc/Misc_03.png"
+  },
+  "Misc_04": {
+   "file": "Misc/Misc_04.png"
+  },
+  "Misc_05": {
+   "file": "Misc/Misc_05.png"
+  },
+  "Misc_06": {
+   "file": "Misc/Misc_06.png"
+  },
+  "Misc_07": {
+   "file": "Misc/Misc_07.png"
+  },
+  "Misc_08": {
+   "file": "Misc/Misc_08.png"
+  },
+  "Misc_09": {
+   "file": "Misc/Misc_09.png"
+  },
+  "Misc_10": {
+   "file": "Misc/Misc_10.png"
+  },
+  "Misc_11": {
+   "file": "Misc/Misc_11.png"
+  },
+  "Misc_12": {
+   "file": "Misc/Misc_12.png"
+  },
+  "Misc_13": {
+   "file": "Misc/Misc_13.png"
+  },
+  "Misc_14": {
+   "file": "Misc/Misc_14.png"
+  },
+  "Misc_15": {
+   "file": "Misc/Misc_15.png"
+  },
+  "Misc_16": {
+   "file": "Misc/Misc_16.png"
+  },
+  "Misc_17": {
+   "file": "Misc/Misc_17.png"
+  },
+  "Misc_18": {
+   "file": "Misc/Misc_18.png"
+  },
+  "Misc_19": {
+   "file": "Misc/Misc_19.png"
+  },
+  "Misc_20": {
+   "file": "Misc/Misc_20.png"
+  },
+  "Misc_21": {
+   "file": "Misc/Misc_21.png"
+  },
+  "Misc_22": {
+   "file": "Misc/Misc_22.png"
+  },
+  "Misc_23": {
+   "file": "Misc/Misc_23.png"
+  },
+  "Misc_24": {
+   "file": "Misc/Misc_24.png"
+  },
+  "Misc_25": {
+   "file": "Misc/Misc_25.png"
+  },
+  "Misc_26": {
+   "file": "Misc/Misc_26.png"
+  },
+  "Misc_27": {
+   "file": "Misc/Misc_27.png"
+  },
+  "Misc_28": {
+   "file": "Misc/Misc_28.png"
+  },
+  "Misc_29": {
+   "file": "Misc/Misc_29.png"
+  },
+  "Misc_30": {
+   "file": "Misc/Misc_30.png"
+  },
+  "Misc_31": {
+   "file": "Misc/Misc_31.png"
+  },
+  "Misc_32": {
+   "file": "Misc/Misc_32.png"
+  },
+  "Misc_33": {
+   "file": "Misc/Misc_33.png"
+  },
+  "Misc_34": {
+   "file": "Misc/Misc_34.png"
+  },
+  "Misc_35": {
+   "file": "Misc/Misc_35.png"
+  },
+  "Misc_36": {
+   "file": "Misc/Misc_36.png"
+  },
+  "Misc_37": {
+   "file": "Misc/Misc_37.png"
+  },
+  "Misc_38": {
+   "file": "Misc/Misc_38.png"
+  },
+  "Misc_39": {
+   "file": "Misc/Misc_39.png"
+  },
+  "Misc_40": {
+   "file": "Misc/Misc_40.png"
+  },
+  "Misc_41": {
+   "file": "Misc/Misc_41.png"
+  },
+  "Misc_42": {
+   "file": "Misc/Misc_42.png"
+  },
+  "Misc_43": {
+   "file": "Misc/Misc_43.png"
+  },
+  "Misc_44": {
+   "file": "Misc/Misc_44.png"
+  },
+  "Misc_45": {
+   "file": "Misc/Misc_45.png"
+  },
+  "Misc_46": {
+   "file": "Misc/Misc_46.png"
+  },
+  "Misc_47": {
+   "file": "Misc/Misc_47.png"
+  },
+  "Misc_48": {
+   "file": "Misc/Misc_48.png"
+  },
+  "Misc_49": {
+   "file": "Misc/Misc_49.png"
+  },
+  "Misc_50": {
+   "file": "Misc/Misc_50.png"
+  },
+  "Misc_51": {
+   "file": "Misc/Misc_51.png"
+  },
+  "Misc_52": {
+   "file": "Misc/Misc_52.png"
+  },
+  "Misc_53": {
+   "file": "Misc/Misc_53.png"
+  },
+  "Misc_54": {
+   "file": "Misc/Misc_54.png"
+  },
+  "Misc_55": {
+   "file": "Misc/Misc_55.png"
+  },
+  "Misc_56": {
+   "file": "Misc/Misc_56.png"
+  },
+  "Misc_57": {
+   "file": "Misc/Misc_57.png"
+  },
+  "Misc_58": {
+   "file": "Misc/Misc_58.png"
+  },
+  "Misc_59": {
+   "file": "Misc/Misc_59.png"
+  },
+  "Misc_60": {
+   "file": "Misc/Misc_60.png"
+  },
+  "Misc_61": {
+   "file": "Misc/Misc_61.png"
+  },
+  "Misc_62": {
+   "file": "Misc/Misc_62.png"
+  },
+  "Misc_63": {
+   "file": "Misc/Misc_63.png"
+  },
+  "Misc_64": {
+   "file": "Misc/Misc_64.png"
+  },
+  "Misc_66": {
+   "file": "Misc/Misc_66.png"
+  },
+  "Misc_67": {
+   "file": "Misc/Misc_67.png"
+  },
+  "Misc_68": {
+   "file": "Misc/Misc_68.png"
+  },
+  "Misc_69": {
+   "file": "Misc/Misc_69.png"
+  },
+  "Misc_70": {
+   "file": "Misc/Misc_70.png"
+  },
+  "Misc_71": {
+   "file": "Misc/Misc_71.png"
+  },
+  "Misc_73": {
+   "file": "Misc/Misc_73.png"
+  },
+  "Misc_74": {
+   "file": "Misc/Misc_74.png"
+  },
+  "Misc_75": {
+   "file": "Misc/Misc_75.png"
+  },
+  "Misc_76": {
+   "file": "Misc/Misc_76.png"
+  },
+  "Misc_77": {
+   "file": "Misc/Misc_77.png"
+  },
+  "Misc_78": {
+   "file": "Misc/Misc_78.png"
+  },
+  "Misc_79": {
+   "file": "Misc/Misc_79.png"
+  },
+  "Misc_80": {
+   "file": "Misc/Misc_80.png"
+  },
+  "Misc_81": {
+   "file": "Misc/Misc_81.png"
+  },
+  "Misc_82": {
+   "file": "Misc/Misc_82.png"
+  },
+  "Misc_83": {
+   "file": "Misc/Misc_83.png"
+  },
+  "Misc_84": {
+   "file": "Misc/Misc_84.png"
+  },
+  "Misc_85": {
+   "file": "Misc/Misc_85.png"
+  },
+  "Misc_86": {
+   "file": "Misc/Misc_86.png"
+  },
+  "Misc_87": {
+   "file": "Misc/Misc_87.png"
+  },
+  "Misc_88": {
+   "file": "Misc/Misc_88.png"
+  },
+  "Misc_89": {
+   "file": "Misc/Misc_89.png"
+  },
+  "Misc_90": {
+   "file": "Misc/Misc_90.png"
+  },
+  "Misc_Preview": {
+   "file": "Misc/Misc_Preview.png"
+  }
+ },
+ "Potions": {
+  "Potion_01": {
+   "file": "Potions/Potion_01.png"
+  },
+  "Potion_02": {
+   "file": "Potions/Potion_02.png"
+  },
+  "Potion_03": {
+   "file": "Potions/Potion_03.png"
+  },
+  "Potion_04": {
+   "file": "Potions/Potion_04.png"
+  },
+  "Potion_05": {
+   "file": "Potions/Potion_05.png"
+  },
+  "Potion_06": {
+   "file": "Potions/Potion_06.png"
+  },
+  "Potion_07": {
+   "file": "Potions/Potion_07.png"
+  },
+  "Potion_08": {
+   "file": "Potions/Potion_08.png"
+  },
+  "Potion_09": {
+   "file": "Potions/Potion_09.png"
+  },
+  "Potion_10": {
+   "file": "Potions/Potion_10.png"
+  },
+  "Potion_11": {
+   "file": "Potions/Potion_11.png"
+  },
+  "Potion_12": {
+   "file": "Potions/Potion_12.png"
+  },
+  "Potion_13": {
+   "file": "Potions/Potion_13.png"
+  },
+  "Potion_14": {
+   "file": "Potions/Potion_14.png"
+  },
+  "Potion_15": {
+   "file": "Potions/Potion_15.png"
+  },
+  "Potion_16": {
+   "file": "Potions/Potion_16.png"
+  },
+  "Potion_17": {
+   "file": "Potions/Potion_17.png"
+  },
+  "Potion_18": {
+   "file": "Potions/Potion_18.png"
+  },
+  "Potion_19": {
+   "file": "Potions/Potion_19.png"
+  },
+  "Potion_20": {
+   "file": "Potions/Potion_20.png"
+  },
+  "Potion_21": {
+   "file": "Potions/Potion_21.png"
+  },
+  "Potion_22": {
+   "file": "Potions/Potion_22.png"
+  },
+  "Potion_23": {
+   "file": "Potions/Potion_23.png"
+  },
+  "Potion_24": {
+   "file": "Potions/Potion_24.png"
+  },
+  "Potion_25": {
+   "file": "Potions/Potion_25.png"
+  },
+  "Potion_26": {
+   "file": "Potions/Potion_26.png"
+  },
+  "Potion_27": {
+   "file": "Potions/Potion_27.png"
+  },
+  "Potion_28": {
+   "file": "Potions/Potion_28.png"
+  },
+  "Potion_29": {
+   "file": "Potions/Potion_29.png"
+  },
+  "Potion_30": {
+   "file": "Potions/Potion_30.png"
+  },
+  "Potion_31": {
+   "file": "Potions/Potion_31.png"
+  },
+  "Potion_32": {
+   "file": "Potions/Potion_32.png"
+  },
+  "Potion_33": {
+   "file": "Potions/Potion_33.png"
+  },
+  "Potion_34": {
+   "file": "Potions/Potion_34.png"
+  },
+  "Potion_35": {
+   "file": "Potions/Potion_35.png"
+  },
+  "Potion_36": {
+   "file": "Potions/Potion_36.png"
+  },
+  "Potion_37": {
+   "file": "Potions/Potion_37.png"
+  },
+  "Potion_38": {
+   "file": "Potions/Potion_38.png"
+  },
+  "Potion_39": {
+   "file": "Potions/Potion_39.png"
+  },
+  "Potion_40": {
+   "file": "Potions/Potion_40.png"
+  },
+  "Potion_41": {
+   "file": "Potions/Potion_41.png"
+  },
+  "Potion_42": {
+   "file": "Potions/Potion_42.png"
+  },
+  "Potion_43": {
+   "file": "Potions/Potion_43.png"
+  },
+  "Potion_44": {
+   "file": "Potions/Potion_44.png"
+  },
+  "Potion_45": {
+   "file": "Potions/Potion_45.png"
+  },
+  "Potion_46": {
+   "file": "Potions/Potion_46.png"
+  },
+  "Potion_47": {
+   "file": "Potions/Potion_47.png"
+  },
+  "Potion_48": {
+   "file": "Potions/Potion_48.png"
+  }
+ },
+ "Shields": {
+  "Shield_01": {
+   "file": "Shields/Shield_01.png"
+  },
+  "Shield_02": {
+   "file": "Shields/Shield_02.png"
+  },
+  "Shield_03": {
+   "file": "Shields/Shield_03.png"
+  },
+  "Shield_04": {
+   "file": "Shields/Shield_04.png"
+  },
+  "Shield_05": {
+   "file": "Shields/Shield_05.png"
+  },
+  "Shield_06": {
+   "file": "Shields/Shield_06.png"
+  },
+  "Shield_07": {
+   "file": "Shields/Shield_07.png"
+  },
+  "Shield_08": {
+   "file": "Shields/Shield_08.png"
+  },
+  "Shield_09": {
+   "file": "Shields/Shield_09.png"
+  },
+  "Shield_10": {
+   "file": "Shields/Shield_10.png"
+  },
+  "Shield_11": {
+   "file": "Shields/Shield_11.png"
+  },
+  "Shield_12": {
+   "file": "Shields/Shield_12.png"
+  },
+  "Shield_13": {
+   "file": "Shields/Shield_13.png"
+  },
+  "Shield_14": {
+   "file": "Shields/Shield_14.png"
+  },
+  "Shield_15": {
+   "file": "Shields/Shield_15.png"
+  },
+  "Shield_16": {
+   "file": "Shields/Shield_16.png"
+  },
+  "Shield_17": {
+   "file": "Shields/Shield_17.png"
+  },
+  "Shield_18": {
+   "file": "Shields/Shield_18.png"
+  },
+  "Shield_19": {
+   "file": "Shields/Shield_19.png"
+  },
+  "Shield_20": {
+   "file": "Shields/Shield_20.png"
+  },
+  "Shield_21": {
+   "file": "Shields/Shield_21.png"
+  },
+  "Shield_22": {
+   "file": "Shields/Shield_22.png"
+  },
+  "Shield_23": {
+   "file": "Shields/Shield_23.png"
+  },
+  "Shield_24": {
+   "file": "Shields/Shield_24.png"
+  },
+  "Shield_25": {
+   "file": "Shields/Shield_25.png"
+  },
+  "Shield_26": {
+   "file": "Shields/Shield_26.png"
+  },
+  "Shield_27": {
+   "file": "Shields/Shield_27.png"
+  }
+ },
+ "Weapons": {
+  "Weapon_01": {
+   "file": "Weapons/Weapon_01.png"
+  },
+  "Weapon_02": {
+   "file": "Weapons/Weapon_02.png"
+  },
+  "Weapon_03": {
+   "file": "Weapons/Weapon_03.png"
+  },
+  "Weapon_04": {
+   "file": "Weapons/Weapon_04.png"
+  },
+  "Weapon_05": {
+   "file": "Weapons/Weapon_05.png"
+  },
+  "Weapon_06": {
+   "file": "Weapons/Weapon_06.png"
+  },
+  "Weapon_07": {
+   "file": "Weapons/Weapon_07.png"
+  },
+  "Weapon_08": {
+   "file": "Weapons/Weapon_08.png"
+  },
+  "Weapon_09": {
+   "file": "Weapons/Weapon_09.png"
+  },
+  "Weapon_10": {
+   "file": "Weapons/Weapon_10.png"
+  },
+  "Weapon_11": {
+   "file": "Weapons/Weapon_11.png"
+  },
+  "Weapon_12": {
+   "file": "Weapons/Weapon_12.png"
+  },
+  "Weapon_13": {
+   "file": "Weapons/Weapon_13.png"
+  },
+  "Weapon_14": {
+   "file": "Weapons/Weapon_14.png"
+  },
+  "Weapon_15": {
+   "file": "Weapons/Weapon_15.png"
+  },
+  "Weapon_16": {
+   "file": "Weapons/Weapon_16.png"
+  },
+  "Weapon_17": {
+   "file": "Weapons/Weapon_17.png"
+  },
+  "Weapon_18": {
+   "file": "Weapons/Weapon_18.png"
+  },
+  "Weapon_19": {
+   "file": "Weapons/Weapon_19.png"
+  },
+  "Weapon_20": {
+   "file": "Weapons/Weapon_20.png"
+  },
+  "Weapon_21": {
+   "file": "Weapons/Weapon_21.png"
+  },
+  "Weapon_22": {
+   "file": "Weapons/Weapon_22.png"
+  },
+  "Weapon_23": {
+   "file": "Weapons/Weapon_23.png"
+  },
+  "Weapon_24": {
+   "file": "Weapons/Weapon_24.png"
+  },
+  "Weapon_25": {
+   "file": "Weapons/Weapon_25.png"
+  },
+  "Weapon_26": {
+   "file": "Weapons/Weapon_26.png"
+  },
+  "Weapon_27": {
+   "file": "Weapons/Weapon_27.png"
+  },
+  "Weapon_28": {
+   "file": "Weapons/Weapon_28.png"
+  },
+  "Weapon_29": {
+   "file": "Weapons/Weapon_29.png"
+  },
+  "Weapon_30": {
+   "file": "Weapons/Weapon_30.png"
+  },
+  "Weapon_31": {
+   "file": "Weapons/Weapon_31.png"
+  },
+  "Weapon_32": {
+   "file": "Weapons/Weapon_32.png"
+  },
+  "Weapon_33": {
+   "file": "Weapons/Weapon_33.png"
+  },
+  "Weapon_34": {
+   "file": "Weapons/Weapon_34.png"
+  },
+  "Weapon_35": {
+   "file": "Weapons/Weapon_35.png"
+  },
+  "Weapon_36": {
+   "file": "Weapons/Weapon_36.png"
+  },
+  "Weapon_37": {
+   "file": "Weapons/Weapon_37.png"
+  },
+  "Weapon_38": {
+   "file": "Weapons/Weapon_38.png"
+  },
+  "Weapon_39": {
+   "file": "Weapons/Weapon_39.png"
+  },
+  "Weapon_40": {
+   "file": "Weapons/Weapon_40.png"
+  },
+  "Weapon_41": {
+   "file": "Weapons/Weapon_41.png"
+  },
+  "Weapon_42": {
+   "file": "Weapons/Weapon_42.png"
+  },
+  "Weapon_43": {
+   "file": "Weapons/Weapon_43.png"
+  },
+  "Weapon_44": {
+   "file": "Weapons/Weapon_44.png"
+  },
+  "Weapon_45": {
+   "file": "Weapons/Weapon_45.png"
+  },
+  "Weapon_46": {
+   "file": "Weapons/Weapon_46.png"
+  },
+  "Weapon_47": {
+   "file": "Weapons/Weapon_47.png"
+  },
+  "Weapon_48": {
+   "file": "Weapons/Weapon_48.png"
+  },
+  "Weapon_49": {
+   "file": "Weapons/Weapon_49.png"
+  },
+  "Weapon_50": {
+   "file": "Weapons/Weapon_50.png"
+  },
+  "Weapon_51": {
+   "file": "Weapons/Weapon_51.png"
+  },
+  "Weapon_52": {
+   "file": "Weapons/Weapon_52.png"
+  },
+  "Weapon_53": {
+   "file": "Weapons/Weapon_53.png"
+  },
+  "Weapon_54": {
+   "file": "Weapons/Weapon_54.png"
+  },
+  "Weapon_55": {
+   "file": "Weapons/Weapon_55.png"
+  },
+  "Weapon_56": {
+   "file": "Weapons/Weapon_56.png"
+  },
+  "Weapon_57": {
+   "file": "Weapons/Weapon_57.png"
+  },
+  "Weapon_58": {
+   "file": "Weapons/Weapon_58.png"
+  },
+  "Weapon_59": {
+   "file": "Weapons/Weapon_59.png"
+  },
+  "Weapon_60": {
+   "file": "Weapons/Weapon_60.png"
+  },
+  "Weapon_61": {
+   "file": "Weapons/Weapon_61.png"
+  },
+  "Weapon_62": {
+   "file": "Weapons/Weapon_62.png"
+  },
+  "Weapon_63": {
+   "file": "Weapons/Weapon_63.png"
+  },
+  "Weapon_64": {
+   "file": "Weapons/Weapon_64.png"
+  },
+  "Weapon_65": {
+   "file": "Weapons/Weapon_65.png"
+  },
+  "Weapon_66": {
+   "file": "Weapons/Weapon_66.png"
+  },
+  "Weapon_67": {
+   "file": "Weapons/Weapon_67.png"
+  },
+  "Weapon_68": {
+   "file": "Weapons/Weapon_68.png"
+  },
+  "Weapon_69": {
+   "file": "Weapons/Weapon_69.png"
+  },
+  "Weapon_70": {
+   "file": "Weapons/Weapon_70.png"
+  },
+  "Weapon_71": {
+   "file": "Weapons/Weapon_71.png"
+  },
+  "Weapon_72": {
+   "file": "Weapons/Weapon_72.png"
+  },
+  "Weapon_73": {
+   "file": "Weapons/Weapon_73.png"
+  },
+  "Weapon_74": {
+   "file": "Weapons/Weapon_74.png"
+  },
+  "Weapon_75": {
+   "file": "Weapons/Weapon_75.png"
+  },
+  "Weapon_76": {
+   "file": "Weapons/Weapon_76.png"
+  },
+  "Weapon_preview": {
+   "file": "Weapons/Weapon_preview.png"
+  }
+ }
+}

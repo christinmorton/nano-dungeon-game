@@ -1,0 +1,20 @@
+{
+ "_meta": {
+  "pack": "Side-scroller Trap pack (selected, repurposed as top-down traps)",
+  "key": "tileReference.trap-spiketrap",
+  "mode": "spritesheet",
+  "browseAllFrames": true,
+  "sheet": "traps/spiketrap.png",
+  "tileSize": 32,
+  "frameWidth": 40,
+  "frameHeight": 32,
+  "spacing": 0,
+  "margin": 0,
+  "columns": 2,
+  "rows": 1,
+  "total": 2,
+  "view": "trap animation frames (Trap_Spike.png)",
+  "license": "User-provided pack (resources/Trap). Side-scroller asset repurposed. Confirm redistribution/use terms before shipping.",
+  "note": "Trap 'Trap_Spike.png' (80x32), 2 animation frames. Frames are NON-SQUARE: 40x32, not 32x32 — the old tileSize:32 sliced 2.5 columns and was wrong. Verified against the PNG 2026-08-06 (two sprites across 80px). `tileSize` is retained for consumers that read it, but frameWidth/frameHeight are authoritative."
+ }
+}

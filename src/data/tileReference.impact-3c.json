@@ -1,0 +1,18 @@
+{
+ "_meta": {
+  "pack": "Retro Impact Effect Pack 3C",
+  "key": "tileReference.impact-3c",
+  "mode": "spritesheet",
+  "browseAllFrames": true,
+  "sheet": "fx/impact/impact_3c.png",
+  "tileSize": 32,
+  "spacing": 0,
+  "margin": 0,
+  "columns": 6,
+  "rows": 24,
+  "total": 144,
+  "view": "64x64 retro impact / spell effect animation frames",
+  "license": "User-provided pack (resources/Retro Impact Effect Pack ALL). Confirm redistribution/use terms before shipping.",
+  "note": "Impact/spell effect frames. RE-PROCESSED to 32px (was 64px showing 4 sprites/tile). 192x768 -> 6x24=144 frames."
+ }
+}

@@ -1,0 +1,18 @@
+{
+    "_meta": {
+        "pack": "Desert pack — Desert auto-tile set",
+        "key": "tileReference.desert-autotile",
+        "mode": "spritesheet",
+        "browseAllFrames": true,
+        "sheet": "tilesets/desert/autoTile_desert.png",
+        "tileSize": 16,
+        "spacing": 0,
+        "margin": 0,
+        "columns": 10,
+        "rows": 15,
+        "total": 150,
+        "view": "top-down desert auto-tile terrain (sand / dune / rock edges)",
+        "license": "User-provided pack (resources/Desert). Confirm redistribution/use terms before shipping.",
+        "note": "GRID VERIFIED 2026-08-06 (grid drawn over the PNG at 9x — lines land exactly on tile edges; 160x240 / 16 = 10x15 = 150 frames, no remainder). Desert auto-tile terrain for a desert floor variant; the arid counterpart to forest/snow autotiles. LABELED: 10 complete terrains — sand-dirt, sand-grass, sand-darkdirt, sand-water and sand-palebrick/sand-redbrick, with -overlay (transparent-background) twins of dirt/grass/darkdirt/water. Every block is a 3x3 outer set with its 2x2 inner-corner set 3 columns to the right. Frames 23/24/28/29 are plain sand fill variants; the remaining 16 frames are empty."
+    }
+}

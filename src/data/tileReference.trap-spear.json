@@ -1,0 +1,18 @@
+{
+ "_meta": {
+  "pack": "Side-scroller Trap pack (selected, repurposed as top-down traps)",
+  "key": "tileReference.trap-spear",
+  "mode": "spritesheet",
+  "browseAllFrames": true,
+  "sheet": "traps/spear.png",
+  "tileSize": 64,
+  "spacing": 0,
+  "margin": 0,
+  "columns": 3,
+  "rows": 1,
+  "total": 3,
+  "view": "trap animation frames (Spear.png)",
+  "license": "User-provided pack (resources/Trap). Side-scroller asset repurposed. Confirm redistribution/use terms before shipping.",
+  "note": "Trap 'Spear.png' (192x64). Frame 64px inferred from strip height (3x1=3 frames)."
+ }
+}

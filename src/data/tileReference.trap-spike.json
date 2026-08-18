@@ -1,0 +1,18 @@
+{
+ "_meta": {
+  "pack": "Side-scroller Trap pack (selected, repurposed as top-down traps)",
+  "key": "tileReference.trap-spike",
+  "mode": "spritesheet",
+  "browseAllFrames": true,
+  "sheet": "traps/spike.png",
+  "tileSize": 32,
+  "spacing": 0,
+  "margin": 0,
+  "columns": 10,
+  "rows": 1,
+  "total": 10,
+  "view": "trap animation frames (Spike_B.png)",
+  "license": "User-provided pack (resources/Trap). Side-scroller asset repurposed. Confirm redistribution/use terms before shipping.",
+  "note": "Trap 'Spike_B.png' (320x32). Frame 32px inferred from strip height (10x1=10 frames)."
+ }
+}

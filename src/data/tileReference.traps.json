@@ -1,0 +1,36 @@
+{
+  "_meta": {
+    "pack": "original (PixelLab)",
+    "key": "tileReference.traps",
+    "mode": "images",
+    "dir": "art/traps",
+    "tileSize": 48,
+    "view": "top-down (floor hazard)",
+    "license": "Original art generated via PixelLab from text prompts only — owned, free to ship.",
+    "generated": "2026-06-07",
+    "note": "Full v3_item_lore_overhaul.md §11 trap roster as 48px top-down matte floor hazards (world layer). Dungeon traps are level-gen placed; deployables are player items. 32rogues/Kenney also carry tile versions of spikes/pit/pressure-plate (these originals are the full self-consistent set).",
+    "referenceDoc": "documents/v3_item_lore_overhaul.md (§11)"
+  },
+
+  "dungeonTraps": {
+    "spikeTrap":        { "file": "spike_trap.png",        "name": "Spike Trap",        "trigger": "step",        "note": "§11 — physical damage on step" },
+    "dartTrap":         { "file": "dart_trap.png",         "name": "Dart Trap",         "trigger": "pressure",    "note": "§11 — fires darts when triggered" },
+    "flameJet":         { "file": "flame_jet.png",         "name": "Flame Jet",         "trigger": "step",        "note": "§11 — fire zone" },
+    "frostPlate":       { "file": "frost_plate.png",       "name": "Frost Plate",       "trigger": "step",        "note": "§11 — cold / slow" },
+    "poisonGasVent":    { "file": "poison_gas_vent.png",   "name": "Poison Gas Vent",   "trigger": "step",        "note": "§11 — poison cloud zone" },
+    "pitTrap":          { "file": "pit_trap.png",          "name": "Pit Trap",          "trigger": "step",        "note": "§11 — fall (also 32rogues.tiles.pit)" },
+    "snareTrap":        { "file": "snare_trap.png",        "name": "Snare Trap",        "trigger": "step",        "note": "§11 — immobilize" },
+    "alarmGlyph":       { "file": "alarm_glyph.png",       "name": "Alarm Glyph",       "trigger": "step",        "note": "§11 — alerts nearby enemies" },
+    "runeTrap":         { "file": "rune_trap.png",         "name": "Rune Trap",         "trigger": "step",        "note": "§11 — magic burst" },
+    "collapsingCeiling":{ "file": "collapsing_ceiling.png","name": "Collapsing Ceiling","trigger": "telegraphed", "note": "§11 — heavy damage" },
+    "teleportGlyph":    { "file": "teleport_glyph.png",    "name": "Teleport Glyph",    "trigger": "step",        "note": "§11 — random teleport" },
+    "cursedGlyph":      { "file": "cursed_glyph.png",      "name": "Cursed Glyph",      "trigger": "step",        "note": "§11 — applies Cursed (wired)" },
+    "doomSigil":        { "file": "doom_sigil.png",        "name": "Doom Sigil",        "trigger": "step",        "note": "§11 — Cult doom effect" }
+  },
+
+  "deployables": {
+    "bearTrap":      { "file": "bear_trap.png",      "name": "Bear Trap",      "trigger": "deployed", "note": "§11 — player-placed; immobilize + damage" },
+    "explosiveRune": { "file": "explosive_rune.png", "name": "Explosive Rune", "trigger": "deployed", "note": "§11 — player-placed; explosion on contact" },
+    "snareKit":      { "file": "snare_kit.png",      "name": "Snare Kit",      "trigger": "deployed", "note": "§11 — player-placed snare" }
+  }
+}

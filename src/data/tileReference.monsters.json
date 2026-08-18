@@ -1,0 +1,373 @@
+{
+  "_meta": {
+    "pack": "original (PixelLab)",
+    "key": "tileReference.monsters",
+    "mode": "images",
+    "dir": "art/monsters",
+    "tileSize": 48,
+    "view": "top-down (south pose)",
+    "license": "Original art generated via PixelLab from text prompts only — owned, free to ship.",
+    "note": "Original monsters sprites. Single south-facing pose per actor (the engine renders one static sprite + tween). Skin-tone variants live under per-actor sub-groups. See documents/v3_actor_art_coverage_audit.md.",
+    "referenceDoc": "documents/v3_actor_art_coverage_audit.md"
+  },
+  "monsters": {
+    "bat": {
+      "file": "bat_south.png",
+      "note": "art/monsters/bat_south.png"
+    },
+    "bear": {
+      "file": "bear_south.png",
+      "note": "art/monsters/bear_south.png"
+    },
+    "beetle": {
+      "file": "beetle_south.png",
+      "note": "art/monsters/beetle_south.png"
+    },
+    "boar": {
+      "file": "boar_south.png",
+      "note": "art/monsters/boar_south.png"
+    },
+    "corsair": {
+      "file": "corsair_south.png",
+      "note": "art/monsters/corsair_south.png"
+    },
+    "crab": {
+      "file": "crab_south.png",
+      "note": "art/monsters/crab_south.png"
+    },
+    "cyclops": {
+      "file": "cyclops_south.png",
+      "note": "art/monsters/cyclops_south.png"
+    },
+    "darkCultWarlord": {
+      "file": "dark_cult_warlord_south.png",
+      "note": "art/monsters/dark_cult_warlord_south.png"
+    },
+    "darkFriarFemale": {
+      "file": "dark_friar_female_south.png",
+      "note": "art/monsters/dark_friar_female_south.png"
+    },
+    "darkFriar": {
+      "file": "dark_friar_south.png",
+      "note": "art/monsters/dark_friar_south.png"
+    },
+    "darkKnightFemale": {
+      "file": "dark_knight_female_south.png",
+      "note": "art/monsters/dark_knight_female_south.png"
+    },
+    "darkKnight": {
+      "file": "dark_knight_south.png",
+      "note": "art/monsters/dark_knight_south.png"
+    },
+    "darkMonkFemale": {
+      "file": "dark_monk_female_south.png",
+      "note": "art/monsters/dark_monk_female_south.png"
+    },
+    "darkMonk": {
+      "file": "dark_monk_south.png",
+      "note": "art/monsters/dark_monk_south.png"
+    },
+    "darkPriestFemale": {
+      "file": "dark_priest_female_south.png",
+      "note": "art/monsters/dark_priest_female_south.png"
+    },
+    "darkPriest": {
+      "file": "dark_priest_south.png",
+      "note": "art/monsters/dark_priest_south.png"
+    },
+    "darkSorcererFemale": {
+      "file": "dark_sorcerer_female_south.png",
+      "note": "art/monsters/dark_sorcerer_female_south.png"
+    },
+    "darkSorcerer": {
+      "file": "dark_sorcerer_south.png",
+      "note": "art/monsters/dark_sorcerer_south.png"
+    },
+    "elderDarkSorcererFemale": {
+      "file": "elder_dark_sorcerer_female_south.png",
+      "note": "art/monsters/elder_dark_sorcerer_female_south.png"
+    },
+    "elderDarkSorcerer": {
+      "file": "elder_dark_sorcerer_south.png",
+      "note": "art/monsters/elder_dark_sorcerer_south.png"
+    },
+    "eliteGoblin": {
+      "file": "elite_goblin_south.png",
+      "note": "art/monsters/elite_goblin_south.png"
+    },
+    "eliteOgre": {
+      "file": "elite_ogre_south.png",
+      "note": "art/monsters/elite_ogre_south.png"
+    },
+    "eliteOrc": {
+      "file": "elite_orc_south.png",
+      "note": "art/monsters/elite_orc_south.png"
+    },
+    "eliteTroll": {
+      "file": "elite_troll_south.png",
+      "note": "art/monsters/elite_troll_south.png"
+    },
+    "ghastB": {
+      "file": "ghast_b_south.png",
+      "note": "art/monsters/ghast_b_south.png"
+    },
+    "ghastC": {
+      "file": "ghast_c_south.png",
+      "note": "art/monsters/ghast_c_south.png"
+    },
+    "ghast": {
+      "file": "ghast_south.png",
+      "note": "art/monsters/ghast_south.png"
+    },
+    "ghost": {
+      "file": "ghost_south.png",
+      "note": "art/monsters/ghost_south.png"
+    },
+    "ghoul": {
+      "file": "ghoul_south.png",
+      "note": "art/monsters/ghoul_south.png"
+    },
+    "giantScarab": {
+      "file": "giant_scarab_south.png",
+      "note": "art/monsters/giant_scarab_south.png"
+    },
+    "goblinArcherFemale": {
+      "file": "goblin_archer_female_south.png",
+      "note": "art/monsters/goblin_archer_female_south.png"
+    },
+    "goblinArcher": {
+      "file": "goblin_archer_south.png",
+      "note": "art/monsters/goblin_archer_south.png"
+    },
+    "goblinCaptain": {
+      "file": "goblin_captain_south.png",
+      "note": "art/monsters/goblin_captain_south.png"
+    },
+    "goblinFemale": {
+      "file": "goblin_female_south.png",
+      "note": "art/monsters/goblin_female_south.png"
+    },
+    "goblinKing": {
+      "file": "goblin_king_south.png",
+      "note": "art/monsters/goblin_king_south.png"
+    },
+    "goblinShamanFemale": {
+      "file": "goblin_shaman_female_south.png",
+      "note": "art/monsters/goblin_shaman_female_south.png"
+    },
+    "goblinShaman": {
+      "file": "goblin_shaman_south.png",
+      "note": "art/monsters/goblin_shaman_south.png"
+    },
+    "goblin": {
+      "file": "goblin_south.png",
+      "note": "art/monsters/goblin_south.png"
+    },
+    "greaterGhastB": {
+      "file": "greater_ghast_b_south.png",
+      "note": "art/monsters/greater_ghast_b_south.png"
+    },
+    "greaterGhast": {
+      "file": "greater_ghast_south.png",
+      "note": "art/monsters/greater_ghast_south.png"
+    },
+    "imp": {
+      "file": "imp_south.png",
+      "note": "art/monsters/imp_south.png"
+    },
+    "lion": {
+      "file": "lion_south.png",
+      "note": "art/monsters/lion_south.png"
+    },
+    "lizardB": {
+      "file": "lizard_b_south.png",
+      "note": "art/monsters/lizard_b_south.png"
+    },
+    "lizard": {
+      "file": "lizard_south.png",
+      "note": "art/monsters/lizard_south.png"
+    },
+    "lynxB": {
+      "file": "lynx_b_south.png",
+      "note": "art/monsters/lynx_b_south.png"
+    },
+    "lynx": {
+      "file": "lynx_south.png",
+      "note": "art/monsters/lynx_south.png"
+    },
+    "marauder": {
+      "file": "marauder_south.png",
+      "note": "art/monsters/marauder_south.png"
+    },
+    "militantOgre": {
+      "file": "militant_ogre_south.png",
+      "note": "art/monsters/militant_ogre_south.png"
+    },
+    "ogreOverlord": {
+      "file": "ogre_overlord_south.png",
+      "note": "art/monsters/ogre_overlord_south.png"
+    },
+    "ogreShaman": {
+      "file": "ogre_shaman_south.png",
+      "note": "art/monsters/ogre_shaman_south.png"
+    },
+    "ogre": {
+      "file": "ogre_south.png",
+      "note": "art/monsters/ogre_south.png"
+    },
+    "ogreWarlord": {
+      "file": "ogre_warlord_south.png",
+      "note": "art/monsters/ogre_warlord_south.png"
+    },
+    "orcArcherFemale": {
+      "file": "orc_archer_female_south.png",
+      "note": "art/monsters/orc_archer_female_south.png"
+    },
+    "orcArcher": {
+      "file": "orc_archer_south.png",
+      "note": "art/monsters/orc_archer_south.png"
+    },
+    "orcCaptain": {
+      "file": "orc_captain_south.png",
+      "note": "art/monsters/orc_captain_south.png"
+    },
+    "orcFemale": {
+      "file": "orc_female_south.png",
+      "note": "art/monsters/orc_female_south.png"
+    },
+    "orcKing": {
+      "file": "orc_king_south.png",
+      "note": "art/monsters/orc_king_south.png"
+    },
+    "orcShamanFemale": {
+      "file": "orc_shaman_female_south.png",
+      "note": "art/monsters/orc_shaman_female_south.png"
+    },
+    "orcShaman": {
+      "file": "orc_shaman_south.png",
+      "note": "art/monsters/orc_shaman_south.png"
+    },
+    "orc": {
+      "file": "orc_south.png",
+      "note": "art/monsters/orc_south.png"
+    },
+    "outlaw": {
+      "file": "outlaw_south.png",
+      "note": "art/monsters/outlaw_south.png"
+    },
+    "raiderCaptain": {
+      "file": "raider_captain_south.png",
+      "note": "art/monsters/raider_captain_south.png"
+    },
+    "reaver": {
+      "file": "reaver_south.png",
+      "note": "art/monsters/reaver_south.png"
+    },
+    "scarab": {
+      "file": "scarab_south.png",
+      "note": "art/monsters/scarab_south.png"
+    },
+    "scorpion": {
+      "file": "scorpion_south.png",
+      "note": "art/monsters/scorpion_south.png"
+    },
+    "shadow": {
+      "file": "shadow_south.png",
+      "note": "art/monsters/shadow_south.png"
+    },
+    "skeletonArcher": {
+      "file": "skeleton_archer_south.png",
+      "note": "art/monsters/skeleton_archer_south.png"
+    },
+    "skeleton": {
+      "file": "skeleton_south.png",
+      "note": "art/monsters/skeleton_south.png"
+    },
+    "slimeSmall": {
+      "file": "slime_small_south.png",
+      "note": "art/monsters/slime_small_south.png"
+    },
+    "slime": {
+      "file": "slime_south.png",
+      "note": "art/monsters/slime_south.png"
+    },
+    "snake": {
+      "file": "snake_south.png",
+      "note": "art/monsters/snake_south.png"
+    },
+    "spiderB": {
+      "file": "spider_b_south.png",
+      "note": "art/monsters/spider_b_south.png"
+    },
+    "spider": {
+      "file": "spider_south.png",
+      "note": "art/monsters/spider_south.png"
+    },
+    "trickster": {
+      "file": "trickster_south.png",
+      "note": "art/monsters/trickster_south.png"
+    },
+    "trollCaptain": {
+      "file": "troll_captain_south.png",
+      "note": "art/monsters/troll_captain_south.png"
+    },
+    "trollKing": {
+      "file": "troll_king_south.png",
+      "note": "art/monsters/troll_king_south.png"
+    },
+    "trollShaman": {
+      "file": "troll_shaman_south.png",
+      "note": "art/monsters/troll_shaman_south.png"
+    },
+    "troll": {
+      "file": "troll_south.png",
+      "note": "art/monsters/troll_south.png"
+    },
+    "voidSwarmling": {
+      "file": "void_swarmling_south.png",
+      "note": "art/monsters/void_swarmling_south.png"
+    },
+    "waspB": {
+      "file": "wasp_b_south.png",
+      "note": "art/monsters/wasp_b_south.png"
+    },
+    "wasp": {
+      "file": "wasp_south.png",
+      "note": "art/monsters/wasp_south.png"
+    },
+    "wolfB": {
+      "file": "wolf_b_south.png",
+      "note": "art/monsters/wolf_b_south.png"
+    },
+    "wolf": {
+      "file": "wolf_south.png",
+      "note": "art/monsters/wolf_south.png"
+    }
+  },
+  "mythical": {
+    "firstWeaver": {
+      "file": "mythical/first_weaver_south.png",
+      "note": "art/monsters/mythical/first_weaver_south.png"
+    },
+    "greyFamine": {
+      "file": "mythical/grey_famine_south.png",
+      "note": "art/monsters/mythical/grey_famine_south.png"
+    },
+    "hollowSwarm": {
+      "file": "mythical/hollow_swarm_south.png",
+      "note": "art/monsters/mythical/hollow_swarm_south.png"
+    },
+    "mountainsTooth": {
+      "file": "mythical/mountains_tooth_south.png",
+      "note": "art/monsters/mythical/mountains_tooth_south.png"
+    },
+    "oldCoil": {
+      "file": "mythical/old_coil_south.png",
+      "note": "art/monsters/mythical/old_coil_south.png"
+    },
+    "theUndying": {
+      "file": "mythical/the_undying_south.png",
+      "note": "art/monsters/mythical/the_undying_south.png"
+    }
+  }
+}

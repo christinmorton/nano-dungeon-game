@@ -1,0 +1,20 @@
+{
+    "species": "void",
+    "kind": "undead",
+    "faction": "void",
+    "roles": [
+        { "class": "Ghoul",        "role": "shambler", "weight": 4 },
+        { "class": "Skeleton",     "role": "shambler", "weight": 3 },
+        { "class": "Ghost",        "role": "wraith",  "weight": 2 },
+        { "class": "DarkSorcerer", "role": "caster",  "weight": 2 },
+        { "class": "EvilPriest",   "role": "healer",  "weight": 1 }
+    ],
+    "leaders": {
+        "encampment": { "tile": 322, "playbook": "*",         "activity": "patrolling" },
+        "fortress":   { "tile": 322, "playbook": "formation", "activity": "patrolling" },
+        "warlord":    { "tile": 325, "playbook": "formation", "activity": "patrolling", "elite": true },
+        "outpost":    { "tile": 322, "playbook": "freeform",  "activity": "patrolling" }
+    },
+    "props": [],
+    "darkness": { "encampment": 2, "fortress": 1 }
+}

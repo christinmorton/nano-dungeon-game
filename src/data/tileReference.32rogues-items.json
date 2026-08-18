@@ -1,0 +1,938 @@
+{
+  "_meta": {
+    "pack": "32rogues",
+    "key": "tileReference.32rogues-items",
+    "sheet": "32rogues-0.5.0/32rogues/items.png",
+    "manifestSource": "32rogues-0.5.0/32rogues/items.txt",
+    "tileSize": 32,
+    "spacing": 0,
+    "columns": 11,
+    "license": "Commercial OK; NO AI/ML input; no NFT/blockchain; no redistribute/resell. (c) 2024 Seth Boyles.",
+    "view": "side / item-icon",
+    "formula": {
+      "frameFromRowCol": "index = row * 11 + col"
+    },
+    "verification": "Positions derived from manifest 'N.x' labels (row = N-1, col = letter). Verify in TestScreen before wiring into game code.",
+    "referenceDoc": "documents/v3_item_prop_art_coverage_audit.md"
+  },
+  "weapons": {
+    "dagger": {
+      "frame": 0,
+      "col": 0,
+      "row": 0,
+      "note": "32rogues 1.a dagger"
+    },
+    "shortSword": {
+      "frame": 1,
+      "col": 1,
+      "row": 0,
+      "note": "32rogues 1.b short sword"
+    },
+    "shortSword2": {
+      "frame": 2,
+      "col": 2,
+      "row": 0,
+      "note": "32rogues 1.c short sword 2"
+    },
+    "longSword": {
+      "frame": 3,
+      "col": 3,
+      "row": 0,
+      "note": "32rogues 1.d long sword"
+    },
+    "bastardSword": {
+      "frame": 4,
+      "col": 4,
+      "row": 0,
+      "note": "32rogues 1.e bastard sword"
+    },
+    "zweihander": {
+      "frame": 5,
+      "col": 5,
+      "row": 0,
+      "note": "32rogues 1.f zweihander"
+    },
+    "sanguineDagger": {
+      "frame": 6,
+      "col": 6,
+      "row": 0,
+      "note": "32rogues 1.g sanguine dagger"
+    },
+    "magicDagger": {
+      "frame": 7,
+      "col": 7,
+      "row": 0,
+      "note": "32rogues 1.h magic dagger"
+    },
+    "crystalSword": {
+      "frame": 8,
+      "col": 8,
+      "row": 0,
+      "note": "32rogues 1.i crystal sword"
+    },
+    "evilSword": {
+      "frame": 9,
+      "col": 9,
+      "row": 0,
+      "note": "32rogues 1.j evil sword"
+    },
+    "flameSword": {
+      "frame": 10,
+      "col": 10,
+      "row": 0,
+      "note": "32rogues 1.k flame sword"
+    },
+    "wideShortSword": {
+      "frame": 11,
+      "col": 0,
+      "row": 1,
+      "note": "32rogues 2.a wide short sword"
+    },
+    "wideLongSword": {
+      "frame": 12,
+      "col": 1,
+      "row": 1,
+      "note": "32rogues 2.b wide long sword"
+    },
+    "rapier": {
+      "frame": 13,
+      "col": 2,
+      "row": 1,
+      "note": "32rogues 2.c rapier"
+    },
+    "longRapier": {
+      "frame": 14,
+      "col": 3,
+      "row": 1,
+      "note": "32rogues 2.d long rapier"
+    },
+    "flamberge": {
+      "frame": 15,
+      "col": 4,
+      "row": 1,
+      "note": "32rogues 2.e flamberge"
+    },
+    "largeFlamberge": {
+      "frame": 16,
+      "col": 5,
+      "row": 1,
+      "note": "32rogues 2.f large flamberge"
+    },
+    "greatSword": {
+      "frame": 17,
+      "col": 6,
+      "row": 1,
+      "note": "32rogues 2.g great sword"
+    },
+    "shotel": {
+      "frame": 22,
+      "col": 0,
+      "row": 2,
+      "note": "32rogues 3.a shotel"
+    },
+    "scimitar": {
+      "frame": 23,
+      "col": 1,
+      "row": 2,
+      "note": "32rogues 3.b scimitar"
+    },
+    "largeScimitar": {
+      "frame": 24,
+      "col": 2,
+      "row": 2,
+      "note": "32rogues 3.c large scimitar"
+    },
+    "greatScimitar": {
+      "frame": 25,
+      "col": 3,
+      "row": 2,
+      "note": "32rogues 3.d great scimitar"
+    },
+    "kukri": {
+      "frame": 26,
+      "col": 4,
+      "row": 2,
+      "note": "32rogues 3.e kukri"
+    },
+    "handAxe": {
+      "frame": 33,
+      "col": 0,
+      "row": 3,
+      "note": "32rogues 4.a hand axe"
+    },
+    "battleAxe": {
+      "frame": 34,
+      "col": 1,
+      "row": 3,
+      "note": "32rogues 4.b battle axe"
+    },
+    "halberd": {
+      "frame": 35,
+      "col": 2,
+      "row": 3,
+      "note": "32rogues 4.c halberd"
+    },
+    "greatAxe": {
+      "frame": 36,
+      "col": 3,
+      "row": 3,
+      "note": "32rogues 4.d great axe"
+    },
+    "giantAxe": {
+      "frame": 37,
+      "col": 4,
+      "row": 3,
+      "note": "32rogues 4.e giant axe"
+    },
+    "hatchet": {
+      "frame": 38,
+      "col": 5,
+      "row": 3,
+      "note": "32rogues 4.f hatchet"
+    },
+    "woodcuttersAxe": {
+      "frame": 39,
+      "col": 6,
+      "row": 3,
+      "note": "32rogues 4.g woodcutter's axe"
+    },
+    "blacksmithsHammer": {
+      "frame": 44,
+      "col": 0,
+      "row": 4,
+      "note": "32rogues 5.a blacksmiths hammer"
+    },
+    "shortWarhammer": {
+      "frame": 45,
+      "col": 1,
+      "row": 4,
+      "note": "32rogues 5.b short warhammer"
+    },
+    "longWarhammer": {
+      "frame": 46,
+      "col": 2,
+      "row": 4,
+      "note": "32rogues 5.c long warhammer"
+    },
+    "hammer": {
+      "frame": 47,
+      "col": 3,
+      "row": 4,
+      "note": "32rogues 5.d hammer"
+    },
+    "greatHammer": {
+      "frame": 48,
+      "col": 4,
+      "row": 4,
+      "note": "32rogues 5.e great hammer"
+    },
+    "mace1": {
+      "frame": 55,
+      "col": 0,
+      "row": 5,
+      "note": "32rogues 6.a mace 1"
+    },
+    "mace2": {
+      "frame": 56,
+      "col": 1,
+      "row": 5,
+      "note": "32rogues 6.b mace 2"
+    },
+    "greatMace": {
+      "frame": 57,
+      "col": 2,
+      "row": 5,
+      "note": "32rogues 6.c great mace"
+    },
+    "spikedBat": {
+      "frame": 58,
+      "col": 3,
+      "row": 5,
+      "note": "32rogues 6.d spiked bat"
+    },
+    "spear": {
+      "frame": 66,
+      "col": 0,
+      "row": 6,
+      "note": "32rogues 7.a spear"
+    },
+    "shortSpear": {
+      "frame": 67,
+      "col": 1,
+      "row": 6,
+      "note": "32rogues 7.b short spear"
+    },
+    "pitchfork": {
+      "frame": 68,
+      "col": 2,
+      "row": 6,
+      "note": "32rogues 7.c pitchfork"
+    },
+    "trident": {
+      "frame": 69,
+      "col": 3,
+      "row": 6,
+      "note": "32rogues 7.d trident"
+    },
+    "magicSpear": {
+      "frame": 70,
+      "col": 4,
+      "row": 6,
+      "note": "32rogues 7.e magic spear"
+    },
+    "flail1": {
+      "frame": 77,
+      "col": 0,
+      "row": 7,
+      "note": "32rogues 8.a flail 1"
+    },
+    "flail2": {
+      "frame": 78,
+      "col": 1,
+      "row": 7,
+      "note": "32rogues 8.b flail 2"
+    },
+    "flail3": {
+      "frame": 79,
+      "col": 2,
+      "row": 7,
+      "note": "32rogues 8.c flail 3"
+    },
+    "club": {
+      "frame": 88,
+      "col": 0,
+      "row": 8,
+      "note": "32rogues 9.a club"
+    },
+    "spikedClub": {
+      "frame": 89,
+      "col": 1,
+      "row": 8,
+      "note": "32rogues 9.b spiked club"
+    },
+    "greatClub": {
+      "frame": 90,
+      "col": 2,
+      "row": 8,
+      "note": "32rogues 9.c great club"
+    },
+    "clubWithNails": {
+      "frame": 91,
+      "col": 3,
+      "row": 8,
+      "note": "32rogues 9.d club with nails"
+    },
+    "crossbow": {
+      "frame": 99,
+      "col": 0,
+      "row": 9,
+      "note": "32rogues 10.a crossbow"
+    },
+    "shortBow": {
+      "frame": 100,
+      "col": 1,
+      "row": 9,
+      "note": "32rogues 10.b short bow"
+    },
+    "longBow": {
+      "frame": 101,
+      "col": 2,
+      "row": 9,
+      "note": "32rogues 10.c long bow"
+    },
+    "longBow2": {
+      "frame": 102,
+      "col": 3,
+      "row": 9,
+      "note": "32rogues 10.d long bow 2"
+    },
+    "largeCrossbow": {
+      "frame": 103,
+      "col": 4,
+      "row": 9,
+      "note": "32rogues 10.e large crossbow"
+    },
+    "crystalStaff": {
+      "frame": 110,
+      "col": 0,
+      "row": 10,
+      "note": "32rogues 11.a crystal staff"
+    },
+    "holyStaff": {
+      "frame": 111,
+      "col": 1,
+      "row": 10,
+      "note": "32rogues 11.b holy staff"
+    },
+    "druidStaff": {
+      "frame": 112,
+      "col": 2,
+      "row": 10,
+      "note": "32rogues 11.c druid staff"
+    },
+    "blueStaff": {
+      "frame": 113,
+      "col": 3,
+      "row": 10,
+      "note": "32rogues 11.d blue staff"
+    },
+    "goldenStaff": {
+      "frame": 114,
+      "col": 4,
+      "row": 10,
+      "note": "32rogues 11.e golden staff"
+    },
+    "redCrystalStaff": {
+      "frame": 115,
+      "col": 5,
+      "row": 10,
+      "note": "32rogues 11.f red crystal staff"
+    },
+    "flameStaff": {
+      "frame": 116,
+      "col": 6,
+      "row": 10,
+      "note": "32rogues 11.g flame staff"
+    },
+    "blueCrystalStaff": {
+      "frame": 117,
+      "col": 7,
+      "row": 10,
+      "note": "32rogues 11.h blue crystal staff"
+    },
+    "crossStaff": {
+      "frame": 118,
+      "col": 8,
+      "row": 10,
+      "note": "32rogues 11.i cross staff"
+    },
+    "saintsStaff": {
+      "frame": 119,
+      "col": 9,
+      "row": 10,
+      "note": "32rogues 11.j saint's staff"
+    }
+  },
+  "offhand": {
+    "buckler": {
+      "frame": 121,
+      "col": 0,
+      "row": 11,
+      "note": "32rogues 12.a buckler"
+    },
+    "kiteShield": {
+      "frame": 122,
+      "col": 1,
+      "row": 11,
+      "note": "32rogues 12.b kite shield"
+    },
+    "crossShield": {
+      "frame": 123,
+      "col": 2,
+      "row": 11,
+      "note": "32rogues 12.c cross shield"
+    },
+    "darkShield": {
+      "frame": 124,
+      "col": 3,
+      "row": 11,
+      "note": "32rogues 12.d dark shield"
+    },
+    "roundShield": {
+      "frame": 125,
+      "col": 4,
+      "row": 11,
+      "note": "32rogues 12.e round shield"
+    },
+    "buckler2": {
+      "frame": 126,
+      "col": 5,
+      "row": 11,
+      "note": "32rogues 12.f buckler 2"
+    },
+    "largeShield": {
+      "frame": 127,
+      "col": 6,
+      "row": 11,
+      "note": "32rogues 12.g large shield"
+    }
+  },
+  "armorBody": {
+    "clothArmor": {
+      "frame": 132,
+      "col": 0,
+      "row": 12,
+      "note": "32rogues 13.a cloth armor"
+    },
+    "leatherArmor": {
+      "frame": 133,
+      "col": 1,
+      "row": 12,
+      "note": "32rogues 13.b leather armor"
+    },
+    "robe": {
+      "frame": 134,
+      "col": 2,
+      "row": 12,
+      "note": "32rogues 13.c robe"
+    },
+    "chainMail": {
+      "frame": 135,
+      "col": 3,
+      "row": 12,
+      "note": "32rogues 13.d chain mail"
+    },
+    "scaleMail": {
+      "frame": 136,
+      "col": 4,
+      "row": 12,
+      "note": "32rogues 13.e scale mail"
+    },
+    "chestPlate": {
+      "frame": 137,
+      "col": 5,
+      "row": 12,
+      "note": "32rogues 13.f chest plate"
+    }
+  },
+  "armorGloves": {
+    "clothGloves": {
+      "frame": 143,
+      "col": 0,
+      "row": 13,
+      "note": "32rogues 14.a cloth gloves"
+    },
+    "leatherGloves": {
+      "frame": 144,
+      "col": 1,
+      "row": 13,
+      "note": "32rogues 14.b leather gloves"
+    },
+    "blueClothGloves": {
+      "frame": 145,
+      "col": 2,
+      "row": 13,
+      "note": "32rogues 14.c blue cloth gloves"
+    },
+    "gauntlets": {
+      "frame": 146,
+      "col": 3,
+      "row": 13,
+      "note": "32rogues 14.d gauntlets"
+    }
+  },
+  "armorFeet": {
+    "shoes": {
+      "frame": 154,
+      "col": 0,
+      "row": 14,
+      "note": "32rogues 15.a shoes"
+    },
+    "leatherBoots": {
+      "frame": 155,
+      "col": 1,
+      "row": 14,
+      "note": "32rogues 15.b leather boots"
+    },
+    "highBlueBoots": {
+      "frame": 156,
+      "col": 2,
+      "row": 14,
+      "note": "32rogues 15.c high blue boots"
+    },
+    "greaves": {
+      "frame": 157,
+      "col": 3,
+      "row": 14,
+      "note": "32rogues 15.d greaves"
+    }
+  },
+  "armorHead": {
+    "clothHood": {
+      "frame": 165,
+      "col": 0,
+      "row": 15,
+      "note": "32rogues 16.a cloth hood"
+    },
+    "leatherHelm": {
+      "frame": 166,
+      "col": 1,
+      "row": 15,
+      "note": "32rogues 16.b leather helm"
+    },
+    "wideBrimmedHat": {
+      "frame": 167,
+      "col": 2,
+      "row": 15,
+      "note": "32rogues 16.c wide-brimmed hat"
+    },
+    "chainMailCoif": {
+      "frame": 168,
+      "col": 3,
+      "row": 15,
+      "note": "32rogues 16.d chain mail coif"
+    },
+    "helm": {
+      "frame": 169,
+      "col": 4,
+      "row": 15,
+      "note": "32rogues 16.e helm"
+    },
+    "helmWithChainMail": {
+      "frame": 170,
+      "col": 5,
+      "row": 15,
+      "note": "32rogues 16.f helm with chain mail"
+    },
+    "plateHelm1": {
+      "frame": 171,
+      "col": 6,
+      "row": 15,
+      "note": "32rogues 16.g plate helm 1"
+    },
+    "plateHelm2": {
+      "frame": 172,
+      "col": 7,
+      "row": 15,
+      "note": "32rogues 16.h plate helm 2"
+    }
+  },
+  "accessories": {
+    "redPendant": {
+      "frame": 176,
+      "col": 0,
+      "row": 16,
+      "note": "32rogues 17.a red pendant"
+    },
+    "metalPendant": {
+      "frame": 177,
+      "col": 1,
+      "row": 16,
+      "note": "32rogues 17.b metal pendant"
+    },
+    "crystalPendant": {
+      "frame": 178,
+      "col": 2,
+      "row": 16,
+      "note": "32rogues 17.c crystal pendant"
+    },
+    "discPendant": {
+      "frame": 179,
+      "col": 3,
+      "row": 16,
+      "note": "32rogues 17.d disc pendant"
+    },
+    "crossPendant": {
+      "frame": 180,
+      "col": 4,
+      "row": 16,
+      "note": "32rogues 17.e cross pendant"
+    },
+    "stonePendant": {
+      "frame": 181,
+      "col": 5,
+      "row": 16,
+      "note": "32rogues 17.f stone pendant"
+    },
+    "ankh": {
+      "frame": 182,
+      "col": 6,
+      "row": 16,
+      "note": "32rogues 17.g ankh"
+    },
+    "goldEmeraldRing": {
+      "frame": 187,
+      "col": 0,
+      "row": 17,
+      "note": "32rogues 18.a gold emerald ring"
+    },
+    "goldBandRing": {
+      "frame": 188,
+      "col": 1,
+      "row": 17,
+      "note": "32rogues 18.b gold band ring"
+    },
+    "greenSignetRing": {
+      "frame": 189,
+      "col": 2,
+      "row": 17,
+      "note": "32rogues 18.c green signet ring"
+    },
+    "rubyRing": {
+      "frame": 190,
+      "col": 3,
+      "row": 17,
+      "note": "32rogues 18.d ruby ring"
+    },
+    "sapphireRing": {
+      "frame": 191,
+      "col": 4,
+      "row": 17,
+      "note": "32rogues 18.e sapphire ring"
+    },
+    "onyxRing": {
+      "frame": 192,
+      "col": 5,
+      "row": 17,
+      "note": "32rogues 18.f onyx ring"
+    },
+    "goldSignetRing": {
+      "frame": 198,
+      "col": 0,
+      "row": 18,
+      "note": "32rogues 19.a gold signet ring"
+    },
+    "silverSignetRing": {
+      "frame": 199,
+      "col": 1,
+      "row": 18,
+      "note": "32rogues 19.b silver signet ring"
+    },
+    "jadeRing": {
+      "frame": 200,
+      "col": 2,
+      "row": 18,
+      "note": "32rogues 19.c jade ring"
+    },
+    "silverSignetRing2": {
+      "frame": 201,
+      "col": 3,
+      "row": 18,
+      "note": "32rogues 19.d silver signet ring"
+    },
+    "twistedGoldRing": {
+      "frame": 202,
+      "col": 4,
+      "row": 18,
+      "note": "32rogues 19.e twisted gold ring"
+    },
+    "twistedMetalRing": {
+      "frame": 203,
+      "col": 5,
+      "row": 18,
+      "note": "32rogues 19.f twisted metal ring"
+    }
+  },
+  "potions": {
+    "purplePotion": {
+      "frame": 209,
+      "col": 0,
+      "row": 19,
+      "note": "32rogues 20.a purple potion"
+    },
+    "redPotion": {
+      "frame": 210,
+      "col": 1,
+      "row": 19,
+      "note": "32rogues 20.b red potion"
+    },
+    "brownVial": {
+      "frame": 211,
+      "col": 2,
+      "row": 19,
+      "note": "32rogues 20.c brown vial"
+    },
+    "largeDarkPotion": {
+      "frame": 212,
+      "col": 3,
+      "row": 19,
+      "note": "32rogues 20.d large dark potion"
+    },
+    "greenPotion": {
+      "frame": 213,
+      "col": 4,
+      "row": 19,
+      "note": "32rogues 20.e green potion"
+    },
+    "blackPotion": {
+      "frame": 220,
+      "col": 0,
+      "row": 20,
+      "note": "32rogues 21.a black potion"
+    },
+    "brightGreenPotion": {
+      "frame": 221,
+      "col": 1,
+      "row": 20,
+      "note": "32rogues 21.b bright green potion"
+    },
+    "pinkVial": {
+      "frame": 222,
+      "col": 2,
+      "row": 20,
+      "note": "32rogues 21.c pink vial"
+    },
+    "bluePotion": {
+      "frame": 223,
+      "col": 3,
+      "row": 20,
+      "note": "32rogues 21.d blue potion"
+    },
+    "orangePotion": {
+      "frame": 224,
+      "col": 4,
+      "row": 20,
+      "note": "32rogues 21.e orange potion"
+    }
+  },
+  "booksAndScrolls": {
+    "scroll": {
+      "frame": 231,
+      "col": 0,
+      "row": 21,
+      "note": "32rogues 22.a scroll"
+    },
+    "book": {
+      "frame": 232,
+      "col": 1,
+      "row": 21,
+      "note": "32rogues 22.b book"
+    },
+    "redBook": {
+      "frame": 233,
+      "col": 2,
+      "row": 21,
+      "note": "32rogues 22.c red book"
+    },
+    "darkTome": {
+      "frame": 234,
+      "col": 3,
+      "row": 21,
+      "note": "32rogues 22.d dark tome"
+    },
+    "tome": {
+      "frame": 235,
+      "col": 4,
+      "row": 21,
+      "note": "32rogues 22.e tome"
+    },
+    "tome2": {
+      "frame": 236,
+      "col": 5,
+      "row": 21,
+      "note": "32rogues 22.f tome 2"
+    },
+    "scroll2": {
+      "frame": 237,
+      "col": 6,
+      "row": 21,
+      "note": "32rogues 22.g scroll 2"
+    },
+    "page": {
+      "frame": 238,
+      "col": 7,
+      "row": 21,
+      "note": "32rogues 22.h page"
+    }
+  },
+  "keys": {
+    "goldKey": {
+      "frame": 242,
+      "col": 0,
+      "row": 22,
+      "note": "32rogues 23.a gold key"
+    },
+    "ornateKey": {
+      "frame": 243,
+      "col": 1,
+      "row": 22,
+      "note": "32rogues 23.b ornate key"
+    },
+    "metalKey": {
+      "frame": 244,
+      "col": 2,
+      "row": 22,
+      "note": "32rogues 23.c metal key"
+    },
+    "primitiveKey": {
+      "frame": 245,
+      "col": 3,
+      "row": 22,
+      "note": "32rogues 23.d primitive key"
+    }
+  },
+  "ammo": {
+    "arrow": {
+      "frame": 253,
+      "col": 0,
+      "row": 23,
+      "note": "32rogues 24.a arrow"
+    },
+    "arrows": {
+      "frame": 254,
+      "col": 1,
+      "row": 23,
+      "note": "32rogues 24.b arrows"
+    },
+    "bolt": {
+      "frame": 255,
+      "col": 2,
+      "row": 23,
+      "note": "32rogues 24.c bolt"
+    },
+    "bolts": {
+      "frame": 256,
+      "col": 3,
+      "row": 23,
+      "note": "32rogues 24.d bolts"
+    }
+  },
+  "currency": {
+    "coin": {
+      "frame": 264,
+      "col": 0,
+      "row": 24,
+      "note": "32rogues 25.a coin"
+    },
+    "smallStacksOfCoins": {
+      "frame": 265,
+      "col": 1,
+      "row": 24,
+      "note": "32rogues 25.b small stacks of coins"
+    },
+    "largeStacksOfCoins": {
+      "frame": 266,
+      "col": 2,
+      "row": 24,
+      "note": "32rogues 25.c large stacks of coins"
+    },
+    "coinPurse": {
+      "frame": 267,
+      "col": 3,
+      "row": 24,
+      "note": "32rogues 25.d coin purse"
+    }
+  },
+  "food": {
+    "cheese": {
+      "frame": 275,
+      "col": 0,
+      "row": 25,
+      "note": "32rogues 26.a cheese"
+    },
+    "bread": {
+      "frame": 276,
+      "col": 1,
+      "row": 25,
+      "note": "32rogues 26.b bread"
+    },
+    "apple": {
+      "frame": 277,
+      "col": 2,
+      "row": 25,
+      "note": "32rogues 26.c apple"
+    },
+    "bottleOfBeer": {
+      "frame": 278,
+      "col": 3,
+      "row": 25,
+      "note": "32rogues 26.d bottle of beer"
+    },
+    "bottleOfWater": {
+      "frame": 279,
+      "col": 4,
+      "row": 25,
+      "note": "32rogues 25.e bottle of water"
+    }
+  }
+}

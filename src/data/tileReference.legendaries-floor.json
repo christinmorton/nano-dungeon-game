@@ -1,0 +1,37 @@
+{
+  "_meta": {
+    "pack": "original (PixelLab)",
+    "key": "tileReference.legendaries-floor",
+    "mode": "images",
+    "dir": "art/items/legendary",
+    "tileSize": 48,
+    "view": "top-down (floor drop)",
+    "license": "Original art generated via PixelLab from text prompts only — owned, free to ship.",
+    "generated": "2026-06-07",
+    "note": "Top-down, matte, 48px FLOOR-DROP versions of the 14 legendaries — the world-layer counterpart to the 64px side-view inventory icons in tileReference.legendaries.json. Sized to match the 48px actor spine so dropped loot sits coherently in the dungeon. Same id/slot/special as the icon; file = <name>_floor.png.",
+    "referenceDoc": "documents/v3_legendary_items.md"
+  },
+
+  "weapons": {
+    "emberBrand":   { "file": "ember_brand_floor.png",  "name": "Ember Brand",     "slot": "mainhand", "type": "sword",    "special": "emberBrand",    "icon": "ember_brand.png" },
+    "lifedrinker":  { "file": "lifedrinker_floor.png",  "name": "Lifedrinker",     "slot": "mainhand", "type": "dagger",   "special": "lifedrink",     "icon": "lifedrinker.png" },
+    "executioner":  { "file": "executioner_floor.png",  "name": "The Executioner", "slot": "mainhand", "type": "greataxe", "special": "executioner",   "icon": "executioner.png" },
+    "riftedge":     { "file": "riftedge_floor.png",     "name": "Riftedge",        "slot": "mainhand", "type": "sword",    "special": "hollowTouched", "icon": "riftedge.png" },
+    "dawnbreaker":  { "file": "dawnbreaker_floor.png",  "name": "Dawnbreaker",     "slot": "mainhand", "type": "mace",     "special": "lightbound",    "icon": "dawnbreaker.png" },
+    "stormcleave":  { "file": "stormcleave_floor.png",  "name": "Stormcleave",     "slot": "mainhand", "type": "war-axe",  "special": "cleaving",      "icon": "stormcleave.png" },
+    "farWhisper":   { "file": "far_whisper_floor.png",  "name": "The Far Whisper", "slot": "mainhand", "type": "bow",      "special": "huntersMark",   "icon": "far_whisper.png" }
+  },
+
+  "armor": {
+    "bramblecoat":  { "file": "bramblecoat_floor.png",  "name": "Bramblecoat",    "slot": "body", "type": "bodyArmor", "special": "thornmail",  "icon": "bramblecoat.png" },
+    "wardenplate":  { "file": "wardenplate_floor.png",  "name": "Wardenplate",    "slot": "body", "type": "bodyArmor", "special": "bulwark",    "icon": "wardenplate.png" },
+    "beaconCrown":  { "file": "beacon_crown_floor.png", "name": "Beacon Crown",   "slot": "head", "type": "helmet",    "special": "lightbearer","icon": "beacon_crown.png" },
+    "revenantMail": { "file": "revenant_mail_floor.png","name": "Revenant Mail",  "slot": "body", "type": "bodyArmor", "special": "lastBreath", "icon": "revenant_mail.png" }
+  },
+
+  "accessories": {
+    "midasBand":       { "file": "midas_band_floor.png",       "name": "Midas Band",        "slot": "accessory", "type": "ring",   "special": "fortune",    "icon": "midas_band.png" },
+    "descentPendant":  { "file": "descent_pendant_floor.png",  "name": "Descent Pendant",   "slot": "accessory", "type": "amulet", "special": "deepening",  "icon": "descent_pendant.png" },
+    "berserkersCharm": { "file": "berserkers_charm_floor.png", "name": "Berserker's Charm", "slot": "accessory", "type": "amulet", "special": "berserkers", "icon": "berserkers_charm.png" }
+  }
+}

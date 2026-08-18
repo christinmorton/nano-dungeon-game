@@ -1,0 +1,18 @@
+{
+    "_meta": {
+        "pack": "Snow pack — Snow auto-tile set",
+        "key": "tileReference.snow-autotile",
+        "mode": "spritesheet",
+        "browseAllFrames": true,
+        "sheet": "tilesets/snow/autoTile_snow.png",
+        "tileSize": 16,
+        "spacing": 0,
+        "margin": 0,
+        "columns": 10,
+        "rows": 9,
+        "total": 90,
+        "view": "top-down snow auto-tile terrain (snow / ice / path edges)",
+        "license": "User-provided pack (resources/c6e902f6…). Confirm redistribution/use terms before shipping.",
+        "note": "GRID VERIFIED 2026-08-06 (grid drawn over the PNG at 8x — lines land exactly on tile edges; 160x144 / 16 = 10x9 = 90 frames, no remainder). Snow auto-tile terrain for a snowy-forest floor variant; the winter counterpart to forest-autotile. LABELED: 5 complete terrains — snow-dirt, snow-ice, snow-water, snow-thicket, snow-thicket-overlay — each a 3x3 outer block with its 2x2 inner-corner block 3 columns to the right. snow-thicket ships twice, baked onto snow and as an alpha overlay for any ground. Frames 28/29 are plain snow fill variants; the rest are empty."
+    }
+}

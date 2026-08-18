@@ -1,0 +1,14 @@
+{
+    "name": "small-orc-band",
+    "species": "orc",
+    "captain": {
+        "playbook": "*"
+    },
+    "members": [
+        { "class": "Orc", "role": "tank" },
+        { "class": "Orc", "role": "warrior" },
+        { "class": "Orc", "role": "archer" },
+        { "class": "Orc", "role": "caster" },
+        { "class": "Orc", "role": "healer" }
+    ]
+}

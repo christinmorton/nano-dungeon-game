@@ -1,0 +1,18 @@
+export default {
+    itemClass: 'RangedWeapon',
+    weaponCategory: 'bow',
+    throwable: false,
+    name: "Realm Crossbow",
+    description: "Heavier than a bow and slower to span, but it punches. Range is six tiles.",
+    tile: 331,
+    art: { sheet: "32rogues-items", name: "crossbow" },
+    attackTile: 285,
+    attackAngle: -Math.PI / 4,
+    drawType: 'bow',
+    attackPowerStat: 'rangedAttackPower',
+    damageMin: 2,
+    damageMax: 5,
+    range: 6,
+    minRange: 2,
+    statContribution: { block: 1 },
+}

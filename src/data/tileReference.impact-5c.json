@@ -1,0 +1,18 @@
+{
+ "_meta": {
+  "pack": "Retro Impact Effect Pack 5C",
+  "key": "tileReference.impact-5c",
+  "mode": "spritesheet",
+  "browseAllFrames": true,
+  "sheet": "fx/impact/impact_5c.png",
+  "tileSize": 64,
+  "spacing": 0,
+  "margin": 0,
+  "columns": 9,
+  "rows": 30,
+  "total": 270,
+  "view": "64x64 retro impact / spell effect animation frames",
+  "license": "User-provided pack (resources/Retro Impact Effect Pack ALL). Confirm redistribution/use terms before shipping.",
+  "note": "Impact/spell effect frames for casting/action polish. 64px grid (9x30=270 frames), browsable by index. VERIFY 64px cell fits visually in the Atlas."
+ }
+}

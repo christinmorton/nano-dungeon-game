@@ -1,0 +1,207 @@
+{
+  "_meta": {
+    "pack": "48 Free Minerals (CraftPix)",
+    "key": "tileReference.minerals",
+    "mode": "images",
+    "dir": "48_Free_Minerals_Pixel_Art_Icons_Pack/transparent",
+    "tileSize": 32,
+    "view": "UI / icon",
+    "license": "CraftPix: commercial game-use OK; AI input BANNED catalog-wide; no redistribute/resell. Direct-use only.",
+    "note": "48 gem/ore/crystal icons. Candidate art for crafting reagents, Runestones (recolor base), and mineral loot. Individual files Icon1.png..Icon48.png.",
+    "referenceDoc": "documents/v3_item_prop_art_coverage_audit.md"
+  },
+  "minerals": {
+    "mineral01": {
+      "file": "Icon1.png",
+      "note": "48_Free_Minerals icon 1 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral02": {
+      "file": "Icon2.png",
+      "note": "48_Free_Minerals icon 2 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral03": {
+      "file": "Icon3.png",
+      "note": "48_Free_Minerals icon 3 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral04": {
+      "file": "Icon4.png",
+      "note": "48_Free_Minerals icon 4 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral05": {
+      "file": "Icon5.png",
+      "note": "48_Free_Minerals icon 5 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral06": {
+      "file": "Icon6.png",
+      "note": "48_Free_Minerals icon 6 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral07": {
+      "file": "Icon7.png",
+      "note": "48_Free_Minerals icon 7 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral08": {
+      "file": "Icon8.png",
+      "note": "48_Free_Minerals icon 8 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral09": {
+      "file": "Icon9.png",
+      "note": "48_Free_Minerals icon 9 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral10": {
+      "file": "Icon10.png",
+      "note": "48_Free_Minerals icon 10 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral11": {
+      "file": "Icon11.png",
+      "note": "48_Free_Minerals icon 11 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral12": {
+      "file": "Icon12.png",
+      "note": "48_Free_Minerals icon 12 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral13": {
+      "file": "Icon13.png",
+      "note": "48_Free_Minerals icon 13 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral14": {
+      "file": "Icon14.png",
+      "note": "48_Free_Minerals icon 14 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral15": {
+      "file": "Icon15.png",
+      "note": "48_Free_Minerals icon 15 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral16": {
+      "file": "Icon16.png",
+      "note": "48_Free_Minerals icon 16 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral17": {
+      "file": "Icon17.png",
+      "note": "48_Free_Minerals icon 17 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral18": {
+      "file": "Icon18.png",
+      "note": "48_Free_Minerals icon 18 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral19": {
+      "file": "Icon19.png",
+      "note": "48_Free_Minerals icon 19 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral20": {
+      "file": "Icon20.png",
+      "note": "48_Free_Minerals icon 20 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral21": {
+      "file": "Icon21.png",
+      "note": "48_Free_Minerals icon 21 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral22": {
+      "file": "Icon22.png",
+      "note": "48_Free_Minerals icon 22 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral23": {
+      "file": "Icon23.png",
+      "note": "48_Free_Minerals icon 23 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral24": {
+      "file": "Icon24.png",
+      "note": "48_Free_Minerals icon 24 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral25": {
+      "file": "Icon25.png",
+      "note": "48_Free_Minerals icon 25 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral26": {
+      "file": "Icon26.png",
+      "note": "48_Free_Minerals icon 26 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral27": {
+      "file": "Icon27.png",
+      "note": "48_Free_Minerals icon 27 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral28": {
+      "file": "Icon28.png",
+      "note": "48_Free_Minerals icon 28 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral29": {
+      "file": "Icon29.png",
+      "note": "48_Free_Minerals icon 29 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral30": {
+      "file": "Icon30.png",
+      "note": "48_Free_Minerals icon 30 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral31": {
+      "file": "Icon31.png",
+      "note": "48_Free_Minerals icon 31 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral32": {
+      "file": "Icon32.png",
+      "note": "48_Free_Minerals icon 32 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral33": {
+      "file": "Icon33.png",
+      "note": "48_Free_Minerals icon 33 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral34": {
+      "file": "Icon34.png",
+      "note": "48_Free_Minerals icon 34 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral35": {
+      "file": "Icon35.png",
+      "note": "48_Free_Minerals icon 35 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral36": {
+      "file": "Icon36.png",
+      "note": "48_Free_Minerals icon 36 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral37": {
+      "file": "Icon37.png",
+      "note": "48_Free_Minerals icon 37 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral38": {
+      "file": "Icon38.png",
+      "note": "48_Free_Minerals icon 38 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral39": {
+      "file": "Icon39.png",
+      "note": "48_Free_Minerals icon 39 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral40": {
+      "file": "Icon40.png",
+      "note": "48_Free_Minerals icon 40 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral41": {
+      "file": "Icon41.png",
+      "note": "48_Free_Minerals icon 41 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral42": {
+      "file": "Icon42.png",
+      "note": "48_Free_Minerals icon 42 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral43": {
+      "file": "Icon43.png",
+      "note": "48_Free_Minerals icon 43 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral44": {
+      "file": "Icon44.png",
+      "note": "48_Free_Minerals icon 44 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral45": {
+      "file": "Icon45.png",
+      "note": "48_Free_Minerals icon 45 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral46": {
+      "file": "Icon46.png",
+      "note": "48_Free_Minerals icon 46 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral47": {
+      "file": "Icon47.png",
+      "note": "48_Free_Minerals icon 47 (gem/ore/crystal; specific identity TBD)"
+    },
+    "mineral48": {
+      "file": "Icon48.png",
+      "note": "48_Free_Minerals icon 48 (gem/ore/crystal; specific identity TBD)"
+    }
+  }
+}

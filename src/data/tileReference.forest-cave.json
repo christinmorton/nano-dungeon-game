@@ -1,0 +1,18 @@
+{
+ "_meta": {
+  "pack": "Village pack — Forest cave tileset",
+  "key": "tileReference.forest-cave",
+  "mode": "spritesheet",
+  "browseAllFrames": true,
+  "sheet": "tilesets/village/ts_forest_cave.png",
+  "tileSize": 16,
+  "spacing": 0,
+  "margin": 0,
+  "columns": 12,
+  "rows": 35,
+  "total": 420,
+  "view": "top-down forest cave tileset (cave floors / walls / rock)",
+  "license": "User-provided pack (resources/16934861…/Village). Confirm redistribution/use terms before shipping.",
+  "note": "GRID VERIFIED 2026-08-07 (grid drawn over the PNG at 13-22x - lines land exactly on tile edges; 192x560 / 16 = 12x35 = 420 frames, no remainder). Forest cave terrain - pairs with forest-autotile for a green-cavern floor variant. TERRAIN: dark-pool (c0,r29, a dark pool with a lavender rim; the only true autotile set on the sheet). ROW-BAND TRIAGE: rows 0-12 cave face - a crystal cave mouth, glowing light, a timbered mine doorway and support frame, ladder, fence, crates and a wagon wheel, over crystal rock-wall and rock-floor variant blocks; rows 13-21 flora and cave props - bushes, pebbles, flowers, mushrooms, stalactites/stalagmites, boulders and gold piles; rows 22-25 sarcophagi, their lids and chests; rows 26-28 four crystal cave-wall variants; rows 29-34 the dark pool, a hollow chasm ring and dark cave-floor fill. Everything not a terrain is a named region in tileLabels.json."
+ }
+}

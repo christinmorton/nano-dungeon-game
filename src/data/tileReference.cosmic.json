@@ -1,0 +1,219 @@
+{
+  "_meta": {
+    "pack": "original (PixelLab)",
+    "key": "tileReference.cosmic",
+    "mode": "images",
+    "dir": "art/cosmic",
+    "tileSize": 48,
+    "view": "top-down (south pose)",
+    "license": "Original art generated via PixelLab from text prompts only — owned, free to ship.",
+    "note": "Original cosmic sprites. Single south-facing pose per actor (the engine renders one static sprite + tween). Skin-tone variants live under per-actor sub-groups. See documents/v3_actor_art_coverage_audit.md.",
+    "referenceDoc": "documents/v3_actor_art_coverage_audit.md"
+  },
+  "demons": {
+    "demon": {
+      "file": "demons/demon.png",
+      "note": "art/cosmic/demons/demon.png"
+    },
+    "demonB": {
+      "file": "demons/demon_b.png",
+      "note": "art/cosmic/demons/demon_b.png"
+    },
+    "demonC": {
+      "file": "demons/demon_c.png",
+      "note": "art/cosmic/demons/demon_c.png"
+    },
+    "demonD": {
+      "file": "demons/demon_d.png",
+      "note": "art/cosmic/demons/demon_d.png"
+    },
+    "demonKingMortalChosen": {
+      "file": "demons/demon_king_mortal_chosen.png",
+      "note": "art/cosmic/demons/demon_king_mortal_chosen.png"
+    },
+    "demonKingTransformed": {
+      "file": "demons/demon_king_transformed.png",
+      "note": "art/cosmic/demons/demon_king_transformed.png"
+    },
+    "demonKingTrue": {
+      "file": "demons/demon_king_true.png",
+      "note": "art/cosmic/demons/demon_king_true.png"
+    },
+    "demonLord": {
+      "file": "demons/demon_lord.png",
+      "note": "art/cosmic/demons/demon_lord.png"
+    },
+    "demonWarlock": {
+      "file": "demons/demon_warlock.png",
+      "note": "art/cosmic/demons/demon_warlock.png"
+    },
+    "demonWarlockB": {
+      "file": "demons/demon_warlock_b.png",
+      "note": "art/cosmic/demons/demon_warlock_b.png"
+    },
+    "demonWarlord": {
+      "file": "demons/demon_warlord.png",
+      "note": "art/cosmic/demons/demon_warlord.png"
+    },
+    "demonWarlordB": {
+      "file": "demons/demon_warlord_b.png",
+      "note": "art/cosmic/demons/demon_warlord_b.png"
+    },
+    "lesserDemon": {
+      "file": "demons/lesser_demon.png",
+      "note": "art/cosmic/demons/lesser_demon.png"
+    },
+    "lesserDemonB": {
+      "file": "demons/lesser_demon_b.png",
+      "note": "art/cosmic/demons/lesser_demon_b.png"
+    }
+  },
+  "holy": {
+    "angel": {
+      "file": "holy/angel.png",
+      "note": "art/cosmic/holy/angel.png"
+    },
+    "angelB": {
+      "file": "holy/angel_b.png",
+      "note": "art/cosmic/holy/angel_b.png"
+    },
+    "angelC": {
+      "file": "holy/angel_c.png",
+      "note": "art/cosmic/holy/angel_c.png"
+    },
+    "archangel": {
+      "file": "holy/archangel.png",
+      "note": "art/cosmic/holy/archangel.png"
+    },
+    "archangelB": {
+      "file": "holy/archangel_b.png",
+      "note": "art/cosmic/holy/archangel_b.png"
+    },
+    "archangelC": {
+      "file": "holy/archangel_c.png",
+      "note": "art/cosmic/holy/archangel_c.png"
+    },
+    "lesserAngel": {
+      "file": "holy/lesser_angel.png",
+      "note": "art/cosmic/holy/lesser_angel.png"
+    },
+    "lesserAngelB": {
+      "file": "holy/lesser_angel_b.png",
+      "note": "art/cosmic/holy/lesser_angel_b.png"
+    },
+    "seraphim": {
+      "file": "holy/seraphim.png",
+      "note": "art/cosmic/holy/seraphim.png"
+    },
+    "seraphimB": {
+      "file": "holy/seraphim_b.png",
+      "note": "art/cosmic/holy/seraphim_b.png"
+    },
+    "seraphimC": {
+      "file": "holy/seraphim_c.png",
+      "note": "art/cosmic/holy/seraphim_c.png"
+    }
+  },
+  "light": {
+    "firstLight": {
+      "file": "light/first_light.png",
+      "note": "art/cosmic/light/first_light.png"
+    },
+    "lightFirstLightAlt": {
+      "file": "light/light_first_light_alt.png",
+      "note": "art/cosmic/light/light_first_light_alt.png"
+    },
+    "lightFirstLightSilhouetteAlt": {
+      "file": "light/light_first_light_silhouette_alt.png",
+      "note": "art/cosmic/light/light_first_light_silhouette_alt.png"
+    },
+    "theJustice": {
+      "file": "light/the_justice.png",
+      "note": "art/cosmic/light/the_justice.png"
+    },
+    "theMending": {
+      "file": "light/the_mending.png",
+      "note": "art/cosmic/light/the_mending.png"
+    },
+    "theUnveiling": {
+      "file": "light/the_unveiling.png",
+      "note": "art/cosmic/light/the_unveiling.png"
+    },
+    "theZenith": {
+      "file": "light/the_zenith.png",
+      "note": "art/cosmic/light/the_zenith.png"
+    }
+  },
+  "void": {
+    "theHollow": {
+      "file": "void/the_hollow.png",
+      "note": "art/cosmic/void/the_hollow.png"
+    },
+    "theHunger": {
+      "file": "void/the_hunger.png",
+      "note": "art/cosmic/void/the_hunger.png"
+    },
+    "theLastDark": {
+      "file": "void/the_last_dark.png",
+      "note": "art/cosmic/void/the_last_dark.png"
+    },
+    "theSilence": {
+      "file": "void/the_silence.png",
+      "note": "art/cosmic/void/the_silence.png"
+    },
+    "theSlumberingDark": {
+      "file": "void/the_slumbering_dark.png",
+      "note": "art/cosmic/void/the_slumbering_dark.png"
+    },
+    "voidTheHollow": {
+      "file": "void/void_the_hollow.png",
+      "note": "art/cosmic/void/void_the_hollow.png"
+    },
+    "voidTheHollowSilhouette": {
+      "file": "void/void_the_hollow_silhouette.png",
+      "note": "art/cosmic/void/void_the_hollow_silhouette.png"
+    }
+  },
+  "voidUndead": {
+    "darkSorcerer": {
+      "file": "void_undead/dark_sorcerer.png",
+      "note": "art/cosmic/void_undead/dark_sorcerer.png"
+    },
+    "darkSorcererB": {
+      "file": "void_undead/dark_sorcerer_b.png",
+      "note": "art/cosmic/void_undead/dark_sorcerer_b.png"
+    },
+    "evilPriest": {
+      "file": "void_undead/evil_priest.png",
+      "note": "art/cosmic/void_undead/evil_priest.png"
+    },
+    "ghost": {
+      "file": "void_undead/ghost.png",
+      "note": "art/cosmic/void_undead/ghost.png"
+    },
+    "ghostB": {
+      "file": "void_undead/ghost_b.png",
+      "note": "art/cosmic/void_undead/ghost_b.png"
+    },
+    "ghoul": {
+      "file": "void_undead/ghoul.png",
+      "note": "art/cosmic/void_undead/ghoul.png"
+    },
+    "ghoulB": {
+      "file": "void_undead/ghoul_b.png",
+      "note": "art/cosmic/void_undead/ghoul_b.png"
+    },
+    "skeletonVoid": {
+      "file": "void_undead/skeleton_void.png",
+      "note": "art/cosmic/void_undead/skeleton_void.png"
+    },
+    "voidCaptain": {
+      "file": "void_undead/void_captain.png",
+      "note": "art/cosmic/void_undead/void_captain.png"
+    },
+    "voidWarlord": {
+      "file": "void_undead/void_warlord.png",
+      "note": "art/cosmic/void_undead/void_warlord.png"
+    }
+  }
+}

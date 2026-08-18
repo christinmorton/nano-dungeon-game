@@ -1,0 +1,2901 @@
+{
+  "format": "tile-labels",
+  "version": 2,
+  "labels": {
+    "rpgitems-retro": {
+      "Accessory/Accessory_06.png": "gold ring",
+      "Food/Food_01.png": "red apple",
+      "Food/Food_02.png": "half red apple",
+      "Food/Food_03.png": "strawberries",
+      "Food/Food_04.png": "raspberries",
+      "Food/Food_15.png": "cherries",
+      "Food/Food_16.png": "berries",
+      "Food/Food_21.png": "grapes"
+    },
+    "forest-autotile": {
+      "0": "leafy-dirt:nw",
+      "1": "leafy-dirt:n",
+      "2": "leafy-dirt:ne",
+      "3": "leafy-dirt:inw",
+      "4": "leafy-dirt:ine",
+      "5": "dirt-water:nw",
+      "6": "dirt-water:n",
+      "7": "dirt-water:ne",
+      "8": "dirt-water:inw",
+      "9": "dirt-water:ine",
+      "10": "water-1",
+      "11": "water-2",
+      "12": "water-3",
+      "13": "water-4",
+      "14": "water-5",
+      "15": "leafy-dirt:w",
+      "16": "leafy-dirt:c",
+      "17": "leafy-dirt:e",
+      "18": "leafy-dirt:isw",
+      "19": "leafy-dirt:ise",
+      "20": "dirt-water:w",
+      "21": "dirt-water:c",
+      "22": "dirt-water:e",
+      "23": "dirt-water:isw",
+      "24": "dirt-water:ise",
+      "25": "water-dark-transition-right",
+      "26": "deep-water-1",
+      "30": "leafy-dirt:sw",
+      "31": "leafy-dirt:s",
+      "32": "leafy-dirt:se",
+      "35": "dirt-water:sw",
+      "36": "dirt-water:s",
+      "37": "dirt-water:se",
+      "43": "deep-water-2",
+      "45": "leafy-limestone:nw",
+      "46": "leafy-limestone:n",
+      "47": "leafy-limestone:ne",
+      "48": "leafy-limestone:inw",
+      "49": "leafy-limestone:ine",
+      "50": "leafy-grass-water:nw",
+      "51": "leafy-grass-water:n",
+      "52": "leafy-grass-water:ne",
+      "60": "leafy-limestone:w",
+      "61": "leafy-limestone:c",
+      "62": "leafy-limestone:e",
+      "63": "leafy-limestone:isw",
+      "64": "leafy-limestone:ise",
+      "65": "leafy-grass-water:w",
+      "66": "leafy-grass-water:c",
+      "67": "leafy-grass-water:e",
+      "75": "leafy-limestone:sw",
+      "76": "leafy-limestone:s",
+      "77": "leafy-limestone:se",
+      "78": "leafy-grass-1",
+      "79": "leafy-grass-2",
+      "80": "leafy-grass-water:sw",
+      "81": "leafy-grass-water:s",
+      "82": "leafy-grass-water:se",
+      "90": "leafy-brownstone:nw",
+      "91": "leafy-brownstone:n",
+      "92": "leafy-brownstone:ne",
+      "93": "leafy-brownstone:inw",
+      "94": "leafy-brownstone:ine",
+      "105": "leafy-brownstone:w",
+      "106": "leafy-brownstone:c",
+      "107": "leafy-brownstone:e",
+      "108": "leafy-brownstone:isw",
+      "109": "leafy-brownstone:ise",
+      "120": "leafy-brownstone:sw",
+      "121": "leafy-brownstone:s",
+      "122": "leafy-brownstone:se"
+    },
+    "snow-autotile": {
+      "0": "snow-dirt:nw",
+      "1": "snow-dirt:n",
+      "2": "snow-dirt:ne",
+      "3": "snow-dirt:inw",
+      "4": "snow-dirt:ine",
+      "5": "snow-thicket:nw",
+      "6": "snow-thicket:n",
+      "7": "snow-thicket:ne",
+      "8": "snow-thicket:inw",
+      "9": "snow-thicket:ine",
+      "10": "snow-dirt:w",
+      "11": "snow-dirt:c",
+      "12": "snow-dirt:e",
+      "13": "snow-dirt:isw",
+      "14": "snow-dirt:ise",
+      "15": "snow-thicket:w",
+      "16": "snow-thicket:c",
+      "17": "snow-thicket:e",
+      "18": "snow-thicket:isw",
+      "19": "snow-thicket:ise",
+      "20": "snow-dirt:sw",
+      "21": "snow-dirt:s",
+      "22": "snow-dirt:se",
+      "25": "snow-thicket:sw",
+      "26": "snow-thicket:s",
+      "27": "snow-thicket:se",
+      "28": "snow-1",
+      "29": "snow-2",
+      "30": "snow-ice:nw",
+      "31": "snow-ice:n",
+      "32": "snow-ice:ne",
+      "33": "snow-ice:inw",
+      "34": "snow-ice:ine",
+      "35": "snow-thicket-overlay:nw",
+      "36": "snow-thicket-overlay:n",
+      "37": "snow-thicket-overlay:ne",
+      "38": "snow-thicket-overlay:inw",
+      "39": "snow-thicket-overlay:ine",
+      "40": "snow-ice:w",
+      "41": "snow-ice:c",
+      "42": "snow-ice:e",
+      "43": "snow-ice:isw",
+      "44": "snow-ice:ise",
+      "45": "snow-thicket-overlay:w",
+      "46": "snow-thicket-overlay:c",
+      "47": "snow-thicket-overlay:e",
+      "48": "snow-thicket-overlay:isw",
+      "49": "snow-thicket-overlay:ise",
+      "50": "snow-ice:sw",
+      "51": "snow-ice:s",
+      "52": "snow-ice:se",
+      "55": "snow-thicket-overlay:sw",
+      "56": "snow-thicket-overlay:s",
+      "57": "snow-thicket-overlay:se",
+      "60": "snow-water:nw",
+      "61": "snow-water:n",
+      "62": "snow-water:ne",
+      "63": "snow-water:inw",
+      "64": "snow-water:ine",
+      "70": "snow-water:w",
+      "71": "snow-water:c",
+      "72": "snow-water:e",
+      "73": "snow-water:isw",
+      "74": "snow-water:ise",
+      "80": "snow-water:sw",
+      "81": "snow-water:s",
+      "82": "snow-water:se"
+    },
+    "desert-autotile": {
+      "0": "sand-dirt:nw",
+      "1": "sand-dirt:n",
+      "2": "sand-dirt:ne",
+      "3": "sand-dirt:inw",
+      "4": "sand-dirt:ine",
+      "5": "sand-grass:nw",
+      "6": "sand-grass:n",
+      "7": "sand-grass:ne",
+      "8": "sand-grass:inw",
+      "9": "sand-grass:ine",
+      "10": "sand-dirt:w",
+      "11": "sand-dirt:c",
+      "12": "sand-dirt:e",
+      "13": "sand-dirt:isw",
+      "14": "sand-dirt:ise",
+      "15": "sand-grass:w",
+      "16": "sand-grass:c",
+      "17": "sand-grass:e",
+      "18": "sand-grass:isw",
+      "19": "sand-grass:ise",
+      "20": "sand-dirt:sw",
+      "21": "sand-dirt:s",
+      "22": "sand-dirt:se",
+      "23": "sand-1",
+      "24": "sand-2",
+      "25": "sand-grass:sw",
+      "26": "sand-grass:s",
+      "27": "sand-grass:se",
+      "28": "sand-3",
+      "29": "sand-4",
+      "30": "sand-dirt-overlay:nw",
+      "31": "sand-dirt-overlay:n",
+      "32": "sand-dirt-overlay:ne",
+      "33": "sand-dirt-overlay:inw",
+      "34": "sand-dirt-overlay:ine",
+      "35": "sand-grass-overlay:nw",
+      "36": "sand-grass-overlay:n",
+      "37": "sand-grass-overlay:ne",
+      "38": "sand-grass-overlay:inw",
+      "39": "sand-grass-overlay:ine",
+      "40": "sand-dirt-overlay:w",
+      "41": "sand-dirt-overlay:c",
+      "42": "sand-dirt-overlay:e",
+      "43": "sand-dirt-overlay:isw",
+      "44": "sand-dirt-overlay:ise",
+      "45": "sand-grass-overlay:w",
+      "46": "sand-grass-overlay:c",
+      "47": "sand-grass-overlay:e",
+      "48": "sand-grass-overlay:isw",
+      "49": "sand-grass-overlay:ise",
+      "50": "sand-dirt-overlay:sw",
+      "51": "sand-dirt-overlay:s",
+      "52": "sand-dirt-overlay:se",
+      "55": "sand-grass-overlay:sw",
+      "56": "sand-grass-overlay:s",
+      "57": "sand-grass-overlay:se",
+      "60": "sand-darkdirt:nw",
+      "61": "sand-darkdirt:n",
+      "62": "sand-darkdirt:ne",
+      "63": "sand-darkdirt:inw",
+      "64": "sand-darkdirt:ine",
+      "65": "sand-water:nw",
+      "66": "sand-water:n",
+      "67": "sand-water:ne",
+      "68": "sand-water:inw",
+      "69": "sand-water:ine",
+      "70": "sand-darkdirt:w",
+      "71": "sand-darkdirt:c",
+      "72": "sand-darkdirt:e",
+      "73": "sand-darkdirt:isw",
+      "74": "sand-darkdirt:ise",
+      "75": "sand-water:w",
+      "76": "sand-water:c",
+      "77": "sand-water:e",
+      "78": "sand-water:isw",
+      "79": "sand-water:ise",
+      "80": "sand-darkdirt:sw",
+      "81": "sand-darkdirt:s",
+      "82": "sand-darkdirt:se",
+      "85": "sand-water:sw",
+      "86": "sand-water:s",
+      "87": "sand-water:se",
+      "90": "sand-darkdirt-overlay:nw",
+      "91": "sand-darkdirt-overlay:n",
+      "92": "sand-darkdirt-overlay:ne",
+      "93": "sand-darkdirt-overlay:inw",
+      "94": "sand-darkdirt-overlay:ine",
+      "95": "sand-water-overlay:nw",
+      "96": "sand-water-overlay:n",
+      "97": "sand-water-overlay:ne",
+      "98": "sand-water-overlay:inw",
+      "99": "sand-water-overlay:ine",
+      "100": "sand-darkdirt-overlay:w",
+      "101": "sand-darkdirt-overlay:c",
+      "102": "sand-darkdirt-overlay:e",
+      "103": "sand-darkdirt-overlay:isw",
+      "104": "sand-darkdirt-overlay:ise",
+      "105": "sand-water-overlay:w",
+      "106": "sand-water-overlay:c",
+      "107": "sand-water-overlay:e",
+      "108": "sand-water-overlay:isw",
+      "109": "sand-water-overlay:ise",
+      "110": "sand-darkdirt-overlay:sw",
+      "111": "sand-darkdirt-overlay:s",
+      "112": "sand-darkdirt-overlay:se",
+      "115": "sand-water-overlay:sw",
+      "116": "sand-water-overlay:s",
+      "117": "sand-water-overlay:se",
+      "120": "sand-palebrick:nw",
+      "121": "sand-palebrick:n",
+      "122": "sand-palebrick:ne",
+      "123": "sand-palebrick:inw",
+      "124": "sand-palebrick:ine",
+      "125": "sand-redbrick:nw",
+      "126": "sand-redbrick:n",
+      "127": "sand-redbrick:ne",
+      "128": "sand-redbrick:inw",
+      "129": "sand-redbrick:ine",
+      "130": "sand-palebrick:w",
+      "131": "sand-palebrick:c",
+      "132": "sand-palebrick:e",
+      "133": "sand-palebrick:isw",
+      "134": "sand-palebrick:ise",
+      "135": "sand-redbrick:w",
+      "136": "sand-redbrick:c",
+      "137": "sand-redbrick:e",
+      "138": "sand-redbrick:isw",
+      "139": "sand-redbrick:ise",
+      "140": "sand-palebrick:sw",
+      "141": "sand-palebrick:s",
+      "142": "sand-palebrick:se",
+      "145": "sand-redbrick:sw",
+      "146": "sand-redbrick:s",
+      "147": "sand-redbrick:se"
+    },
+    "castletown": {
+      "0": "blue-roof:nw",
+      "1": "blue-roof:n",
+      "2": "blue-roof:ne",
+      "5": "green-roof:nw",
+      "6": "green-roof:n",
+      "7": "green-roof:ne",
+      "18": "stone-fence-post",
+      "24": "blue-roof:w",
+      "25": "blue-roof:c",
+      "26": "blue-roof:e",
+      "27": "blue-roof:inw",
+      "28": "blue-roof:ine",
+      "29": "green-roof:w",
+      "30": "green-roof:c",
+      "31": "green-roof:e",
+      "32": "green-roof:inw",
+      "33": "green-roof:ine",
+      "48": "blue-roof:sw",
+      "49": "blue-roof:s",
+      "50": "blue-roof:se",
+      "51": "blue-roof:isw",
+      "52": "blue-roof:ise",
+      "53": "green-roof:sw",
+      "54": "green-roof:s",
+      "55": "green-roof:se",
+      "56": "green-roof:isw",
+      "57": "green-roof:ise",
+      "72": "grey-stone-brick-wall:nw",
+      "73": "grey-stone-brick-wall:n",
+      "74": "grey-stone-brick-wall:ne",
+      "75": "white-brick-wall:nw",
+      "76": "white-brick-wall:n",
+      "77": "white-brick-wall:ne",
+      "78": "tan-brick-wall:nw",
+      "79": "tan-brick-wall:n",
+      "80": "tan-brick-wall:ne",
+      "81": "cream-brick-wall:nw",
+      "82": "cream-brick-wall:n",
+      "83": "cream-brick-wall:ne",
+      "96": "grey-stone-brick-wall:w",
+      "97": "grey-stone-brick-wall:c",
+      "98": "grey-stone-brick-wall:e",
+      "99": "white-brick-wall:w",
+      "100": "white-brick-wall:c",
+      "101": "white-brick-wall:e",
+      "102": "tan-brick-wall:w",
+      "103": "tan-brick-wall:c",
+      "104": "tan-brick-wall:e",
+      "105": "cream-brick-wall:w",
+      "106": "cream-brick-wall:c",
+      "107": "cream-brick-wall:e",
+      "120": "grey-stone-brick-wall:sw",
+      "121": "grey-stone-brick-wall:s",
+      "122": "grey-stone-brick-wall:se",
+      "123": "white-brick-wall:sw",
+      "124": "white-brick-wall:s",
+      "125": "white-brick-wall:se",
+      "126": "tan-brick-wall:sw",
+      "127": "tan-brick-wall:s",
+      "128": "tan-brick-wall:se",
+      "129": "cream-brick-wall:sw",
+      "130": "cream-brick-wall:s",
+      "131": "cream-brick-wall:se",
+      "138": "unsure-what-to-name-this",
+      "168": "patterned-stone-floor:nw",
+      "169": "patterned-stone-floor:n",
+      "170": "patterned-stone-floor:ne",
+      "171": "patterned-stone-floor:inw",
+      "172": "patterned-stone-floor:ine",
+      "173": "stone-border-grass:nw",
+      "174": "stone-border-grass:n",
+      "175": "stone-border-grass:ne",
+      "176": "stone-border-grass:inw",
+      "177": "stone-border-grass:ine",
+      "178": "wooden-border-grass:nw",
+      "179": "wooden-border-grass:n",
+      "180": "wooden-border-grass:ne",
+      "181": "wooden-border-grass:inw",
+      "182": "wooden-border-grass:ine",
+      "192": "patterned-stone-floor:w",
+      "193": "patterned-stone-floor:c",
+      "194": "patterned-stone-floor:e",
+      "195": "patterned-stone-floor:isw",
+      "196": "patterned-stone-floor:ise",
+      "197": "stone-border-grass:w",
+      "198": "stone-border-grass:c",
+      "199": "stone-border-grass:e",
+      "200": "stone-border-grass:isw",
+      "201": "stone-border-grass:ise",
+      "202": "wooden-border-grass:w",
+      "203": "wooden-border-grass:c",
+      "204": "wooden-border-grass:e",
+      "205": "wooden-border-grass:isw",
+      "206": "wooden-border-grass:ise",
+      "216": "patterned-stone-floor:sw",
+      "217": "patterned-stone-floor:s",
+      "218": "patterned-stone-floor:se",
+      "221": "stone-border-grass:sw",
+      "222": "stone-border-grass:s",
+      "223": "stone-border-grass:se",
+      "226": "wooden-border-grass:sw",
+      "227": "wooden-border-grass:s",
+      "228": "wooden-border-grass:se",
+      "250": "borderless-grass:nw",
+      "251": "borderless-grass:n",
+      "252": "borderless-grass:ne",
+      "253": "borderless-grass:inw",
+      "254": "borderless-grass:ine",
+      "274": "borderless-grass:w",
+      "275": "borderless-grass:c",
+      "276": "borderless-grass:e",
+      "277": "borderless-grass:isw",
+      "278": "borderless-grass:ise",
+      "298": "borderless-grass:sw",
+      "299": "borderless-grass:s",
+      "300": "borderless-grass:se",
+      "312": "patterned-stone-floor-tan:nw",
+      "313": "patterned-stone-floor-tan:n",
+      "314": "patterned-stone-floor-tan:ne",
+      "315": "patterned-stone-floor-tan:inw",
+      "316": "patterned-stone-floor-tan:ine",
+      "317": "patterned-stone-floor-brown:nw",
+      "318": "patterned-stone-floor-brown:n",
+      "319": "patterned-stone-floor-brown:ne",
+      "320": "patterned-stone-floor-brown:inw",
+      "321": "patterned-stone-floor-brown:ine",
+      "322": "patterned-stone-floor-2:nw",
+      "323": "patterned-stone-floor-2:n",
+      "324": "patterned-stone-floor-2:ne",
+      "325": "patterned-stone-floor-2:inw",
+      "326": "patterned-stone-floor-2:ine",
+      "327": "raised-stone-floor-cross:nw",
+      "328": "raised-stone-floor-cross:n",
+      "329": "raised-stone-floor-cross:ne",
+      "330": "raised-stone-floor-cross:inw",
+      "331": "raised-stone-floor-cross:ine",
+      "336": "patterned-stone-floor-tan:w",
+      "337": "patterned-stone-floor-tan:c",
+      "338": "patterned-stone-floor-tan:e",
+      "339": "patterned-stone-floor-tan:isw",
+      "340": "patterned-stone-floor-tan:ise",
+      "341": "patterned-stone-floor-brown:w",
+      "342": "patterned-stone-floor-brown:c",
+      "343": "patterned-stone-floor-brown:e",
+      "344": "patterned-stone-floor-brown:isw",
+      "345": "patterned-stone-floor-brown:ise",
+      "346": "patterned-stone-floor-2:w",
+      "347": "patterned-stone-floor-2:c",
+      "348": "patterned-stone-floor-2:e",
+      "349": "patterned-stone-floor-2:isw",
+      "350": "patterned-stone-floor-2:ise",
+      "351": "raised-stone-floor-cross:w",
+      "352": "raised-stone-floor-cross:c",
+      "353": "raised-stone-floor-cross:e",
+      "354": "raised-stone-floor-cross:isw",
+      "355": "raised-stone-floor-cross:ise",
+      "360": "patterned-stone-floor-tan:sw",
+      "361": "patterned-stone-floor-tan:s",
+      "362": "patterned-stone-floor-tan:se",
+      "363": "patterned-stone-floor-variant-3-tan-cross",
+      "364": "patterned-stone-floor-variant-3-tan-cross-weathered",
+      "365": "patterned-stone-floor-brown:sw",
+      "366": "patterned-stone-floor-brown:s",
+      "367": "patterned-stone-floor-brown:se",
+      "368": "patterned-stone-floor-variant-4-brown-cross",
+      "370": "patterned-stone-floor-2:sw",
+      "371": "patterned-stone-floor-2:s",
+      "372": "patterned-stone-floor-2:se",
+      "373": "patterned-stone-floor-variant-2-cross",
+      "374": "patterned-stone-floor-variant-2-cross-weathered",
+      "375": "raised-stone-floor-cross:sw",
+      "376": "raised-stone-floor-cross:s",
+      "377": "raised-stone-floor-cross:se",
+      "399": "raised-stone-floor:nw",
+      "400": "raised-stone-floor:n",
+      "401": "raised-stone-floor:ne",
+      "402": "raised-stone-floor:inw",
+      "403": "raised-stone-floor:ine",
+      "423": "raised-stone-floor:w",
+      "424": "raised-stone-floor:c",
+      "425": "raised-stone-floor:e",
+      "426": "raised-stone-floor:isw",
+      "427": "raised-stone-floor:ise",
+      "447": "raised-stone-floor:sw",
+      "448": "raised-stone-floor:s",
+      "449": "raised-stone-floor:se",
+      "477": "rounded-stone-border-grass:nw",
+      "478": "rounded-stone-border-grass:n",
+      "479": "rounded-stone-border-grass:ne",
+      "501": "rounded-stone-border-grass:w",
+      "502": "rounded-stone-border-grass:c",
+      "503": "rounded-stone-border-grass:e",
+      "525": "rounded-stone-border-grass:sw",
+      "526": "rounded-stone-border-grass:s",
+      "527": "rounded-stone-border-grass:se",
+      "550": "rounded-stone-border-grass:inw",
+      "551": "rounded-stone-border-grass:ine",
+      "574": "rounded-stone-border-grass:isw",
+      "575": "rounded-stone-border-grass:ise"
+    },
+    "castletown-interior": {
+      "0": "darkness:nw",
+      "1": "darkness:n",
+      "2": "darkness:ne",
+      "3": "darkness:inw",
+      "4": "darkness:ine",
+      "14": "darkness-plain-1",
+      "20": "darkness:w",
+      "21": "darkness:c",
+      "22": "darkness:e",
+      "23": "darkness:isw",
+      "24": "darkness:ise",
+      "34": "darkness-plain-2",
+      "40": "darkness:sw",
+      "41": "darkness:s",
+      "42": "darkness:se",
+      "120": "wood-floor",
+      "123": "emerald-tile-floor",
+      "126": "grey-cobble-floor",
+      "149": "red-carpet:nw",
+      "150": "red-carpet:n",
+      "151": "red-carpet:ne",
+      "169": "red-carpet:w",
+      "170": "red-carpet:c",
+      "171": "red-carpet:e",
+      "189": "red-carpet:sw",
+      "190": "red-carpet:s",
+      "191": "red-carpet:se"
+    },
+    "forest-cave": {
+      "348": "dark-pool:nw",
+      "349": "dark-pool:n",
+      "350": "dark-pool:ne",
+      "360": "dark-pool:w",
+      "361": "dark-pool:c",
+      "362": "dark-pool:e",
+      "372": "dark-pool:sw",
+      "373": "dark-pool:s",
+      "374": "dark-pool:se"
+    }
+  },
+  "regions": {
+    "castletown": [
+      {
+        "name": "town-tree-large",
+        "col": 9,
+        "row": 19,
+        "w": 6,
+        "h": 7
+      },
+      {
+        "name": "large-stone-wall",
+        "col": 15,
+        "row": 3,
+        "w": 3,
+        "h": 4
+      },
+      {
+        "name": "stone-steps-by-2",
+        "col": 0,
+        "row": 10,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "rounded-stone-steps-by-3",
+        "col": 0,
+        "row": 11,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "free-range-rounded-bush",
+        "col": 15,
+        "row": 22,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "free-range-tall-bush",
+        "col": 17,
+        "row": 22,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "stone-border-rounded-bush",
+        "col": 15,
+        "row": 20,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "stone-border-rounded-tall-bush-grass",
+        "col": 19,
+        "row": 19,
+        "w": 2,
+        "h": 3
+      },
+      {
+        "name": "stone-border-rounded-tall-bush-dirt",
+        "col": 17,
+        "row": 19,
+        "w": 2,
+        "h": 3
+      },
+      {
+        "name": "stone-border-base-dirt",
+        "col": 20,
+        "row": 22,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "stone-fence",
+        "col": 15,
+        "row": 0,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "open-stone-doorway",
+        "col": 12,
+        "row": 3,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "orange-brick-wall-ring",
+        "col": 0,
+        "row": 16,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "orange-brick-wall-ring-corners",
+        "col": 3,
+        "row": 16,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "tan-brick-wall-ring",
+        "col": 5,
+        "row": 16,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "tan-brick-wall-ring-corners",
+        "col": 8,
+        "row": 16,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "grey-stone-wall-ring",
+        "col": 10,
+        "row": 16,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "grey-stone-wall-ring-corners",
+        "col": 13,
+        "row": 16,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "grey-stone-arch-top",
+        "col": 0,
+        "row": 6,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "white-brick-arch-top",
+        "col": 3,
+        "row": 6,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "tan-brick-arch-top",
+        "col": 6,
+        "row": 6,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "cream-brick-arch-top",
+        "col": 9,
+        "row": 6,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "wooden-bench",
+        "col": 0,
+        "row": 19,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "wooden-bench-side",
+        "col": 0,
+        "row": 21,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "white-bench",
+        "col": 3,
+        "row": 19,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "white-bench-side",
+        "col": 3,
+        "row": 21,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "white-round-table",
+        "col": 6,
+        "row": 19,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "white-chair-pair",
+        "col": 6,
+        "row": 21,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "lamppost-head-unlit",
+        "col": 8,
+        "row": 19,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "lamppost-head-lit",
+        "col": 8,
+        "row": 20,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "lamppost-post",
+        "col": 8,
+        "row": 21,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "barrel-arrangement",
+        "col": 0,
+        "row": 23,
+        "w": 6,
+        "h": 2
+      },
+      {
+        "name": "white-stool-pair",
+        "col": 6,
+        "row": 23,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "barrel-blue-band",
+        "col": 0,
+        "row": 25,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "wooden-crate",
+        "col": 1,
+        "row": 25,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "wooden-crate-tall",
+        "col": 2,
+        "row": 25,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "barrel-row",
+        "col": 3,
+        "row": 25,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "dirt-patch-orange",
+        "col": 3,
+        "row": 10,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "dirt-patch-dark",
+        "col": 3,
+        "row": 11,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "flowerbed-mixed",
+        "col": 5,
+        "row": 10,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "flowerbed-blue-red",
+        "col": 6,
+        "row": 10,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "flowerbed-red",
+        "col": 7,
+        "row": 10,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "flowers-blue",
+        "col": 8,
+        "row": 10,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "flowers-white",
+        "col": 9,
+        "row": 10,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "flowers-yellow",
+        "col": 8,
+        "row": 11,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "flowers-yellow-2",
+        "col": 9,
+        "row": 11,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "stone-posts-blue-rope",
+        "col": 12,
+        "row": 0,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "stone-bollard-pair",
+        "col": 20,
+        "row": 0,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "pale-stone-column",
+        "col": 20,
+        "row": 2,
+        "w": 1,
+        "h": 4
+      },
+      {
+        "name": "shutter-wood",
+        "col": 21,
+        "row": 4,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "shutter-wood-2",
+        "col": 22,
+        "row": 4,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "void-pit",
+        "col": 15,
+        "row": 7,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "narrow-door",
+        "col": 18,
+        "row": 7,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "window-wood",
+        "col": 19,
+        "row": 7,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "window-wood-box",
+        "col": 20,
+        "row": 7,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "window-white",
+        "col": 21,
+        "row": 7,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "window-white-box",
+        "col": 22,
+        "row": 7,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "window-wood-small",
+        "col": 23,
+        "row": 7,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "planter-blue-flowers",
+        "col": 17,
+        "row": 9,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "planter-yellow-flowers",
+        "col": 17,
+        "row": 11,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "chest-white",
+        "col": 19,
+        "row": 9,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "window-white-framed",
+        "col": 21,
+        "row": 9,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "market-goods",
+        "col": 15,
+        "row": 10,
+        "w": 2,
+        "h": 3
+      },
+      {
+        "name": "flowerbed-blue",
+        "col": 15,
+        "row": 24,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "flower-pot-blue",
+        "col": 17,
+        "row": 24,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "flower-pot-yellow",
+        "col": 18,
+        "row": 24,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "flower-pot-white",
+        "col": 19,
+        "row": 24,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "flower-pot-mixed",
+        "col": 20,
+        "row": 24,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "stone-well",
+        "col": 15,
+        "row": 25,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "stone-fence-left-right-ends-connected",
+        "col": 18,
+        "row": 1,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "thin-pale-stone-column",
+        "col": 19,
+        "row": 2,
+        "w": 1,
+        "h": 3
+      },
+      {
+        "name": "rectangle-pale-stone-column",
+        "col": 18,
+        "row": 2,
+        "w": 1,
+        "h": 3
+      },
+      {
+        "name": "pale-stone-platform-top",
+        "col": 20,
+        "row": 12,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "pale-stone-steps-by-4",
+        "col": 20,
+        "row": 14,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "pale-stone-steps-narrow",
+        "col": 20,
+        "row": 16,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "pale-stone-steps-single",
+        "col": 22,
+        "row": 16,
+        "w": 2,
+        "h": 3
+      },
+      {
+        "name": "stone-border-base-grass",
+        "col": 18,
+        "row": 22,
+        "w": 2,
+        "h": 2
+      }
+    ],
+    "castletown-interior": [
+      {
+        "name": "stone-brick-wall",
+        "col": 0,
+        "row": 3,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "stone-brick-wall-slim",
+        "col": 3,
+        "row": 3,
+        "w": 1,
+        "h": 3
+      },
+      {
+        "name": "wooden-steps-wide",
+        "col": 17,
+        "row": 7,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "curtain-red-open",
+        "col": 12,
+        "row": 10,
+        "w": 2,
+        "h": 3
+      },
+      {
+        "name": "curtain-red-closed",
+        "col": 12,
+        "row": 13,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "wooden-wall-section",
+        "col": 15,
+        "row": 4,
+        "w": 5,
+        "h": 3
+      },
+      {
+        "name": "stone-steps-wide",
+        "col": 17,
+        "row": 3,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "stone-wall-section",
+        "col": 15,
+        "row": 0,
+        "w": 5,
+        "h": 3
+      },
+      {
+        "name": "plaster-wall-white",
+        "col": 4,
+        "row": 2,
+        "w": 3,
+        "h": 4
+      },
+      {
+        "name": "window-lamplit",
+        "col": 7,
+        "row": 0,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "window-daylight",
+        "col": 7,
+        "row": 3,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "stone-archway",
+        "col": 10,
+        "row": 0,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "window-rose",
+        "col": 10,
+        "row": 3,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "wooden-window-pair",
+        "col": 13,
+        "row": 0,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "wooden-shelf-stocked",
+        "col": 13,
+        "row": 2,
+        "w": 1,
+        "h": 3
+      },
+      {
+        "name": "doorway-lit",
+        "col": 14,
+        "row": 2,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "wood-floor-variants",
+        "col": 0,
+        "row": 7,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "emerald-tile-floor-variants",
+        "col": 3,
+        "row": 7,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "grey-cobble-floor-variants",
+        "col": 6,
+        "row": 7,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "wooden-window-variants",
+        "col": 14,
+        "row": 7,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "wooden-plank-boards",
+        "col": 17,
+        "row": 8,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "chair-wooden-set",
+        "col": 6,
+        "row": 10,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "table-wooden-long",
+        "col": 0,
+        "row": 11,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "cabinet-wooden",
+        "col": 0,
+        "row": 12,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "railing-white",
+        "col": 2,
+        "row": 12,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "bench-wooden",
+        "col": 4,
+        "row": 12,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "sofa-tan",
+        "col": 7,
+        "row": 12,
+        "w": 2,
+        "h": 3
+      },
+      {
+        "name": "shelf-wooden",
+        "col": 2,
+        "row": 13,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "wardrobe-tall",
+        "col": 4,
+        "row": 13,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "table-wooden",
+        "col": 0,
+        "row": 14,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "bookshelf-stocked",
+        "col": 2,
+        "row": 14,
+        "w": 2,
+        "h": 3
+      },
+      {
+        "name": "cabinet-glass",
+        "col": 0,
+        "row": 15,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "statue-angel",
+        "col": 4,
+        "row": 15,
+        "w": 2,
+        "h": 3
+      },
+      {
+        "name": "candlestick",
+        "col": 6,
+        "row": 15,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "potted-plants-row",
+        "col": 7,
+        "row": 15,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "name": "bench-long-wooden",
+        "col": 0,
+        "row": 17,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "broom",
+        "col": 6,
+        "row": 17,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "crate-grey",
+        "col": 7,
+        "row": 17,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "piano",
+        "col": 0,
+        "row": 18,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "kettle",
+        "col": 3,
+        "row": 18,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "counter-grey",
+        "col": 4,
+        "row": 18,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "name": "bottles-shelf",
+        "col": 8,
+        "row": 18,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "jars-and-bowls",
+        "col": 10,
+        "row": 18,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "sofa-purple",
+        "col": 0,
+        "row": 20,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "name": "potted-plants-large",
+        "col": 4,
+        "row": 20,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "paintings",
+        "col": 9,
+        "row": 20,
+        "w": 5,
+        "h": 2
+      },
+      {
+        "name": "teddy-bear",
+        "col": 14,
+        "row": 21,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "fireplace-stone",
+        "col": 2,
+        "row": 10,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "hearth-fire",
+        "col": 4,
+        "row": 10,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "bed-red-variants",
+        "col": 14,
+        "row": 16,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "bed-blue-green-variants",
+        "col": 17,
+        "row": 16,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "chest-drawer",
+        "col": 3,
+        "row": 19,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "cauldron",
+        "col": 12,
+        "row": 17,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "bowls",
+        "col": 12,
+        "row": 18,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "mirror-standing",
+        "col": 14,
+        "row": 19,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "mirror-gold",
+        "col": 16,
+        "row": 19,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "mirror-blue",
+        "col": 17,
+        "row": 19,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "mirror-pink",
+        "col": 18,
+        "row": 19,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "tray-bottles",
+        "col": 19,
+        "row": 19,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "stool-red",
+        "col": 16,
+        "row": 20,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "desk-wooden",
+        "col": 17,
+        "row": 20,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "poster-purple",
+        "col": 19,
+        "row": 20,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "bench-dark",
+        "col": 15,
+        "row": 21,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "stool-wooden",
+        "col": 9,
+        "row": 10,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "wooden-panel-tall",
+        "col": 9,
+        "row": 12,
+        "w": 1,
+        "h": 3
+      },
+      {
+        "name": "window-white-panes",
+        "col": 14,
+        "row": 10,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "door-white",
+        "col": 14,
+        "row": 11,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "mirror-dark",
+        "col": 14,
+        "row": 13,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "window-dark-wood",
+        "col": 16,
+        "row": 10,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "window-dark-wood-2",
+        "col": 18,
+        "row": 10,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "drapes-grey",
+        "col": 15,
+        "row": 12,
+        "w": 5,
+        "h": 4
+      },
+      {
+        "name": "plant-stand",
+        "col": 7,
+        "row": 20,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "plants-tall",
+        "col": 9,
+        "row": 17,
+        "w": 3,
+        "h": 1
+      }
+    ],
+    "forest-cave": [
+      {
+        "name": "cave-mouth-crystal",
+        "col": 0,
+        "row": 0,
+        "w": 5,
+        "h": 4
+      },
+      {
+        "name": "crystal-wall-upper",
+        "col": 5,
+        "row": 0,
+        "w": 6,
+        "h": 2
+      },
+      {
+        "name": "cave-light-glow",
+        "col": 5,
+        "row": 2,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "mine-support-frame",
+        "col": 8,
+        "row": 3,
+        "w": 3,
+        "h": 4
+      },
+      {
+        "name": "mine-doorway",
+        "col": 5,
+        "row": 4,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "rock-wall-variants",
+        "col": 0,
+        "row": 4,
+        "w": 5,
+        "h": 5
+      },
+      {
+        "name": "wooden-ladder",
+        "col": 5,
+        "row": 7,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "rock-floor-variants",
+        "col": 0,
+        "row": 9,
+        "w": 5,
+        "h": 4
+      },
+      {
+        "name": "bush-large",
+        "col": 0,
+        "row": 13,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "bush-small",
+        "col": 3,
+        "row": 13,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "pebbles",
+        "col": 0,
+        "row": 16,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "flowers-white",
+        "col": 3,
+        "row": 16,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "cave-holes",
+        "col": 5,
+        "row": 16,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "boulder-brown",
+        "col": 7,
+        "row": 16,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "straw-pile",
+        "col": 2,
+        "row": 17,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "flowers-orange",
+        "col": 3,
+        "row": 17,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "plant-purple-flower",
+        "col": 4,
+        "row": 17,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "stalactites",
+        "col": 5,
+        "row": 17,
+        "w": 2,
+        "h": 3
+      },
+      {
+        "name": "stalagmites-large",
+        "col": 9,
+        "row": 17,
+        "w": 2,
+        "h": 3
+      },
+      {
+        "name": "mushrooms-white",
+        "col": 0,
+        "row": 18,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "mushrooms-orange",
+        "col": 3,
+        "row": 18,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "stalagmites-small",
+        "col": 7,
+        "row": 18,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "gold-pile-large",
+        "col": 0,
+        "row": 20,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "gold-pile",
+        "col": 2,
+        "row": 20,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "gold-nugget",
+        "col": 4,
+        "row": 20,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "sarcophagus-closed",
+        "col": 0,
+        "row": 22,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "sarcophagus-open",
+        "col": 2,
+        "row": 22,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "sarcophagus-empty",
+        "col": 4,
+        "row": 22,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "sarcophagus-gold",
+        "col": 6,
+        "row": 22,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "chest-wooden",
+        "col": 8,
+        "row": 22,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "sarcophagus-lid-open",
+        "col": 0,
+        "row": 24,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "sarcophagus-lid",
+        "col": 2,
+        "row": 24,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "sarcophagus-lid-gold",
+        "col": 4,
+        "row": 24,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "ring-and-sword",
+        "col": 6,
+        "row": 24,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "crystal-cave-wall-1",
+        "col": 0,
+        "row": 26,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "crystal-cave-wall-2",
+        "col": 3,
+        "row": 26,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "crystal-cave-wall-3",
+        "col": 6,
+        "row": 26,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "crystal-cave-wall-4",
+        "col": 9,
+        "row": 26,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "dark-rock-fill",
+        "col": 3,
+        "row": 29,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "cave-chasm-ring",
+        "col": 5,
+        "row": 29,
+        "w": 4,
+        "h": 5
+      },
+      {
+        "name": "cave-floor-dark",
+        "col": 0,
+        "row": 32,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "crystal-bits",
+        "col": 9,
+        "row": 2,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "rock-band-dark",
+        "col": 8,
+        "row": 8,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "wooden-fence",
+        "col": 5,
+        "row": 9,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "wagon-wheel",
+        "col": 8,
+        "row": 9,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "wooden-crates",
+        "col": 5,
+        "row": 10,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "wooden-crate-tall",
+        "col": 8,
+        "row": 11,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "wooden-bench-small",
+        "col": 9,
+        "row": 12,
+        "w": 1,
+        "h": 1
+      }
+    ],
+    "snow": [
+      {
+        "name": "snow-stone-enclosure",
+        "col": 0,
+        "row": 0,
+        "w": 7,
+        "h": 4
+      },
+      {
+        "name": "cave-mouth-snow",
+        "col": 0,
+        "row": 4,
+        "w": 6,
+        "h": 6
+      },
+      {
+        "name": "stone-wall-snow",
+        "col": 6,
+        "row": 6,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "chimney-pipe",
+        "col": 8,
+        "row": 1,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "cabin-log-snow",
+        "col": 9,
+        "row": 0,
+        "w": 6,
+        "h": 9
+      },
+      {
+        "name": "snow-drift-fill",
+        "col": 15,
+        "row": 0,
+        "w": 3,
+        "h": 9
+      },
+      {
+        "name": "pine-tree-snow",
+        "col": 0,
+        "row": 11,
+        "w": 4,
+        "h": 6
+      },
+      {
+        "name": "tree-round-snow",
+        "col": 4,
+        "row": 11,
+        "w": 5,
+        "h": 6
+      },
+      {
+        "name": "flower-clusters",
+        "col": 9,
+        "row": 11,
+        "w": 4,
+        "h": 1
+      },
+      {
+        "name": "green-sprigs",
+        "col": 13,
+        "row": 11,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "wooden-wheel",
+        "col": 9,
+        "row": 12,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "snowy-branches",
+        "col": 10,
+        "row": 12,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "snowman",
+        "col": 12,
+        "row": 12,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "snowball-stack",
+        "col": 14,
+        "row": 12,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "stakes-snow",
+        "col": 9,
+        "row": 13,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "snow-fill",
+        "col": 15,
+        "row": 11,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "snow-specks",
+        "col": 16,
+        "row": 11,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "fence-rail-snow",
+        "col": 15,
+        "row": 13,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "fence-panel-wood",
+        "col": 15,
+        "row": 14,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "wooden-gate",
+        "col": 12,
+        "row": 14,
+        "w": 3,
+        "h": 4
+      },
+      {
+        "name": "fence-rail-snow-2",
+        "col": 15,
+        "row": 17,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "window-dark-large",
+        "col": 0,
+        "row": 17,
+        "w": 4,
+        "h": 3
+      },
+      {
+        "name": "dark-panel-lamp",
+        "col": 4,
+        "row": 17,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "windows-wood-set",
+        "col": 5,
+        "row": 18,
+        "w": 5,
+        "h": 2
+      },
+      {
+        "name": "stove-pipe",
+        "col": 11,
+        "row": 19,
+        "w": 1,
+        "h": 3
+      },
+      {
+        "name": "log-wall-interior",
+        "col": 0,
+        "row": 20,
+        "w": 8,
+        "h": 2
+      },
+      {
+        "name": "ladder-wood",
+        "col": 8,
+        "row": 20,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "brick-wall-interior",
+        "col": 0,
+        "row": 22,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "table-wooden-large",
+        "col": 3,
+        "row": 22,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "cookware",
+        "col": 6,
+        "row": 22,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "shelf-dishes",
+        "col": 9,
+        "row": 22,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "chairs-and-stools",
+        "col": 6,
+        "row": 23,
+        "w": 6,
+        "h": 2
+      },
+      {
+        "name": "brick-wall-single",
+        "col": 0,
+        "row": 25,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "chests",
+        "col": 6,
+        "row": 25,
+        "w": 2,
+        "h": 1
+      },
+      {
+        "name": "carpet-red",
+        "col": 0,
+        "row": 26,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "carpet-green",
+        "col": 3,
+        "row": 26,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "beds-wooden",
+        "col": 6,
+        "row": 26,
+        "w": 4,
+        "h": 3
+      },
+      {
+        "name": "food-and-candles",
+        "col": 10,
+        "row": 26,
+        "w": 3,
+        "h": 3
+      }
+    ],
+    "desert": [
+      {
+        "name": "sand-basin-stone",
+        "col": 0,
+        "row": 0,
+        "w": 5,
+        "h": 6
+      },
+      {
+        "name": "sand-basin-sand",
+        "col": 9,
+        "row": 0,
+        "w": 5,
+        "h": 6
+      },
+      {
+        "name": "cave-mouth-stone",
+        "col": 1,
+        "row": 6,
+        "w": 4,
+        "h": 4
+      },
+      {
+        "name": "cave-mouth-sand",
+        "col": 10,
+        "row": 6,
+        "w": 4,
+        "h": 4
+      },
+      {
+        "name": "pillar-stone",
+        "col": 5,
+        "row": 4,
+        "w": 1,
+        "h": 5
+      },
+      {
+        "name": "pillar-sand",
+        "col": 14,
+        "row": 4,
+        "w": 1,
+        "h": 5
+      },
+      {
+        "name": "rubble-tiles-stone",
+        "col": 6,
+        "row": 6,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "rubble-tiles-sand",
+        "col": 15,
+        "row": 6,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "desert-props-stone",
+        "col": 0,
+        "row": 10,
+        "w": 4,
+        "h": 1
+      },
+      {
+        "name": "desert-props-sand",
+        "col": 9,
+        "row": 10,
+        "w": 4,
+        "h": 1
+      },
+      {
+        "name": "palm-trees",
+        "col": 0,
+        "row": 12,
+        "w": 6,
+        "h": 5
+      },
+      {
+        "name": "cactus-saguaro",
+        "col": 6,
+        "row": 12,
+        "w": 2,
+        "h": 3
+      },
+      {
+        "name": "barrel-cacti",
+        "col": 6,
+        "row": 15,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "name": "desert-shrub",
+        "col": 10,
+        "row": 15,
+        "w": 1,
+        "h": 1
+      },
+      {
+        "name": "palm-tree-single",
+        "col": 0,
+        "row": 17,
+        "w": 4,
+        "h": 4
+      },
+      {
+        "name": "desert-shrubs",
+        "col": 6,
+        "row": 17,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "name": "awning-pink",
+        "col": 0,
+        "row": 21,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "awning-green",
+        "col": 3,
+        "row": 21,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "awning-blue",
+        "col": 6,
+        "row": 21,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "adobe-wall-beam-sand",
+        "col": 0,
+        "row": 23,
+        "w": 7,
+        "h": 2
+      },
+      {
+        "name": "adobe-wall-beam-stone",
+        "col": 9,
+        "row": 23,
+        "w": 7,
+        "h": 2
+      },
+      {
+        "name": "adobe-wall-door-sand",
+        "col": 0,
+        "row": 25,
+        "w": 9,
+        "h": 2
+      },
+      {
+        "name": "adobe-wall-door-stone",
+        "col": 9,
+        "row": 25,
+        "w": 9,
+        "h": 2
+      },
+      {
+        "name": "adobe-wall-inset-sand",
+        "col": 0,
+        "row": 27,
+        "w": 9,
+        "h": 2
+      },
+      {
+        "name": "adobe-wall-inset-stone",
+        "col": 9,
+        "row": 27,
+        "w": 9,
+        "h": 2
+      },
+      {
+        "name": "adobe-wall-body-sand",
+        "col": 0,
+        "row": 29,
+        "w": 9,
+        "h": 3
+      },
+      {
+        "name": "adobe-wall-body-stone",
+        "col": 9,
+        "row": 29,
+        "w": 9,
+        "h": 3
+      },
+      {
+        "name": "adobe-wall-arches-sand",
+        "col": 0,
+        "row": 32,
+        "w": 9,
+        "h": 3
+      },
+      {
+        "name": "adobe-wall-arches-stone",
+        "col": 9,
+        "row": 32,
+        "w": 9,
+        "h": 3
+      },
+      {
+        "name": "wood-plank-wall-sand",
+        "col": 6,
+        "row": 35,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "wood-plank-wall-stone",
+        "col": 15,
+        "row": 35,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "thatch-roof-sand",
+        "col": 0,
+        "row": 37,
+        "w": 9,
+        "h": 6
+      },
+      {
+        "name": "thatch-roof-stone",
+        "col": 9,
+        "row": 37,
+        "w": 9,
+        "h": 6
+      },
+      {
+        "name": "thatch-roof-edge-sand",
+        "col": 0,
+        "row": 43,
+        "w": 3,
+        "h": 4
+      },
+      {
+        "name": "thatch-roof-edge-stone",
+        "col": 9,
+        "row": 43,
+        "w": 3,
+        "h": 4
+      },
+      {
+        "name": "door-desert-sand",
+        "col": 3,
+        "row": 43,
+        "w": 4,
+        "h": 3
+      },
+      {
+        "name": "door-desert-stone",
+        "col": 12,
+        "row": 43,
+        "w": 4,
+        "h": 3
+      },
+      {
+        "name": "wooden-crate",
+        "col": 0,
+        "row": 47,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "clay-pots",
+        "col": 1,
+        "row": 47,
+        "w": 2,
+        "h": 2
+      },
+      {
+        "name": "vases-tall",
+        "col": 3,
+        "row": 47,
+        "w": 4,
+        "h": 2
+      },
+      {
+        "name": "pots-round",
+        "col": 3,
+        "row": 49,
+        "w": 4,
+        "h": 1
+      }
+    ],
+    "fantasyrpg-dungeon": [
+      {
+        "name": "dirt-variant-floor-tiles",
+        "col": 2,
+        "row": 1,
+        "w": 4,
+        "h": 1
+      },
+      {
+        "name": "stone-variant-floor-tiles",
+        "col": 6,
+        "row": 1,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "stone-floor-tiles-some-covered-in-dirt",
+        "col": 1,
+        "row": 6,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "sand-stone-floor-tiles-some-covered-in-dirt",
+        "col": 1,
+        "row": 7,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "grey-floor-tiles-some-covered-in-dirt",
+        "col": 1,
+        "row": 8,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "dirt-pathway-tiles-possibly-transparent-path",
+        "col": 1,
+        "row": 9,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "dirt-path-tiles",
+        "col": 1,
+        "row": 10,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "stone-floor-tiles-some-covered-in-dried-dirt",
+        "col": 1,
+        "row": 11,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "possibly-grey-or-transparent-path-tiles-with-dried-dirt-borders",
+        "col": 1,
+        "row": 12,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "sand-stone-floor-tiles-some-covered-in-sand",
+        "col": 1,
+        "row": 14,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "grey-floor-tiles-some-covered-in-sand",
+        "col": 1,
+        "row": 15,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "sand-pathway-tiles-possibly-transparent-path",
+        "col": 1,
+        "row": 16,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "sand-path-tiles",
+        "col": 1,
+        "row": 17,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "possibly-grey-or-transparent-path-tiles-with-dried-sand-borders",
+        "col": 1,
+        "row": 18,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "brown-ceiling-borders",
+        "col": 1,
+        "row": 22,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "tan-ceiling-borders",
+        "col": 1,
+        "row": 23,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "white-ceiling-borders",
+        "col": 1,
+        "row": 24,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "teal-blue-ceiling-borders",
+        "col": 1,
+        "row": 25,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "stone-ceiling-borders",
+        "col": 1,
+        "row": 26,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "dark-grey-stone-ceiling-borders",
+        "col": 1,
+        "row": 27,
+        "w": 16,
+        "h": 1
+      },
+      {
+        "name": "trap-spikes-section-on-all-different-floors",
+        "col": 11,
+        "row": 1,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "name": "rocks-plants-mushrooms-section",
+        "col": 1,
+        "row": 2,
+        "w": 8,
+        "h": 2
+      },
+      {
+        "name": "castle-wall-section-with-columns",
+        "col": 36,
+        "row": 1,
+        "w": 8,
+        "h": 4
+      },
+      {
+        "name": "castle-wall-with-door-section-2",
+        "col": 44,
+        "row": 1,
+        "w": 6,
+        "h": 4
+      },
+      {
+        "name": "dark-castle-wall-section-with-columns",
+        "col": 36,
+        "row": 13,
+        "w": 8,
+        "h": 4
+      },
+      {
+        "name": "dark-castle-wall-with-door-section-2",
+        "col": 44,
+        "row": 13,
+        "w": 5,
+        "h": 5
+      },
+      {
+        "name": "interior-desert-wall-with-columns-and-doorway",
+        "col": 18,
+        "row": 19,
+        "w": 11,
+        "h": 3
+      },
+      {
+        "name": "desert-stone-pillar-section",
+        "col": 30,
+        "row": 23,
+        "w": 4,
+        "h": 4
+      },
+      {
+        "name": "dark-damp-desert-ground-with-rocks-section",
+        "col": 18,
+        "row": 16,
+        "w": 8,
+        "h": 2
+      },
+      {
+        "name": "sand-stone-desert-pathway-walls-section",
+        "col": 27,
+        "row": 7,
+        "w": 2,
+        "h": 4
+      },
+      {
+        "name": "dark-stone-desert-pathway-walls-section",
+        "col": 27,
+        "row": 11,
+        "w": 2,
+        "h": 4
+      },
+      {
+        "name": "sand-stone-desert-wall-pathways",
+        "col": 30,
+        "row": 18,
+        "w": 4,
+        "h": 4
+      },
+      {
+        "name": "sand-stone-desert-structure-section-exterior",
+        "col": 18,
+        "row": 1,
+        "w": 8,
+        "h": 6
+      },
+      {
+        "name": "dark-stone-desert-structure-section-exterior",
+        "col": 18,
+        "row": 9,
+        "w": 8,
+        "h": 6
+      },
+      {
+        "name": "sand-floor-tiles",
+        "col": 18,
+        "row": 23,
+        "w": 9,
+        "h": 1
+      },
+      {
+        "name": "sand-floor-with-rocks-section",
+        "col": 18,
+        "row": 24,
+        "w": 7,
+        "h": 1
+      },
+      {
+        "name": "terracotta-floor-tile-patterns-and-tile-variants",
+        "col": 18,
+        "row": 25,
+        "w": 7,
+        "h": 1
+      },
+      {
+        "name": "interior-castle-floor-tile-patterns",
+        "col": 36,
+        "row": 5,
+        "w": 6,
+        "h": 1
+      },
+      {
+        "name": "interior-dark-castle-floor-tile-patterns",
+        "col": 36,
+        "row": 17,
+        "w": 6,
+        "h": 1
+      },
+      {
+        "name": "interior-castle-props",
+        "col": 36,
+        "row": 7,
+        "w": 5,
+        "h": 3
+      },
+      {
+        "name": "interior-castle-statue-1",
+        "col": 41,
+        "row": 7,
+        "w": 2,
+        "h": 3
+      },
+      {
+        "name": "interior-castle-statue-2",
+        "col": 43,
+        "row": 7,
+        "w": 2,
+        "h": 3
+      },
+      {
+        "name": "interior-dark-castle-props",
+        "col": 36,
+        "row": 19,
+        "w": 5,
+        "h": 3
+      },
+      {
+        "name": "interior-dark-castle-statue-1",
+        "col": 41,
+        "row": 19,
+        "w": 2,
+        "h": 3
+      },
+      {
+        "name": "interior-dark-castle-statue-2",
+        "col": 43,
+        "row": 19,
+        "w": 2,
+        "h": 3
+      },
+      {
+        "name": "castle-walls-and-stairs",
+        "col": 45,
+        "row": 7,
+        "w": 5,
+        "h": 6
+      },
+      {
+        "name": "dark-castle-walls-and-stairs",
+        "col": 45,
+        "row": 19,
+        "w": 5,
+        "h": 6
+      },
+      {
+        "name": "section-label-autotiles",
+        "col": 1,
+        "row": 5,
+        "w": 4,
+        "h": 1
+      },
+      {
+        "name": "section-label-ceiling",
+        "col": 1,
+        "row": 21,
+        "w": 3,
+        "h": 1
+      },
+      {
+        "name": "wooden-signs",
+        "col": 27,
+        "row": 0,
+        "w": 7,
+        "h": 2
+      },
+      {
+        "name": "lamp-stand",
+        "col": 27,
+        "row": 2,
+        "w": 1,
+        "h": 2
+      },
+      {
+        "name": "crates-wooden",
+        "col": 28,
+        "row": 2,
+        "w": 6,
+        "h": 2
+      },
+      {
+        "name": "barrels-wooden",
+        "col": 27,
+        "row": 4,
+        "w": 3,
+        "h": 3
+      },
+      {
+        "name": "clay-jars",
+        "col": 30,
+        "row": 4,
+        "w": 4,
+        "h": 1
+      },
+      {
+        "name": "mine-tracks",
+        "col": 31,
+        "row": 6,
+        "w": 3,
+        "h": 5
+      },
+      {
+        "name": "wooden-railing",
+        "col": 31,
+        "row": 11,
+        "w": 3,
+        "h": 4
+      },
+      {
+        "name": "crystal-clusters",
+        "col": 30,
+        "row": 15,
+        "w": 4,
+        "h": 3
+      },
+      {
+        "name": "boulders-grey",
+        "col": 27,
+        "row": 16,
+        "w": 3,
+        "h": 2
+      },
+      {
+        "name": "rubble-and-boulders-sand",
+        "col": 25,
+        "row": 24,
+        "w": 4,
+        "h": 3
+      }
+    ]
+  }
+}

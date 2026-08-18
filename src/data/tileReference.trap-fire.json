@@ -1,0 +1,18 @@
+{
+ "_meta": {
+  "pack": "Side-scroller Trap pack (selected, repurposed as top-down traps)",
+  "key": "tileReference.trap-fire",
+  "mode": "spritesheet",
+  "browseAllFrames": true,
+  "sheet": "traps/fire.png",
+  "tileSize": 16,
+  "spacing": 0,
+  "margin": 0,
+  "columns": 4,
+  "rows": 1,
+  "total": 4,
+  "view": "trap animation frames (Fire.png)",
+  "license": "User-provided pack (resources/Trap). Side-scroller asset repurposed. Confirm redistribution/use terms before shipping.",
+  "note": "Trap 'Fire.png' (64x16). Frame 16px inferred from strip height (4x1=4 frames)."
+ }
+}

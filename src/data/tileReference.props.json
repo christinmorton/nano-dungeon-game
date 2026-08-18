@@ -1,0 +1,18 @@
+{
+  "_meta": {
+    "pack": "original (PixelLab)",
+    "key": "tileReference.props",
+    "mode": "images",
+    "dir": "art/props",
+    "tileSize": 48,
+    "view": "top-down (high)",
+    "license": "Original art generated via PixelLab from text prompts only — owned, free to ship.",
+    "note": "Original prop/object sprites (non-actor). Single static sprite per object (the engine renders one sprite + tween). Started 2026-06-12 with the training dummy for the ability test bench."
+  },
+  "props": {
+    "trainingDummy": {
+      "file": "training_dummy.png",
+      "note": "art/props/training_dummy.png — straw-and-burlap practice target for the A->Z ability bench"
+    }
+  }
+}

@@ -1,0 +1,18 @@
+{
+ "_meta": {
+  "pack": "Castle Town tileset — interior",
+  "key": "tileReference.castletown-interior",
+  "mode": "spritesheet",
+  "browseAllFrames": true,
+  "sheet": "tilesets/castletown/ts_castleTown_interior.png",
+  "tileSize": 16,
+  "spacing": 0,
+  "margin": 0,
+  "columns": 20,
+  "rows": 22,
+  "total": 440,
+  "view": "top-down castle-town interior tileset (floors, walls, furniture)",
+  "license": "User-provided pack (resources/b4f1209…). Confirm redistribution/use terms before shipping.",
+  "note": "GRID VERIFIED 2026-08-07 (grid drawn over the PNG at 12x - lines land exactly on tile edges; 320x352 / 16 = 20x22 = 440 frames, no remainder). Castle-town INTERIOR tileset. TERRAINS: darkness (the black void you flood around rooms so lit interiors read as rooms - 3x3 outer at c0,r0 plus its 2x2 inner block at c3,r0) and red-carpet (c9,r7, the only floor here with a real border drawn around its edge). ROW-BAND TRIAGE: rows 0-5 void, stone/plaster walls, lit and daylight windows, arch, stone and wooden wall sections; row 6 plain floor fill tiles; rows 7-9 floor VARIANT grids (wood, emerald tile, grey cobble - 9 variants each, NOT autotile: no borders) plus the red carpet; rows 10-15 curtains, drapes, doors, mirrors, hearth, cabinets, shelves, statue; rows 16-21 beds, piano, sofas, counters, plants, paintings and small props. Everything not a terrain is a named region in tileLabels.json."
+ }
+}

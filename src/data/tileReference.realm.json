@@ -1,0 +1,78 @@
+{
+  "_meta": {
+    "pack": "original (PixelLab)",
+    "key": "tileReference.realm",
+    "mode": "images",
+    "dir": "art/realm",
+    "tileSize": 32,
+    "view": "top-down (high) — overhead map tile",
+    "license": "Original art generated via PixelLab from text prompts only (no third-party pack used as input). Owned outright — free to ship.",
+    "note": "Per-realm art for the mechanic-tied props the dungeon themes select by ROLE (levels/themeRoles.js). Prompt templates + the hard-won generation rules are in documents/v3_theme_roles_and_item_pack_audit.md."
+  },
+  "stairs": {
+    "stairsDownCastleTown": {
+      "file": "stairs-down-castle-town.png",
+      "note": "art/realm/stairs-down-castle-town.png — castle-town stairs down"
+    },
+    "stairsDownCastleHalls": {
+      "file": "stairs-down-castle-halls.png",
+      "note": "art/realm/stairs-down-castle-halls.png — castle-halls stairs down"
+    },
+    "stairsDownSandstoneKeep": {
+      "file": "stairs-down-sandstone-keep.png",
+      "note": "art/realm/stairs-down-sandstone-keep.png — sandstone-keep stairs down"
+    },
+    "stairsDownOldQuarter": {
+      "file": "stairs-down-old-quarter.png",
+      "note": "art/realm/stairs-down-old-quarter.png — old-quarter stairs down"
+    },
+    "stairsDownCandlelitHall": {
+      "file": "stairs-down-candlelit-hall.png",
+      "note": "art/realm/stairs-down-candlelit-hall.png — candlelit-hall stairs down"
+    },
+    "stairsDownFrozenThicket": {
+      "file": "stairs-down-frozen-thicket.png",
+      "note": "art/realm/stairs-down-frozen-thicket.png — frozen-thicket stairs down"
+    },
+    "stairsDownForestGlade": {
+      "file": "stairs-down-forest-glade.png",
+      "note": "art/realm/stairs-down-forest-glade.png — forest-glade stairs down"
+    },
+    "stairsDownDesertCompound": {
+      "file": "stairs-down-desert-compound.png",
+      "note": "art/realm/stairs-down-desert-compound.png — desert-compound stairs down"
+    },
+    "stairsUpCastleTown": {
+      "file": "stairs-up-castle-town.png",
+      "note": "art/realm/stairs-up-castle-town.png — castle-town stairs up"
+    },
+    "stairsUpCastleHalls": {
+      "file": "stairs-up-castle-halls.png",
+      "note": "art/realm/stairs-up-castle-halls.png — castle-halls stairs up"
+    },
+    "stairsUpSandstoneKeep": {
+      "file": "stairs-up-sandstone-keep.png",
+      "note": "art/realm/stairs-up-sandstone-keep.png — sandstone-keep stairs up"
+    },
+    "stairsUpOldQuarter": {
+      "file": "stairs-up-old-quarter.png",
+      "note": "art/realm/stairs-up-old-quarter.png — old-quarter stairs up"
+    },
+    "stairsUpCandlelitHall": {
+      "file": "stairs-up-candlelit-hall.png",
+      "note": "art/realm/stairs-up-candlelit-hall.png — candlelit-hall stairs up"
+    },
+    "stairsUpFrozenThicket": {
+      "file": "stairs-up-frozen-thicket.png",
+      "note": "art/realm/stairs-up-frozen-thicket.png — frozen-thicket stairs up"
+    },
+    "stairsUpForestGlade": {
+      "file": "stairs-up-forest-glade.png",
+      "note": "art/realm/stairs-up-forest-glade.png — forest-glade stairs up"
+    },
+    "stairsUpDesertCompound": {
+      "file": "stairs-up-desert-compound.png",
+      "note": "art/realm/stairs-up-desert-compound.png — desert-compound stairs up"
+    }
+  }
+}

@@ -1,0 +1,14 @@
+{
+    "name": "all-archer-orcs",
+    "species": "orc",
+    "captain": {
+        "playbook": "*"
+    },
+    "members": [
+        { "class": "Orc", "role": "archer" },
+        { "class": "Orc", "role": "archer" },
+        { "class": "Orc", "role": "archer" },
+        { "class": "Orc", "role": "archer" },
+        { "class": "Orc", "role": "archer" }
+    ]
+}

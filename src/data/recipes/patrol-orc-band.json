@@ -1,0 +1,14 @@
+{
+    "name": "patrol-orc-band",
+    "species": "orc",
+    "captain": {
+        "playbook": "*",
+        "activity": "patrolling"
+    },
+    "members": [
+        { "class": "Orc", "role": "tank" },
+        { "class": "Orc", "role": "warrior" },
+        { "class": "Orc", "role": "warrior" },
+        { "class": "Orc", "role": "archer" }
+    ]
+}

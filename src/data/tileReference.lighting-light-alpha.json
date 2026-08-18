@@ -1,0 +1,565 @@
+{
+  "_meta": {
+    "pack": "FREE Textures Of Light Alpha",
+    "key": "tileReference.lighting-light-alpha",
+    "mode": "images",
+    "dir": "lighting/light_alpha",
+    "tileSize": 64,
+    "view": "lighting alpha mask",
+    "license": "Free/purchased texture pack; direct use OK; NO AI input.",
+    "note": "Alpha-mask variants of the light textures (for masking/erosion lighting). 64x64 light/glow overlays for the lighting layer (torch glow, the darkness mechanic, magic glows) — NOT environment tiles. Use additively (BLEND). Names are placeholders pending a curation pass.",
+    "referenceDoc": "documents/v3_item_prop_art_coverage_audit.md"
+  },
+  "lightAlpha": {
+    "lightAlpha1": {
+      "file": "lightAlpha_1.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #1"
+    },
+    "lightAlpha10": {
+      "file": "lightAlpha_10.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #10"
+    },
+    "lightAlpha100": {
+      "file": "lightAlpha_100.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #100"
+    },
+    "lightAlpha101": {
+      "file": "lightAlpha_101.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #101"
+    },
+    "lightAlpha102": {
+      "file": "lightAlpha_102.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #102"
+    },
+    "lightAlpha103": {
+      "file": "lightAlpha_103.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #103"
+    },
+    "lightAlpha104": {
+      "file": "lightAlpha_104.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #104"
+    },
+    "lightAlpha105": {
+      "file": "lightAlpha_105.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #105"
+    },
+    "lightAlpha106": {
+      "file": "lightAlpha_106.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #106"
+    },
+    "lightAlpha107": {
+      "file": "lightAlpha_107.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #107"
+    },
+    "lightAlpha108": {
+      "file": "lightAlpha_108.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #108"
+    },
+    "lightAlpha109": {
+      "file": "lightAlpha_109.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #109"
+    },
+    "lightAlpha11": {
+      "file": "lightAlpha_11.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #11"
+    },
+    "lightAlpha110": {
+      "file": "lightAlpha_110.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #110"
+    },
+    "lightAlpha12": {
+      "file": "lightAlpha_12.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #12"
+    },
+    "lightAlpha13": {
+      "file": "lightAlpha_13.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #13"
+    },
+    "lightAlpha14": {
+      "file": "lightAlpha_14.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #14"
+    },
+    "lightAlpha15": {
+      "file": "lightAlpha_15.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #15"
+    },
+    "lightAlpha16": {
+      "file": "lightAlpha_16.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #16"
+    },
+    "lightAlpha17": {
+      "file": "lightAlpha_17.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #17"
+    },
+    "lightAlpha18": {
+      "file": "lightAlpha_18.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #18"
+    },
+    "lightAlpha19": {
+      "file": "lightAlpha_19.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #19"
+    },
+    "lightAlpha2": {
+      "file": "lightAlpha_2.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #2"
+    },
+    "lightAlpha20": {
+      "file": "lightAlpha_20.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #20"
+    },
+    "lightAlpha21": {
+      "file": "lightAlpha_21.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #21"
+    },
+    "lightAlpha22": {
+      "file": "lightAlpha_22.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #22"
+    },
+    "lightAlpha23": {
+      "file": "lightAlpha_23.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #23"
+    },
+    "lightAlpha24": {
+      "file": "lightAlpha_24.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #24"
+    },
+    "lightAlpha25": {
+      "file": "lightAlpha_25.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #25"
+    },
+    "lightAlpha26": {
+      "file": "lightAlpha_26.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #26"
+    },
+    "lightAlpha27": {
+      "file": "lightAlpha_27.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #27"
+    },
+    "lightAlpha28": {
+      "file": "lightAlpha_28.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #28"
+    },
+    "lightAlpha29": {
+      "file": "lightAlpha_29.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #29"
+    },
+    "lightAlpha3": {
+      "file": "lightAlpha_3.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #3"
+    },
+    "lightAlpha30": {
+      "file": "lightAlpha_30.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #30"
+    },
+    "lightAlpha31": {
+      "file": "lightAlpha_31.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #31"
+    },
+    "lightAlpha32": {
+      "file": "lightAlpha_32.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #32"
+    },
+    "lightAlpha33": {
+      "file": "lightAlpha_33.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #33"
+    },
+    "lightAlpha34": {
+      "file": "lightAlpha_34.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #34"
+    },
+    "lightAlpha35": {
+      "file": "lightAlpha_35.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #35"
+    },
+    "lightAlpha36": {
+      "file": "lightAlpha_36.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #36"
+    },
+    "lightAlpha37": {
+      "file": "lightAlpha_37.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #37"
+    },
+    "lightAlpha38": {
+      "file": "lightAlpha_38.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #38"
+    },
+    "lightAlpha39": {
+      "file": "lightAlpha_39.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #39"
+    },
+    "lightAlpha4": {
+      "file": "lightAlpha_4.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #4"
+    },
+    "lightAlpha40": {
+      "file": "lightAlpha_40.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #40"
+    },
+    "lightAlpha41": {
+      "file": "lightAlpha_41.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #41"
+    },
+    "lightAlpha42": {
+      "file": "lightAlpha_42.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #42"
+    },
+    "lightAlpha43": {
+      "file": "lightAlpha_43.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #43"
+    },
+    "lightAlpha44": {
+      "file": "lightAlpha_44.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #44"
+    },
+    "lightAlpha45": {
+      "file": "lightAlpha_45.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #45"
+    },
+    "lightAlpha46": {
+      "file": "lightAlpha_46.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #46"
+    },
+    "lightAlpha47": {
+      "file": "lightAlpha_47.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #47"
+    },
+    "lightAlpha48": {
+      "file": "lightAlpha_48.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #48"
+    },
+    "lightAlpha49": {
+      "file": "lightAlpha_49.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #49"
+    },
+    "lightAlpha5": {
+      "file": "lightAlpha_5.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #5"
+    },
+    "lightAlpha50": {
+      "file": "lightAlpha_50.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #50"
+    },
+    "lightAlpha51": {
+      "file": "lightAlpha_51.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #51"
+    },
+    "lightAlpha52": {
+      "file": "lightAlpha_52.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #52"
+    },
+    "lightAlpha53": {
+      "file": "lightAlpha_53.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #53"
+    },
+    "lightAlpha54": {
+      "file": "lightAlpha_54.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #54"
+    },
+    "lightAlpha55": {
+      "file": "lightAlpha_55.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #55"
+    },
+    "lightAlpha56": {
+      "file": "lightAlpha_56.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #56"
+    },
+    "lightAlpha57": {
+      "file": "lightAlpha_57.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #57"
+    },
+    "lightAlpha58": {
+      "file": "lightAlpha_58.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #58"
+    },
+    "lightAlpha59": {
+      "file": "lightAlpha_59.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #59"
+    },
+    "lightAlpha6": {
+      "file": "lightAlpha_6.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #6"
+    },
+    "lightAlpha60": {
+      "file": "lightAlpha_60.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #60"
+    },
+    "lightAlpha61": {
+      "file": "lightAlpha_61.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #61"
+    },
+    "lightAlpha62": {
+      "file": "lightAlpha_62.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #62"
+    },
+    "lightAlpha63": {
+      "file": "lightAlpha_63.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #63"
+    },
+    "lightAlpha64": {
+      "file": "lightAlpha_64.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #64"
+    },
+    "lightAlpha65": {
+      "file": "lightAlpha_65.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #65"
+    },
+    "lightAlpha66": {
+      "file": "lightAlpha_66.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #66"
+    },
+    "lightAlpha67": {
+      "file": "lightAlpha_67.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #67"
+    },
+    "lightAlpha68": {
+      "file": "lightAlpha_68.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #68"
+    },
+    "lightAlpha69": {
+      "file": "lightAlpha_69.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #69"
+    },
+    "lightAlpha7": {
+      "file": "lightAlpha_7.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #7"
+    },
+    "lightAlpha70": {
+      "file": "lightAlpha_70.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #70"
+    },
+    "lightAlpha71": {
+      "file": "lightAlpha_71.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #71"
+    },
+    "lightAlpha72": {
+      "file": "lightAlpha_72.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #72"
+    },
+    "lightAlpha73": {
+      "file": "lightAlpha_73.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #73"
+    },
+    "lightAlpha74": {
+      "file": "lightAlpha_74.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #74"
+    },
+    "lightAlpha75": {
+      "file": "lightAlpha_75.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #75"
+    },
+    "lightAlpha76": {
+      "file": "lightAlpha_76.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #76"
+    },
+    "lightAlpha77": {
+      "file": "lightAlpha_77.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #77"
+    },
+    "lightAlpha78": {
+      "file": "lightAlpha_78.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #78"
+    },
+    "lightAlpha79": {
+      "file": "lightAlpha_79.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #79"
+    },
+    "lightAlpha8": {
+      "file": "lightAlpha_8.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #8"
+    },
+    "lightAlpha80": {
+      "file": "lightAlpha_80.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #80"
+    },
+    "lightAlpha81": {
+      "file": "lightAlpha_81.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #81"
+    },
+    "lightAlpha82": {
+      "file": "lightAlpha_82.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #82"
+    },
+    "lightAlpha83": {
+      "file": "lightAlpha_83.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #83"
+    },
+    "lightAlpha84": {
+      "file": "lightAlpha_84.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #84"
+    },
+    "lightAlpha85": {
+      "file": "lightAlpha_85.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #85"
+    },
+    "lightAlpha86": {
+      "file": "lightAlpha_86.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #86"
+    },
+    "lightAlpha87": {
+      "file": "lightAlpha_87.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #87"
+    },
+    "lightAlpha88": {
+      "file": "lightAlpha_88.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #88"
+    },
+    "lightAlpha89": {
+      "file": "lightAlpha_89.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #89"
+    },
+    "lightAlpha9": {
+      "file": "lightAlpha_9.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #9"
+    },
+    "lightAlpha90": {
+      "file": "lightAlpha_90.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #90"
+    },
+    "lightAlpha91": {
+      "file": "lightAlpha_91.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #91"
+    },
+    "lightAlpha92": {
+      "file": "lightAlpha_92.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #92"
+    },
+    "lightAlpha93": {
+      "file": "lightAlpha_93.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #93"
+    },
+    "lightAlpha94": {
+      "file": "lightAlpha_94.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #94"
+    },
+    "lightAlpha95": {
+      "file": "lightAlpha_95.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #95"
+    },
+    "lightAlpha96": {
+      "file": "lightAlpha_96.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #96"
+    },
+    "lightAlpha97": {
+      "file": "lightAlpha_97.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #97"
+    },
+    "lightAlpha98": {
+      "file": "lightAlpha_98.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #98"
+    },
+    "lightAlpha99": {
+      "file": "lightAlpha_99.png",
+      "audit": true,
+      "note": "FREE Textures Of Light 64x64 #99"
+    }
+  }
+}

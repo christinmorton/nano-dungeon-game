@@ -5,6 +5,19 @@ A turn-based roguelike built in vanilla JavaScript on Phaser 3 — roughly 695 s
 abilities are assembled from reusable parts, and levels are authored in an in-engine designer
 that runs the same generation code the game does.
 
+## This is my first game
+
+I want to say that up front rather than let anyone wonder. Nano Dungeon is the first game I've
+built, and it shows in places — a few systems were rewritten once I understood the problem
+properly, some corners are half-finished, and the scope grew as I found out what I could
+actually do.
+
+I've left that visible instead of tidying it away. The parts I'm proudest of came from hitting
+walls rather than from planning: the tag system exists because subclassing enemies stopped
+scaling, and the three-layer ability stack exists because copy-pasting spell logic became
+untenable around the twentieth ability. If you're reading the code, those two decisions are the
+ones worth your time.
+
 > ### ⚠️ No art assets are included
 >
 > The game runs on a mix of purchased and CC0 sprite packs. Several of those licences forbid

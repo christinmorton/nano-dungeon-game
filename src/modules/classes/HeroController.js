@@ -1,17 +1,14 @@
 import dungeon from '../Dungeon.js'
 import tm from '../TurnManager.js'
 import router from '../SceneRouter.js'
-import { playCast } from '../Animations.js'
+import { playCast, spawnFloatingNumber } from '../Animations.js'
 import run from '../Run.js'
 import gameLog from '../GameLog.js'
 import mapState from '../MapState.js'
-import encounters from '../encounters/index.js'
 import { INVENTORY_CAP } from '../items/Container.js'
-import { reactHeroLoot } from '../dialog/heroReactions.js'
 import { footprintTiles } from '../hazards/Hazards.js'
-import { wallLineTiles } from '../hazards/Wall.js'
-import { isBurrowed } from '../tags/underground.js'
 import inputMap from '../InputMap.js'
+import audio from '../Audio.js'
 
 // Input + interact + targeting layer for a player-controlled hero.
 // Bound to the world scene's keyboard/pointer events. Translates raw
@@ -52,6 +49,13 @@ export default class HeroController {
                 router.openPause()
                 return
             }
+            // The Character screen (default C) opens like Pause does — before
+            // the turn-over gate, so it works while enemies are still moving.
+            if (inputMap.actionForEvent(event) === 'character' && !this.targeting && !this.invoking) {
+                router.bind(scene)
+                router.openCharacter()
+                return
+            }
             // While invoking, keep processing keys even when the turn reads
             // "over" (the channel spends the turn each round) so the player can
             // always toggle the channel off or hit Escape.
@@ -62,7 +66,13 @@ export default class HeroController {
         this._onPointerUp = (event) => {
             if (run.transitioning) return
             if (dungeon.paused) return
-            if (!this.hero.over()) {
+            // `|| this.invoking` for the same reason the key handler above has it,
+            // and it was missing here: a channel spends the turn every round, so
+            // hero.over() is true almost continuously while one is running. Clicks
+            // were therefore dropped before processPointer ever saw them, which is
+            // why a steerable beam could be turned with the arrow keys (the key
+            // handler had the guard) but never with the mouse.
+            if (!this.hero.over() || this.invoking) {
                 this.processPointer(event)
             }
         }
@@ -105,7 +115,24 @@ export default class HeroController {
         }
 
         // Locked while channeling — no click-to-move / click-to-attack.
-        if (this.invoking) return
+        //
+        // EXCEPT for a steerable direction channel (a Sustained Beam), where a
+        // click RE-AIMS the beam instead of being swallowed. Targeting is already
+        // cleared by the time the channel starts, so these clicks used to fall
+        // straight into this guard and do nothing, and the beam could only be
+        // turned with the arrow keys. Same 8-way resolution the initial aim uses,
+        // so clicking to start the cast and clicking to turn it behave alike.
+        if (this.invoking) {
+            const { ability } = this.invoking
+            if (ability.steerable && ability.target === 'direction') {
+                const dx = Math.sign(x - hero.x)
+                const dy = Math.sign(y - hero.y)
+                // Clicking your own tile has no direction in it; leave the beam
+                // where it is rather than snapping it somewhere arbitrary.
+                if (dx !== 0 || dy !== 0) this.invoking.aim = { dx, dy }
+            }
+            return
+        }
 
         // Shift+click: continuous travel — pathfind and auto-walk to the tile
         // (or adjacent to a clicked entity), one step per turn, until arrival,
@@ -118,6 +145,20 @@ export default class HeroController {
         this._stopTravel()
 
         const entity = mapState.entityAtTile(x, y)
+
+        // Clicking a foe in reach with no action left used to fall through to
+        // click-to-move, which for an adjacent enemy did nothing at all — the
+        // silence read as the game ignoring the click. Say why instead. Out of
+        // reach still falls through, so a click on a distant enemy walks toward it.
+        if (entity && (entity.type == "enemy" || entity.destructible) && hero.actionPoints <= 0 && entity.team !== "neutral") {
+            const weapon = hero.currentWeapon()
+            const distance = mapState.distanceBetweenEntities(hero, entity)
+            const reach = weapon ? weapon.range() + (!weapon.attackTile ? (hero._reachBonus || 0) : 0) : 1
+            if (distance <= Math.max(reach, 1)) {
+                this._warnNoAction()
+                return
+            }
+        }
 
         if (entity && (entity.type == "enemy" || entity.destructible) && hero.actionPoints > 0) {
             const currentWeapon = hero.currentWeapon()
@@ -202,7 +243,7 @@ export default class HeroController {
             }
             return false   // enemy / blocker — don't bump-attack from a move click
         }
-        if (mapState.isWalkableTile(nx, ny) || this._canTunnelInto(nx, ny)) {
+        if (mapState.isWalkableTile(nx, ny)) {
             hero.movementPoints -= 1
             dungeon.moveEntityTo(hero, nx, ny)
             return true
@@ -255,7 +296,7 @@ export default class HeroController {
                 this._stopTravel()       // something hostile moved into the path
                 return
             }
-        } else if (mapState.isWalkableTile(next.x, next.y) || this._canTunnelInto(next.x, next.y)) {
+        } else if (mapState.isWalkableTile(next.x, next.y)) {
             hero.movementPoints -= 1
             dungeon.moveEntityTo(hero, next.x, next.y)
             t.index += 1
@@ -338,18 +379,11 @@ export default class HeroController {
             hero.toggleItem(digit - 1)
         }
 
-        // Unequip a slot back to carry (M=mainhand, O=offhand, H=head,
-        // B=body, T=feet ["treads"], G=gloves, C=accessory ["clasp"]).
-        // Equipped items leave the carry list so the digit keys no longer
-        // address them; these letter keys are the only in-world way to put a
-        // slotted item back in carry. Accessory moved off A to free that key
-        // for ability slot 3 per the abilities design. Provisional bindings —
-        // keymap rework planned alongside configurable keybinds.
-        const slotKeys = { m: 'mainhand', o: 'offhand', h: 'head', b: 'body', t: 'feet', g: 'gloves', c: 'accessory' }
-        if (event.key && slotKeys[event.key.toLowerCase()]) {
-            hero.unequipSlot(slotKeys[event.key.toLowerCase()])
-            return
-        }
+        // Unequip keys lived here until 2026-10-03 (one letter per slot, read
+        // from InputMap.equipSlotKeys). Removed at the user's call: the Pause
+        // panel and the Character screen both unequip by click, and seven
+        // letters for that was more keymap than the game needed. The table in
+        // InputMap is now empty; the Controls screen prints nothing for it.
 
         // Discrete bindings now resolve through the central keymap (InputMap.js)
         // instead of hardcoded literals, so the planned Controls UI can rebind
@@ -375,12 +409,13 @@ export default class HeroController {
             return
         }
 
-        // Skillbook / spend-points screen (default K). Modal — pauses the world.
-        if (action === 'skillbook') {
-            router.bind(this.scene)
-            router.openUpgrade()
-            return
-        }
+        // The skillbook key (K) used to open the spend-points screen here. That
+        // screen is cut in v5 (scope doc §6), and SceneRouter.openUpgrade still
+        // pauses World and UI *before* launching "upgrade-scene" — which Game.js
+        // does not register. Pressing K therefore froze the game with nothing on
+        // screen and no way back. Same family as the four Pause buttons that were
+        // removed for routing to unregistered scenes; a dead key that soft-locks
+        // is worse than one that does nothing.
 
         // Beckon (default V) — call companions to your side / manifest your reserve.
         // Dismiss (default D) — send active companions to the reserve bench. Free
@@ -399,14 +434,6 @@ export default class HeroController {
         const slot = inputMap.abilitySlotForEvent(event)
         if (slot >= 0) {
             this.onAbilityKey(slot)
-            return
-        }
-
-        // Retreat (default R) — break off the current fight. The universal flee
-        // verb for the hero: combat-only, costs the action whether it lands or
-        // not. See documents/v3_objective_driven_encounters.md.
-        if (action === 'retreat') {
-            this.tryRetreat()
             return
         }
 
@@ -437,20 +464,12 @@ export default class HeroController {
             return
         }
 
-        if (mapState.isWalkableTile(newX, newY) || this._canTunnelInto(newX, newY)) {
+        if (mapState.isWalkableTile(newX, newY)) {
             hero.movementPoints -= 1
             dungeon.moveEntityTo(hero, newX, newY)
         } else {
             this._resolveBumpAt(newX, newY)
         }
-    }
-
-    // While burrowed (Dig), the hero tunnels through shallow dungeon walls — but
-    // never a sturdy/story wall, a door, or out of bounds. surface() refuses to
-    // pop while standing in a wall, so a mid-tunnel hero can't be stranded.
-    _canTunnelInto(x, y) {
-        if (!isBurrowed(this.hero)) return false
-        return mapState.isBreachableWallAt(x, y) && !mapState.isDoorAt(x, y)
     }
 
     // The hero bumped into a non-walkable tile. Dispatch based on what's
@@ -483,6 +502,14 @@ export default class HeroController {
             return
         }
 
+        // Walked into a foe with no action left this round. The old behaviour
+        // was nothing — no log, no movement — and that silence is what made the
+        // round feel stuck. See _warnNoAction.
+        if (entity && (entity.type == "enemy" || entity.destructible)) {
+            this._warnNoAction()
+            return
+        }
+
         if (entity && entity.type == "item") {
             if (entity.bypassInventory) {
                 // Collect-on-touch trigger (win / goal item): never stored in the
@@ -503,7 +530,10 @@ export default class HeroController {
                 // no slot consumed, no full check, fully consumed on pickup.
                 // Cursed tally items (CursedGem) skip this branch and go to
                 // inventory; they only convert to tally on cleanse.
-                const value = entity.value?.() ?? 1
+                // Fortune (§10.17, the Midas Band): coins multiply by 1 + the
+                // `fortune` stat gear contributes. Keys and other tallies do not.
+                const fortune = entity.tallyKey === 'coins' ? (hero.stat?.('fortune') ?? 0) : 0
+                const value = Math.round((entity.value?.() ?? 1) * (1 + fortune))
                 hero.tallies[entity.tallyKey] = (hero.tallies[entity.tallyKey] || 0) + value
                 tm.removeEntity(entity)
                 dungeon.itemPicked(entity)
@@ -513,14 +543,16 @@ export default class HeroController {
                 hero.movementPoints -= 1
                 dungeon.moveEntityTo(hero, newX, newY)
                 entity.onPickup?.()
-            } else if (hero.items.length >= 10) {
+            } else if (!hero.inventory.canAccept(entity)) {
                 gameLog.log(`${hero.name}'s inventory is full.`)
             } else {
-                hero.items.push(entity)
+                // Through inventory.add, NOT items.push — add() is what merges a
+                // stackable item into a stack already carried. Pushing straight
+                // onto the array skipped that and left duplicate potion rows.
+                hero.inventory.add(entity)
                 dungeon.itemPicked(entity)
                 if (run.stats) run.stats.itemsFound += 1
                 gameLog.log(`${hero.name} picked ${entity.name}: ${entity.description}`)
-                reactHeroLoot(hero, entity)
                 hero.movementPoints -= 1
                 dungeon.moveEntityTo(hero, newX, newY)
                 entity.onPickup?.()
@@ -530,11 +562,9 @@ export default class HeroController {
 
         if (entity && entity.type == "stairs") {
             hero.movementPoints -= 1
-            if (entity.direction == "down") {
-                run.goDown()
-            } else {
-                run.goUp()
-            }
+            // v5 is one-way descent (scope doc section 6): no up-stairs are ever
+            // placed, so this is always a descent. Guarded rather than assumed.
+            if (entity.direction == "down") run.goDown()
             return
         }
 
@@ -542,7 +572,7 @@ export default class HeroController {
             // Hero case (design §15.9). An ACTIVE portal teleports on step-in
             // (the stairs model — the hero never stands on the portal tile). A
             // HIDDEN portal reads as a wall: bumping it does nothing; the player
-            // reveals it with [E] via onInteract, then a later bump uses it.
+            // reveals it with the interact key via onInteract, then a later bump uses it.
             if (entity.state === "active") {
                 hero.movementPoints -= 1
                 if (entity.heroOnly) {
@@ -580,6 +610,20 @@ export default class HeroController {
                 hero.movementPoints -= 1
             }
         }
+    }
+
+    // The player tried to attack with the round's action already spent. Once per
+    // round, not per attempt: a player hammering the key against an adjacent
+    // enemy would otherwise fill the log with the same line. The HUD banner is
+    // already saying it; this is the moment-of-click echo.
+    _warnNoAction() {
+        if (this._noActionRound === tm.tickCount) return
+        this._noActionRound = tm.tickCount
+        const hero = this.hero
+        const wait = inputMap.keyLabel('passTurn')
+        gameLog.log(`No action left this round — move (${hero.movementPoints} left) or press ${wait} to wait.`)
+        spawnFloatingNumber(hero, 'No action left', '#fbbf24')
+        audio.play('ui-error')
     }
 
     bestInteractTargetAtTile(x, y) {
@@ -697,19 +741,47 @@ export default class HeroController {
             ability.onChannelStart?.(target)
             const label = victim ? `${ability.invokeVerb} ${victim.name}` : ability.invokeVerb
             gameLog.log(`${hero.name} begins ${label}.`)
+            // Steering is not discoverable otherwise — nothing on screen says the
+            // beam can be turned once it is burning.
+            if (ability.steerable && ability.target === 'direction') {
+                gameLog.log(`Click a tile (or press an arrow key) to turn the beam.`)
+            }
             this.hero.hud?.refresh()
         })
     }
 
     stopInvoking(message) {
         if (!this.invoking) return
+        const { ability } = this.invoking
         this.invoking = null
+        // Every channel teardown routes through here — Escape, toggling off, hard
+        // CC, target loss, and normal completion are eight separate call sites and
+        // only the CC one calls onChannelInterrupt. An ability holding a PERSISTENT
+        // visual (a held beam has no self-destruct) must be told on all of them, or
+        // a cast ended any other way leaves its bar burning on screen forever.
+        ability?.onChannelEnd?.()
         if (message) gameLog.log(message)
         this.hero.hud?.refresh()
     }
 
-    // Called every frame the hero takes a turn (BaseHero.turn). Fires the channel
-    // once per round (AP gate), spends the whole turn, and snaps on break.
+    // Called from BaseHero.turn — the TURN-ECONOMY half of a channel: it spends
+    // the hero's action for the round. The ANIMATION half is tickChannelFrame(),
+    // pumped every frame by World.update.
+    //
+    // WHY THESE ARE SPLIT (bug found 2026-09-20, reported as "the beam blinks
+    // with the turn count"). This method used to do both. It spends 1 AP and
+    // zeroes MP on every tick — and BaseHero.over() returns true the moment
+    // movementPoints hits 0, at which point TurnManager stops calling turn() on
+    // the hero at all. So a channel got exactly ONE tick per ROUND: the phase
+    // machine in chargedCast.js was asked for a frame once a round, painted a
+    // single telegraph, and went quiet until the round cycled.
+    //
+    // chargedCast.js paces its phases by WALL CLOCK precisely so a wind-up is
+    // visible regardless of turn speed — its own header says "an idle hero's
+    // channel ticks every frame". That assumption was false here, so a 800ms
+    // wind-up animated in round-sized jumps and read as a flicker rather than a
+    // charge. Ticking the phase machine from the frame loop is what makes the
+    // wall-clock pacing mean anything.
     tickInvocation() {
         const inv = this.invoking
         if (!inv) return
@@ -741,14 +813,46 @@ export default class HeroController {
                 }
             }
         }
-        // Fire once per round (AP gate); spend the whole turn — no other action.
-        // A truthy tick() return means the (charged) sequence finished — release.
+        // Spend the round on the channel — no other action. The hero is locked
+        // and stationary for as long as it runs, which IS the cost of a charged
+        // cast; only the phase machine moved to the frame loop.
+        //
+        // An ENTITY-locked channel (Siphon) still resolves its payload here, once
+        // per round: its effect is a per-round drain, not a timed animation, and
+        // moving it to the frame loop would make it fire sixty times a second.
+        // Only TIMED casts (chargedCast-driven, marked by a tick that reads the
+        // wall clock) want frame pacing — those are handled in tickChannelFrame.
         if (hero.actionPoints > 0) {
-            const done = ability.tick(hero, target ?? aim)
+            if (!ability.framePaced) {
+                const done = ability.tick(hero, target ?? aim)
+                if (done) this.stopInvoking()
+            }
             hero.actionPoints -= (ability.cost.ap ?? 1)
             hero.movementPoints = 0
             this.hero.hud?.refresh()
-            if (done) this.stopInvoking()
+        }
+    }
+
+    // The ANIMATION half of a channel, pumped every frame by World.update so a
+    // wall-clock-paced cast (chargedCast.js) actually animates. Runs independently
+    // of the turn economy: it spends nothing and gates on nothing, because the
+    // round cost was already taken in tickInvocation above.
+    //
+    // Only abilities that opt in with `framePaced = true` are ticked here, so a
+    // per-round channel like Siphon keeps its once-a-round cadence and does not
+    // suddenly drain sixty times a second.
+    tickChannelFrame() {
+        const inv = this.invoking
+        if (!inv) return
+        if (run.transitioning || dungeon.paused) return
+        const { ability, target, aim } = inv
+        if (!ability.framePaced) return
+        // Interrupts, target-loss and line-of-sight are all still judged once per
+        // round in tickInvocation — this half only advances the phase machine.
+        const done = ability.tick(this.hero, target ?? aim)
+        if (done) {
+            this.stopInvoking()
+            this.hero.hud?.refresh()
         }
     }
 
@@ -758,27 +862,6 @@ export default class HeroController {
         // hero a turn the same way it costs an enemy.
         const DISABLING = ['Stun', 'Freeze', 'Sleep', 'Petrify', 'Daze']
         return (hero._tags || []).some(t => DISABLING.includes(t))
-    }
-
-    // Deliberate Retreat. Combat-gated (only when the hero is inside an active
-    // arena) and costs 1 AP for any real attempt — success or failure both
-    // burn the action, so fleeing is a committed choice, not a free peek. The
-    // SPD roll + Emboldened consequence live in encounters.playerRetreat.
-    tryRetreat() {
-        const hero = this.hero
-        if (hero.actionPoints < 1) return
-        const result = encounters.playerRetreat(hero)
-        if (result === 'none') {
-            gameLog.log('Nothing to retreat from.')
-            return
-        }
-        hero.actionPoints -= 1
-        if (result === 'fled') {
-            gameLog.log(`${hero.name} breaks off and retreats!`)
-        } else {
-            gameLog.log(`${hero.name} tries to flee but can't break away!`)
-        }
-        this.hero.hud?.refresh()
     }
 
     // Ability dispatch. Per documents/v3_abilities_runtime.md call chain:
@@ -805,6 +888,10 @@ export default class HeroController {
             if (!target) return
             const result = ability.activate(this.hero, target)
             if (result === false) return
+            // After the false-check, so an ability that self-validated and
+            // failed (Charge with nothing to charge at) stays silent rather
+            // than telling the player it fired.
+            audio.playAbility(ability)
             gameLog.log(`${this.hero.name} uses ${ability.name}.`)
             this.hero.actionPoints -= (ability.cost.ap ?? 0)
             this.hero.movementPoints -= (ability.cost.mp ?? 0)
@@ -883,13 +970,8 @@ export default class HeroController {
         // flasks/traps (ThrowableItem uses the same mode).
         if (mode === 'aoeTile') {
             const radius = ability.radius ?? 1
-            const wallLength = ability.wallLength ?? 0
-            this.targeting = { type: 'aoeTile', callback, range: ability.range, radius, wallLength }
-            if (wallLength > 0) {
-                gameLog.log(`${ability.name}: click to place the wall (range ${ability.range}).`)
-            } else {
-                gameLog.log(`${ability.name}: click a target area (range ${ability.range}, blast ${radius}).`)
-            }
+            this.targeting = { type: 'aoeTile', callback, range: ability.range, radius }
+            gameLog.log(`${ability.name}: click a target area (range ${ability.range}, blast ${radius}).`)
             return
         }
 
@@ -944,13 +1026,7 @@ export default class HeroController {
         g.clear()
         g.fillStyle(color, 0.28)
 
-        if (t.type === 'aoeTile' && t.wallLength > 0) {
-            // Wall: preview the actual line, oriented perpendicular to the cast —
-            // exactly the tiles wallLineTiles() will lay the segments on.
-            for (const tile of wallLineTiles(hero, { x, y }, t.wallLength)) {
-                g.fillRect(mapState.map.tileToWorldX(tile.x), mapState.map.tileToWorldY(tile.y), ts, ts)
-            }
-        } else if (t.type === 'aoeTile') {
+        if (t.type === 'aoeTile') {
             const radius = t.radius ?? 1
             for (let dy = -radius; dy <= radius; dy++) {
                 for (let dx = -radius; dx <= radius; dx++) {

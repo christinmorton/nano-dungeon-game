@@ -6,24 +6,13 @@ import Stairs from "../items/Stairs.js"
 import quest from "../Quest.js"
 import run from "../Run.js"
 import router from "../SceneRouter.js"
-import { rollDraft } from "../abilities/draft.js"
-import floorMemory from "../FloorMemory.js"
-import account from "../Account.js"
+import prefs from "../Prefs.js"
 import fogOfWar from "../FogOfWar.js"
-import encounters from "../encounters/index.js"
-import ArenaView from "../encounters/ArenaView.js"
 import speech from "../SpeechBubble.js"
+import audio from "../Audio.js"
 import { preloadSheets, GAME_SHEETS } from "../assetLoader.js"
 import { RECIPE_SHEETS } from "../levels/recipes.js"
 import { resolveAmbient } from "../levels/lighting.js"
-import { makeItem } from "../items/itemProfiles.js"
-
-// Display name for each Battle.kind, shown on the combat intro banner. Only
-// 'battle' exists for now; ambush / trapped / siege etc. get their label here
-// as those conflict kinds are added. Unknown kinds fall back to "Battle".
-const CONFLICT_LABELS = {
-    battle: 'Battle'
-}
 
 export default class World extends Phaser.Scene {
     constructor() {
@@ -41,6 +30,20 @@ export default class World extends Phaser.Scene {
             frameWidth: 64,
             frameHeight: 64
         })
+        // Ability icons — one 16px frame per ability, in the order declared by
+        // scripts/build_skill_icons.mjs. Each Ability's `icon` field is its frame
+        // index into THIS sheet, not into 'tiles'. Loaded here rather than through
+        // assetSheets because it is a plain uniform grid with no tileReference
+        // catalogue behind it — nothing needs to look these up by name.
+        //
+        // The file is generated and gitignored like all other art: a clone runs
+        // `node scripts/build_skill_icons.mjs` to rebuild it from the pack. If it
+        // is absent the slots render blank, the same way a missing tileset paints
+        // nothing — no crash, just no icons.
+        this.load.spritesheet('skills', 'art/skills.png', {
+            frameWidth: 16,
+            frameHeight: 16
+        })
         // New PNG art packs (see src/data/assetSheets.js). Allowlisted so the
         // game only loads what it renders. Heroes first (Slice 1); enemies /
         // npcs / item drops get added here as each is wired to its art.
@@ -48,17 +51,10 @@ export default class World extends Phaser.Scene {
         // Themed-floor tilesets used by dungeon recipes (levels/recipes.js) — the
         // floor layer paints from these, so they must be loaded before bind().
         preloadSheets(this, RECIPE_SHEETS)
-        // An authored floor (?authored) can theme itself from any catalogued
-        // tileset picked in the designer's Atlas — load that sheet too so bind()
-        // can paint it. No-op (null) outside authored mode. Idempotent.
-        // A theme may name a different pack per role (ground / wall / env decals),
-        // so load every sheet it references, not just the ground one.
-        preloadSheets(this, mapState.getAuthoredThemeSheets())
-        // The authored goal item (§15.8) may render an Atlas sprite from any
-        // catalogued sheet — load it too so the GoalItem paints instead of the
-        // fallback tile. No-op (null) unless the goal is an Atlas-sourced item.
-        const goalSheet = mapState.getAuthoredGoalSheet()
-        if (goalSheet) preloadSheets(this, [goalSheet])
+        // Every sound in src/data/audioManifest.json. Phaser's audio cache is
+        // game-wide, so loading here also covers the UI and end screens — none
+        // of which ever run before World.
+        audio.preload(this)
     }
 
     create () {
@@ -72,15 +68,9 @@ export default class World extends Phaser.Scene {
         if (stairs.down) {
             tm.addEntity(new Stairs(stairs.down.x, stairs.down.y, "down"))
         }
-        if (stairs.up) {
-            tm.addEntity(new Stairs(stairs.up.x, stairs.up.y, "up"))
-        }
 
         dungeon.placePlayer()
 
-        // Drop any battles from a prior floor — their rosters point at entities
-        // that tm.cleanup just tore down. A fresh floor starts out of combat.
-        encounters.reset()
 
         // A fresh floor always starts unpaused. The combat intro beat owns
         // dungeon.paused and only clears it from _hideIntro (UI scene). If a
@@ -91,12 +81,6 @@ export default class World extends Phaser.Scene {
         // regardless of how the intro beat was interrupted.
         dungeon.paused = false
 
-        // Arena overlay (the in-place dim + boundary ring). Fresh per floor —
-        // scene.restart destroyed the prior instance's GameObjects with the
-        // scene, so a new view starts with no stale references.
-        this.arena = new ArenaView(this)
-        this.arena.reset()
-        this._wasInCombat = false
 
         // Per-room enemy/item spawn, elite roll, BSP-specific door + key
         // placement — all owned by the level type now. Reads dungeon.player
@@ -106,79 +90,62 @@ export default class World extends Phaser.Scene {
         // hydrate path so addAmulet doesn't double-spawn the Amulet on
         // floor-N revisits — the snapshot already carries it if it was
         // un-picked-up at exit.
-        const floorIndex = mapState.levelManager.currentLevel
-        let restoredFog = null
-        if (floorMemory.has(floorIndex)) {
-            const snap = floorMemory.load(floorIndex)
-            floorMemory.hydrate(snap)
-            // Carry the explored fog grid forward so a revisited floor keeps
-            // what the player had already uncovered (bind restores it below).
-            restoredFog = snap.fog || null
-        } else {
-            mapState.levelManager.getCurrent().populate(tm)
-            // Quest hooks (Amulet placement etc.) assume a multi-room BSP
-            // layout. Skip them in the single-room arena so addAmulet
-            // doesn't try to find a non-starting room and crash on the
-            // empty candidate list.
-            if (typeof window === "undefined" || !window.ARENA_MODE) {
-                quest.forEach(f => f())
+        // v5 populates every floor fresh. Descent is one-way and there is no
+        // floor persistence (scope doc section 6), so there is nothing to hydrate
+        // and no explored fog to carry forward.
+        const restoredFog = null
+        mapState.levelManager.getCurrent().populate(tm)
+        quest.forEach(f => f())
+
+        // Day/night debug, kept from v3. The cycle runs on the round counter, so
+        // seeing dusk otherwise means walking ~64 rounds to it.
+        //   time()           -> where the clock is now
+        //   setTime('night') -> pin an hour; setTime(null) to release
+        if (typeof window !== 'undefined') {
+            window.time = () => {
+                const a = resolveAmbient(mapState.theme, tm.tickCount || 0)
+                return {
+                    round: tm.tickCount || 0,
+                    phase: a.label,
+                    cycles: a.cycles,
+                    sightRadius: a.radius,
+                    enemySight: a.enemySight,
+                    pinned: fogOfWar.debugTimeOfDay || null,
+                }
+            }
+            window.setTime = (key) => {
+                fogOfWar.debugTimeOfDay = key || null
+                if (dungeon.player) fogOfWar.update(dungeon.player)
+                return window.time()
             }
 
-            // DEBUG (affinity testing): drop a couple of affinity essences (§14
-            // affinity) next to the player on the first floor — walk over one and
-            // press its inventory digit key to absorb it (attune the affinity).
-            // Fresh-populate only (skipped on revisit). Remove once these spawn
-            // naturally via loot / rare drops.
-            //
-            // Skipped in arena/training (window.ARENA_MODE, set by arenaMain.js for
-            // both arena.html and ?training) so the ability bench spawns clean.
-            if (floorIndex === 0 && (typeof window === "undefined" || !window.ARENA_MODE)) {
-                const p = dungeon.player
-                const debugDrops = ['essenceFire', 'essenceArcane', 'essencePureArcane']
-                const offsets = [[1, 0], [-1, 0], [0, 1]]
-                let li = 0
-                for (const [dx, dy] of offsets) {
-                    if (li >= debugDrops.length) break
-                    const tx = p.x + dx
-                    const ty = p.y + dy
-                    if (mapState.isWalkableTile(tx, ty) && !mapState.entityAtTile(tx, ty)) {
-                        tm.addEntity(makeItem(debugDrops[li], tx, ty))
-                        li++
+            // Volume, until there is a Settings screen to hold it. There is no
+            // key binding for mute because every conventional letter is taken
+            // (m/b/c/g/o/h/t are unequip-slot keys), and the real control
+            // belongs on the Pause menu.
+            //   volume()            -> current levels
+            //   volume({music: 0})  -> set any of master/music/sfx/muted
+            //   mute()              -> toggle
+            window.volume = (patch) => {
+                if (patch) {
+                    for (const [k, v] of Object.entries(patch)) {
+                        const key = k === 'master' ? 'masterVolume'
+                            : k === 'music' ? 'musicVolume'
+                                : k === 'sfx' ? 'sfxVolume' : k
+                        prefs.setPreference(key, v)
                     }
+                    audio.refreshVolume()
                 }
-                // §18 debug: grant any affinity from the console — the advanced ones
-                // (light/void/holy/seraphic) have no in-game path yet. Basic goes to the
-                // swappable slot, advanced to the bound slot (both attach their passive).
-                // e.g. grantAffinity('light') / grantAffinity('void').
-                if (typeof window !== 'undefined') {
-                    window.grantAffinity = (k) => {
-                        const r = dungeon.player?.grantAffinity?.(k)
-                        // Mirror the essence path: a basic grant also rolls a pool passive.
-                        if (r?.ok && dungeon.player?.affinityBasic === k) dungeon.player.rollBasicPassive?.()
-                        return r
-                    }
-                    // Day/night debug. The cycle runs on the round counter, so
-                    // seeing dusk otherwise means walking ~64 rounds to it.
-                    //   time()          -> where the clock is now
-                    //   setTime('night')-> pin an hour; setTime(null) to release
-                    window.time = () => {
-                        const a = resolveAmbient(mapState.theme, tm.tickCount || 0)
-                        return {
-                            round: tm.tickCount || 0,
-                            phase: a.label,
-                            cycles: a.cycles,
-                            sightRadius: a.radius,
-                            enemySight: a.enemySight,
-                            pinned: fogOfWar.debugTimeOfDay || null,
-                        }
-                    }
-                    window.setTime = (key) => {
-                        fogOfWar.debugTimeOfDay = key || null
-                        if (dungeon.player) fogOfWar.update(dungeon.player)
-                        return window.time()
-                    }
+                const p = prefs.getPreferences()
+                return {
+                    master: p.masterVolume, music: p.musicVolume,
+                    sfx: p.sfxVolume, muted: p.muted
                 }
             }
+            window.mute = () => window.volume({ muted: !prefs.getPreferences().muted })
+            // The Mana Beam variant switcher (window.beam / beamState) lived here
+            // from 2026-09-20 to 2026-10-04. The sustained beam won (scope doc
+            // §10.16); the VARIANTS table it switched is gone from ManaBeam.js.
         }
 
         // Fire onEnter for the spawn room. populate() runs first so any
@@ -207,7 +174,7 @@ export default class World extends Phaser.Scene {
         // boundary — otherwise tight bounds clamp the camera and pin the player to
         // the very edge of the window, with the outer wall jammed at the screen
         // border (worst on authored floors whose rooms sit near the void edge).
-        const zoom = account.getPreferences().cameraZoom
+        const zoom = prefs.getPreferences().cameraZoom
         const padX = camera.width / zoom / 2
         const padY = camera.height / zoom / 2
         camera.setBounds(-padX, -padY, fullW + padX * 2, fullH + padY * 2)
@@ -215,7 +182,7 @@ export default class World extends Phaser.Scene {
         // Zoom from the player's preference (Settings > Display > Camera zoom;
         // default 3). Whole numbers only — pixelArt makes fractional zoom shimmer.
         // Higher = bigger tiles but less of the map visible.
-        camera.setZoom(account.getPreferences().cameraZoom)
+        camera.setZoom(prefs.getPreferences().cameraZoom)
 
         // Fog of war — bind to the new floor's level grid (restoring the
         // explored memory from the snapshot on a revisit), then light the
@@ -241,6 +208,13 @@ export default class World extends Phaser.Scene {
         // can speak on demand via speech.say(entity, text). See SpeechBubble.js.
         speech.bind(this)
 
+        // Sound. Bound after the floor is built so the first thing it does is
+        // start that floor's track. The last floor is the stronghold and gets
+        // its own music — same test Quest.js uses to place the goal.
+        audio.bind(this)
+        const lm = mapState.levelManager
+        audio.playFloorMusic(lm.currentLevel, lm.currentLevel === lm.levels.length - 1)
+
         // Trigger UI scene construction
         this.events.emit('createUI')
 
@@ -248,20 +222,6 @@ export default class World extends Phaser.Scene {
         // replace once real dialog content is authored per actor.
         speech.say(dungeon.player, "Another floor... let's keep moving.")
 
-        // Milestone ability draft (§14 B5/B6): if descending to a new depth flagged
-        // one, roll the offer now (World is outside BaseEnemy's import chain, so
-        // pulling the ability registry here is safe) and open the pick-a-reward
-        // screen once the floor is set up — deferred a tick so it opens cleanly.
-        if (run.draftPending && (typeof window === "undefined" || !window.ARENA_MODE)) {
-            run.draftPending = false
-            run.pendingDraft = rollDraft(dungeon.player)
-            if (run.pendingDraft.length) {
-                this.time.delayedCall(50, () => {
-                    router.bind(this)
-                    router.openDraft()
-                })
-            }
-        }
     }
 
     // Dev tool: tint each room by its assigned kind and stamp the kind name
@@ -278,6 +238,7 @@ export default class World extends Phaser.Scene {
             starting: 0x66ff66,
             ending: 0xff6666,
             treasure: 0xffcc33,
+            camp: 0x33ffcc,
             combat: 0x666666,
             shrine: 0x66ccff,
             duelist: 0xff66ff,
@@ -307,28 +268,6 @@ export default class World extends Phaser.Scene {
         }
     }
 
-    // Summarize a freshly-formed battle for the intro banner: a threat label
-    // scaled by roster size and the distinct enemy names with counts
-    // (e.g. "2x Skeleton", "Orc Captain"). Kept on the World since it owns the
-    // battle reference; the UI scene just renders the strings.
-    _battleIntro(battle) {
-        const counts = new Map()
-        for (const enemy of battle.roster) {
-            const name = enemy.name || 'Enemy'
-            counts.set(name, (counts.get(name) || 0) + 1)
-        }
-        const roster = [...counts.entries()]
-            .map(([name, n]) => (n > 1 ? `${n}x ${name}` : name))
-
-        // Threat label is the conflict KIND's display name, not a roster-size
-        // bucket — a single foe is no longer auto-branded an "Ambush". Only
-        // 'battle' exists today (→ "Battle"); ambush / trapped / siege etc.
-        // slot in here as kinds are authored. See documents/v3_objective_driven_encounters.md.
-        const threat = CONFLICT_LABELS[battle.kind] || 'Battle'
-
-        return { threat, roster }
-    }
-
     update (time, delta) {
         if (dungeon.paused) return
 
@@ -343,45 +282,18 @@ export default class World extends Phaser.Scene {
             if (run.stats) run.stats.turns += 1
         }
 
-        // The encounter/Battle "arena" system — battle formation + the dim
-        // overlay/boundary ring + the combat-start banner + turn throttle. A level
-        // can opt out (TrainingLevel sets disableEncounters) so the ability bench
-        // isn't interrupted by combat staging.
-        const encountersOff = mapState.levelManager?.getCurrent?.()?.disableEncounters
-        if (!encountersOff) {
-            // Form / update / resolve battles before the turn loop so each enemy's
-            // isEngaged() reflects current membership when it acts this tick.
-            const started = encounters.update(dungeon.player)
-
-            // Recompute pocket-dimension phasing every tick (independent of whether
-            // a battle formed): marks enemies passing through an active arena they
-            // aren't part of so they read as blind + non-blocking when they act.
-            encounters.syncPhasing()
-
-            // Keep the arena overlay (dim + boundary ring) in sync with the active
-            // battle list — draws on form, tears down on resolve.
-            this.arena.sync(encounters.battles)
-
-            // Combat-state transitions: combat-start fires the intro beat (UI
-            // banner + a brief blocking pause); combat-end is a hook for future
-            // music / HUD. Emitted on this scene's emitter — the UI scene listens.
-            const inCombat = encounters.inCombat
-            if (started) this.events.emit('combat-start', this._battleIntro(started))
-            if (this._wasInCombat && !inCombat) this.events.emit('combat-end', {
-                outcome: encounters.lastOutcome,
-                anchorX: encounters.lastAnchorX,
-                anchorY: encounters.lastAnchorY
-            })
-            this._wasInCombat = inCombat
-
-            // The intro beat pauses the game (dungeon.paused) the same frame it
-            // fires, so skip the turn loop now — it resumes on dismiss.
-            if (started) return
-        }
 
         tm.turn()
 
-        const showPerceptionZones = account.getPreferences().showPerceptionZones
+        // Advance a frame-paced channel (a charged cast) every frame. It cannot
+        // ride tm.turn(): tickInvocation zeroes the hero's movement points, which
+        // makes hero.over() true, which stops TurnManager calling turn() on the
+        // hero for the rest of the round — so a wall-clock-paced wind-up got one
+        // animation frame per round and flickered. The turn COST is still taken
+        // once per round in tickInvocation; this only drives the animation.
+        dungeon.player?.controller?.tickChannelFrame?.()
+
+        const showPerceptionZones = prefs.getPreferences().showPerceptionZones
         for (const e of tm.entities) {
             e.syncWorldHpBar?.()
             // Perception circles need both the user preference and a

@@ -83,7 +83,13 @@ export default class ZoneEffect {
     // standing in the cloud, then count down and expire.
     refresh() {
         for (const t of this.tiles) {
-            const entity = mapState.entityAtTile(t.x, t.y)
+            // combatantAtTile, not entityAtTile: the latter returns the FIRST
+            // entity on a tile and stops, so an enemy standing on a dropped item
+            // or a loot bag was masked by it and the zone skipped that tile
+            // entirely. affectsEntity would then reject the item and the actor
+            // underneath took nothing. Same fault fixed in the ability layer on
+            // 2026-09-20; zones have it for the same reason.
+            const entity = mapState.combatantAtTile(t.x, t.y)
             if (!affectsEntity(entity, this.affects)) continue
             if (this.damage != null) {
                 const dmg = typeof this.damage === "number"

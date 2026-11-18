@@ -1,0 +1,38 @@
+{
+    "_meta": {
+        "pack": "game_dev_sprites — original dungeon set",
+        "key": "tileReference.verdant-stairs",
+        "mode": "spritesheet",
+        "sheet": "game_dev_sprites/sprites/verdant/dungeon_stairs.png",
+        "tileSize": 32,
+        "spacing": 0,
+        "margin": 0,
+        "columns": 2,
+        "rows": 1,
+        "total": 2,
+        "view": "top-down dungeon map tile",
+        "license": "Original art made for this game (game_dev_sprites). Owned outright — free to ship. No third-party pack was used as input.",
+        "kind": "stairs",
+        "biome": "verdant",
+        "layer": "overlay",
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "elevation": 90,
+        "placement": "Draw over the floor cell, after the floor layer. Cell 0 descends, cell 1 ascends. Both flights run north -- away from the viewer, up the frame -- so a flight facing another way needs the cell rotated by the consumer, which costs nothing at 32x32.",
+        "note": "GRID VERIFIED by scripts/build_sprite_reference.mjs against the PNG header (64x32 / 32 = 2x1, 2 frames, no remainder). Generated from verdant/dungeon_stairs.json — do not hand-edit; re-run the script instead. Frame names are the exporter's own, kept verbatim so a re-export cannot drift from the reference."
+    },
+    "stairss": {
+        "stairs_down": {
+            "frame": 0,
+            "col": 0,
+            "row": 0
+        },
+        "stairs_up": {
+            "frame": 1,
+            "col": 1,
+            "row": 0
+        }
+    }
+}

@@ -2,7 +2,7 @@ import gameLog from "../GameLog.js"
 import { defineStatus } from "./Status.js"
 
 // Invisible — perception block + "strike from stealth" damage bonus on
-// the breaking attack. Applied by Elf Stealth.
+// the breaking attack. Applied by Ranger Stealth.
 //
 // While active:
 //   - Perception.canSee returns false against this entity (enemy notice

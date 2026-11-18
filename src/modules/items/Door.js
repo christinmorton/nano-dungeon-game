@@ -1,7 +1,7 @@
 import GenericItem from "./GenericItem.js"
 import tm from "../TurnManager.js"
 import gameLog from "../GameLog.js"
-import { doorCreaks } from "../dialog/environmentBarks.js"
+import inputMap from "../InputMap.js"
 
 const TILE_CLOSED = 497
 const TILE_OPEN = 447
@@ -83,7 +83,7 @@ export default class Door extends GenericItem {
     }
 
     interactPrompt(actor) {
-        if (this.state === "open") return "[E] Close door"
+        if (this.state === "open") return `[${inputMap.keyLabel('interact')}] Close door`
         return null
     }
 
@@ -109,7 +109,6 @@ export default class Door extends GenericItem {
 
         this.close()
         gameLog.log(`${actor.name} closes the door.`)
-        doorCreaks(this)
         if (typeof actor.movementPoints === "number") actor.movementPoints -= 1
     }
 

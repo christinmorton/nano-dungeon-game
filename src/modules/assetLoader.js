@@ -12,9 +12,30 @@ const BY_KEY = Object.fromEntries(SHEETS.map(s => [s.key, s]))
 // this set so floor sprites and inventory/shop icons resolve. Excludes
 // browse-only packs (7souls, lighting, fantasy-dungeon, 32rogues-tiles) that
 // aren't wired to entities/items yet.
+//
+// EVERY KEY HERE MUST BE REGISTERED IN data/assetSheets.js. This list was carried
+// over from v3 unpruned, so it named six sheets v5 never registered
+// ('32rogues-rogues', 'npcs', 'minerals', 'traps', 'legendaries', 'cosmic').
+// preloadSheets warns and skips an unknown key, which is loud in the console but
+// SILENT in the game: resolveArt then returns null for anything declaring that
+// sheet, and callers that guard on `textures.exists` simply draw nothing. That is
+// how traps ended up firing invisibly for the whole port. 'traps' is now
+// registered and stays; the rest are dropped until something actually needs them.
+// Adding a key back here without adding it there re-creates the same silent bug.
 export const GAME_SHEETS = [
-    'heroes', '32rogues-rogues', 'monsters', 'npcs', 'props',
-    '32rogues-items', 'minerals', 'traps', 'legendaries', 'cosmic',
+    'heroes', 'monsters', 'props', '32rogues-items',
+    // Dungeon-trap floor decals (hazards/trapDefs.js). Original PixelLab art.
+    'traps',
+    // The Camp room's shopkeeper (items/Shopkeeper.js). The reference is cut to
+    // that one entry, because an images-mode sheet preloads every entry it lists.
+    'npcs',
+    // Chest tiers + the loot sack (items/Container.js), and the 14 legendaries:
+    // inventory icons for the pack and HUD, floor sprites for a dropped one.
+    'containers', 'legendaries', 'legendaries-floor',
+    // Void-undead reskins for the corrupted stronghold themes (§10.13). Cut to
+    // the 7 entries those themes name — every one is a void version of an enemy
+    // the roster already has, so a corrupted floor adds no enemy classes.
+    'cosmic',
     // Per-realm mechanic-prop art selected by ROLE (levels/themeRoles.js). Loaded
     // unconditionally rather than per-theme: a run crosses several realms, and
     // the whole pack is a handful of 32px sprites.
@@ -94,6 +115,21 @@ export function addEntityIcon(scene, x, y, entity, opts = {}) {
         if (entity?.tint) { sprite.tint = entity.tint; sprite.tintFill = tintFill }
     }
     return sprite.setOrigin(originX, originY)
+}
+
+// Strict name -> frame lookup against a sheet's named entries. Returns null when
+// the sheet or the name is unknown.
+//
+// DELIBERATELY unlike resolveArt, which ends in `frame ?? 0`: that fallback is
+// right for rendering an entity (draw *something*) and wrong for resolving
+// authored content, where "this name is gone" must be distinguishable from
+// "frame 0". Resolving a missing name to 0 is how a renamed asset silently
+// paints the sheet's first tile instead of dropping out of the picker.
+export function frameForName(sheetKey, name) {
+    const sheet = BY_KEY[sheetKey]
+    if (!sheet || !name) return null
+    const frame = frameIndexFor(sheetKey, sheet)[name]
+    return typeof frame === "number" ? frame : null
 }
 
 // Lazily build + cache a name->frame index for a spritesheet reference so

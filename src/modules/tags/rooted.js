@@ -1,7 +1,7 @@
 import gameLog from "../GameLog.js"
 import { defineStatus } from "./Status.js"
 
-// Rooted — the entity can't move but can still attack. Applied by Elf
+// Rooted — the entity can't move but can still attack. Applied by Ranger
 // Root. BaseEnemy.turn() zeros movementPoints (but NOT actionPoints)
 // when this tag is present, so the archetype still runs and can swing
 // from its current tile.

@@ -161,6 +161,23 @@ export default {
     turn,
     // Fragile kiter: breaks and runs at 30% HP rather than be cornered.
     fleeThreshold: 0.3,
+    // A RANGED enemy must be able to SEE as far as it can SHOOT.
+    //
+    // This block did not exist until 2026-09-22, so every archer and caster
+    // inherited BaseEnemy's melee default of detectionRadius 3 while carrying a
+    // weapon that reaches 5 (wand) or 7 (bow). The kiting logic in turn() is
+    // gated on isEngaged(), and an enemy only engages once its perception trips
+    // — so it could not open fire until the player had already walked inside its
+    // minimum range, at which point the archer's first move is to RETREAT. The
+    // result reads exactly as "ranged enemies don't use their range", and no
+    // amount of damage tuning would have fixed it.
+    //
+    // 8 covers the bow's 7 with a tile to spare, so an archer gets a shot off
+    // during the approach. The cone stays wide rather than full circle: a
+    // sentry that spots you from any direction removes the point of flanking,
+    // and 120 still means it will not miss someone walking up the corridor in
+    // front of it. Individual enemies widen this further — DarkSorcerer does.
+    perception: { radius: 8, coneDegrees: 120 },
     statTemplate: {
         STR: [6, 9],
         DEX: [13, 15],

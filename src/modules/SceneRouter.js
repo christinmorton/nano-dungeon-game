@@ -7,6 +7,7 @@ const SCENES = {
     profile: "profile-scene",
     settings: "settings-scene",
     controls: "controls-scene",
+    character: "character-scene",
     vaultDeposit: "vault-deposit-scene",
     shop: "shop-scene",
     loadout: "loadout-scene",
@@ -123,10 +124,27 @@ class SceneRouter {
     // Settings and launch Controls — so only one of the two is ever active at a
     // time. That sidesteps a multi-scene Escape race (both owning Escape). Back
     // from Controls reopens Settings fresh (Settings rebuilds from prefs).
+    // Controls overlays whatever opened it — the Intro title screen, or Pause
+    // mid-run — and closing just stops it, so the caller reappears underneath
+    // untouched. World and UI are already paused if we came in through Pause,
+    // and Intro needs no pausing, so neither is touched here.
+    //
+    // v3's version swapped Controls with a Settings screen. v5 registers no
+    // Settings scene, so keeping that would have made closing this screen
+    // launch a scene that does not exist — a black overlay with no way out,
+    // the same soft-lock the K key had.
+    // The caller is PAUSED while Controls is up, and resumed on close. This is
+    // not cosmetic: a Phaser scene that is merely covered still receives input.
+    // Without the pause, Escape inside Controls would close Controls *and* be
+    // heard by Pause underneath, resuming the run; and a click meant to dismiss
+    // Controls would also land on an Intro class card and start a game. Pausing
+    // disables the covered scene's input plugin, which is exactly the wanted
+    // behaviour and is reversed on resume.
     openControls() {
         const mgr = this._mgr()
         if (!mgr || mgr.isActive(SCENES.controls)) return
-        mgr.stop(SCENES.settings)
+        this._controlsCaller = this.scene?.scene?.key || null
+        if (this._controlsCaller) mgr.pause(this._controlsCaller)
         mgr.launch(SCENES.controls)
     }
 
@@ -134,7 +152,42 @@ class SceneRouter {
         const mgr = this._mgr()
         if (!mgr) return
         mgr.stop(SCENES.controls)
-        mgr.launch(SCENES.settings)
+        if (this._controlsCaller) {
+            mgr.resume(this._controlsCaller)
+            this._controlsCaller = null
+        }
+    }
+
+    // The Character screen. Reached from the dungeon (the `character` key) and
+    // from Pause, so it follows the Controls pattern: pause whoever opened it,
+    // resume them on close. From the dungeon that means World AND UI, as Shop
+    // does, so the HUD underneath stops hearing clicks too.
+    //
+    // The 200ms debounce is the openPause one: the key both opens and closes
+    // this screen, and the keyup that closes it can reach the just-resumed
+    // World in the same dispatch and reopen it.
+    openCharacter() {
+        const mgr = this._mgr()
+        if (!mgr || mgr.isActive(SCENES.character)) return
+        const now = Date.now()
+        if (this._lastCharacterToggle && (now - this._lastCharacterToggle) < 200) return
+        this._lastCharacterToggle = now
+        this._characterCaller = this.scene?.scene?.key || null
+        if (this._characterCaller) mgr.pause(this._characterCaller)
+        if (this._characterCaller === SCENES.world) mgr.pause(SCENES.ui)
+        mgr.launch(SCENES.character)
+    }
+
+    closeCharacter() {
+        const mgr = this._mgr()
+        if (!mgr) return
+        this._lastCharacterToggle = Date.now()
+        mgr.stop(SCENES.character)
+        if (this._characterCaller) {
+            mgr.resume(this._characterCaller)
+            if (this._characterCaller === SCENES.world) mgr.resume(SCENES.ui)
+            this._characterCaller = null
+        }
     }
 
     openVaultDeposit() {

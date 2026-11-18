@@ -1,15 +1,13 @@
 import LevelManager from './levels/LevelManager.js'
 import BSPLevel from './levels/BSPLevel.js'
-import AuthoredLevel from './levels/AuthoredLevel.js'
-import MazeLevel from './levels/MazeLevel.js'
-import ArenaLevel from './levels/ArenaLevel.js'
-import FortressTestLevel from './levels/FortressTestLevel.js'
-import PartyTestLevel from './levels/PartyTestLevel.js'
-import TrainingLevel from './levels/TrainingLevel.js'
 import worldQueries from './WorldQueries.js'
-import account from './Account.js'
-import { getRecipe, DEFAULT_RECIPE, DEFAULT_THEME, normalizeTheme } from './levels/recipes.js'
-import { autotileTerrains, pickAutotileFrame } from './levels/autotile.js'
+import { getRecipe, FLOOR_RECIPES, DEFAULT_THEME, normalizeTheme } from './levels/recipes.js'
+import { autotileTerrains, pickAutotileFrame, pickWallPatchFrame, wallPatchSpec } from './levels/autotile.js'
+import { pickStronghold } from './levels/strongholds.js'
+// Safe to import here: dungeonTypes' whole transitive closure is leaf modules
+// (autotile, tileRegions, themeRoles, assetLoader), none of which reach MapState.
+// DIAGNOSTIC 2026-08-25: unused while the theme re-derive above is disabled.
+// import { refreshThemeFromType } from './levels/dungeonTypes.js'
 import SHEETS from '../data/assetSheets.js'
 
 // Run-length presets (run-time budgeting). Always 5 floors; the preset sizes
@@ -19,11 +17,6 @@ import SHEETS from '../data/assetSheets.js'
 // (0 disconnects across 100 seeds each); the in-game play-time tracker is the
 // instrument for calibrating these to the actual minute targets. See
 // documents/v3_dungeon_archetype_system.md.
-// localStorage slot the Dungeon Designer autosaves its skeleton to. The
-// ?authored=1 handoff reads it to play an authored floor (design §15.6 step 6).
-// Kept in sync with DesignerScene's LS_KEY. Temporary — a start-screen file
-// importer replaces the URL-param + localStorage handoff later.
-const AUTHORED_LS_KEY = "dungeonDesigner.autosave.v1"
 
 const RUN_PROFILES = {
     "1min": { width: 22, height: 15, iterations: 2 },
@@ -126,40 +119,6 @@ function envDecalFrame(envTiles, x, y, seed) {
     return null
 }
 
-// Read the Dungeon Designer's autosaved skeleton from localStorage for the
-// ?authored handoff. Returns the parsed object or null (empty slot / bad JSON /
-// no localStorage). Safe to call in any environment.
-function loadAuthoredSkeleton() {
-    try {
-        if (typeof localStorage === "undefined") return null
-        const raw = localStorage.getItem(AUTHORED_LS_KEY)
-        return raw ? JSON.parse(raw) : null
-    } catch (e) {
-        return null
-    }
-}
-
-// A blank authored floor (no rooms) still needs a start + end so it's walkable
-// and its stairs have an anchor. Mirrors DesignerScene._makeDefaultFloor's
-// placement; real content is authored on the floor later (procedural-fill floors
-// are a separate slice).
-function minimalFloorAreas(grid) {
-    const w = (grid && grid.w) || 48, h = (grid && grid.h) || 32
-    return [
-        { id: 1, name: "Start", kind: "starting", walled: true, shape: "rect", x: 3, y: 3, w: 8, h: 6 },
-        { id: 2, name: "End",   kind: "ending",   walled: true, shape: "rect", x: w - 11, y: h - 9, w: 8, h: 6 },
-    ]
-}
-
-// A designer theme is usable only if both floor and wall frames are set on one
-// sheet (the engine paints one tileset per floor). Incomplete/absent → the floor
-// falls back to the default recipe tileset.
-function validAuthoredTheme(t) {
-    if (!t || !t.sheet) return false
-    const hasFloor = t.floorTile != null || (Array.isArray(t.floorTiles) && t.floorTiles.length > 0)
-    const hasWall = t.wallTile != null || (Array.isArray(t.wallTiles) && t.wallTiles.length > 0)
-    return !!(hasFloor && hasWall)
-}
 
 class MapState {
     constructor() {
@@ -193,43 +152,6 @@ class MapState {
     // mode mix is data, not buried in BSPLevel. A future game-mode UI can
     // swap this for a preset (all-tree / all-banded / random per floor).
     start() {
-        // Arena test mode (window.ARENA_MODE set by arenaMain.js) replaces
-        // the BSP floor sequence with a single fixed-layout room used to
-        // verify AI behavior — alert propagation, archetypes, future
-        // captain coordination — in isolation from procedural variance.
-        if (typeof window !== "undefined" && window.ARENA_MODE) {
-            // ?settlement=fortress|outpost swaps the AI arena for a single
-            // large outdoor war-camp so the settlement perimeter feature can be
-            // tested in isolation (the BSP large-room requirement makes forts
-            // rare in a real run). Absent the param, the AI ArenaLevel loads.
-            const params = new URLSearchParams(window.location.search)
-            const settlement = params.get("settlement")
-            const species = params.get("species") || "orc"
-            // ?party[=N] swaps the AI arena for a party-vs-band test bench: the
-            // hero spawns with a party of followers facing an enemy band, so the
-            // player PARTY can be exercised in isolation.
-            const partyTest = params.get("party") != null
-            // ?training[=<spec>] swaps the AI arena for the A->Z ability bench:
-            // a hero facing an inert Training Dummy, abilities loaded onto the
-            // bar (see levels/TrainingLevel.js + window.training helpers).
-            const trainingTest = params.get("training") != null
-            this.levelManager = new LevelManager({
-                levels: trainingTest
-                    ? [{ type: TrainingLevel, config: {} }]
-                    : partyTest
-                        ? [{ type: PartyTestLevel, config: {} }]
-                        : settlement
-                            ? [{ type: FortressTestLevel, config: { form: settlement, species } }]
-                            : [{ type: ArenaLevel, config: {} }]
-            })
-            return
-        }
-
-        // Authored-floor mode (?authored=1): play the floor the Dungeon Designer
-        // stashed in localStorage as a single AuthoredLevel — "author a floor ->
-        // walk into it" (design §15.6 step 6). Themed with the safe 'classic'
-        // Kenney tileset. Falls through to a normal run if the slot is empty or
-        // malformed. Temporary handoff; see AUTHORED_LS_KEY.
         // Dungeon-wide enemy perception scale (designer Dungeon tab). Default 1x
         // for every run; an authored run may override below. Read live by
         // BaseEnemy.effectiveDetectionRadius / effectiveVisionCone.
@@ -251,115 +173,6 @@ class MapState {
         this.noCaptains = false
         this.noCursed = false
         this.noRoyals = false
-        if (typeof window !== "undefined" && window.location) {
-            const params = new URLSearchParams(window.location.search)
-            if (params.get("authored") != null) {
-                const skeleton = loadAuthoredSkeleton()
-                // Dungeon-wide perception scale from the designer (Dungeon tab).
-                const perc = (skeleton && skeleton.perception) || {}
-                if (Number.isFinite(perc.rangeScale)) this.perceptionRangeScale = perc.rangeScale
-                if (Number.isFinite(perc.coneScale)) this.perceptionConeScale = perc.coneScale
-                this.noHunters = !!(skeleton && skeleton.noHunters)
-                this.noElites = !!(skeleton && skeleton.noElites)
-                this.noCaptains = !!(skeleton && skeleton.noCaptains)
-                this.noCursed = !!(skeleton && skeleton.noCursed)
-                this.noRoyals = !!(skeleton && skeleton.noRoyals)
-                // Multi-floor run (§15.7/15.8): one AuthoredLevel per floor in the
-                // roster, so Start/End rooms become up/down stairs the existing
-                // LevelManager sequences. Falls back to the legacy flat single-floor
-                // export. Blank floors (no rooms) aren't playable yet (procedural-
-                // fill floors are a later slice) — filtered with a warning.
-                const roster = (skeleton && Array.isArray(skeleton.floors) && skeleton.floors.length)
-                    ? skeleton.floors
-                    : (skeleton && Array.isArray(skeleton.areas) && skeleton.areas.length)
-                        ? [{ grid: skeleton.grid, areas: skeleton.areas, routePoints: skeleton.routePoints, connections: skeleton.connections }]
-                        : []
-                if (roster.length) {
-                    const recipe = getRecipe("classic")
-                    // Authored floor's picked tileset when complete (both frames on
-                    // one sheet); otherwise the classic default. World.preload loads
-                    // the sheets via getAuthoredThemeSheets(). Theme is dungeon-global.
-                    const theme = validAuthoredTheme(skeleton.theme) ? skeleton.theme : recipe.theme
-                    // One AuthoredLevel per floor. Dungeon-level fill style is shared;
-                    // each floor supplies its own grid / areas / routePoints. A blank
-                    // floor gets a minimal start+end so it stays traversable.
-                    //
-                    // Seed policy (§15.8): a LOCKED seed pins the layout — every run
-                    // reproduces the same floors (the raw pinned seed, so the in-game
-                    // floor matches the designer's locked preview — "preview == game",
-                    // §15.3; floors still differ because their skeletons differ).
-                    // UNLOCKED rerolls a fresh seed per floor at run start (roguelike
-                    // variety). Injected HERE (runtime) so the shared engine-free
-                    // generator stays deterministic — each floor's skeleton carries a
-                    // concrete seed marked locked, so hydrateSkeleton uses it verbatim.
-                    const pinned = !!skeleton.fillSeedLocked
-                    const levels = roster.map(f => {
-                        const grid = f.grid || skeleton.grid
-                        const seed = pinned
-                            ? ((skeleton.fillSeed | 0) >>> 0)                       // pinned: matches the preview
-                            : ((Math.floor(Math.random() * 0x100000000)) >>> 0)    // fresh each run
-                        // §17: a 'maze' floor is a PURE procedural labyrinth built
-                        // by MazeLevel (a maze carved across the whole floor, no BSP
-                        // rooms — labyrinth first), NOT the authored skeleton, so its
-                        // drawn areas are ignored. This is the room-density=0 pole of
-                        // §17.4; the rooms-in-a-maze end (BSPLevel corridorStyle:'maze')
-                        // returns behind a future density knob. Slice 1 uses default
-                        // maze knobs (algorithm + low braid) until the params panel.
-                        if (f.mode === "maze") {
-                            const w = (grid && grid.w) || 41, h = (grid && grid.h) || 31
-                            const mz = (f.maze && typeof f.maze === "object") ? f.maze : {}
-                            return {
-                                type: MazeLevel,
-                                config: {
-                                    width: w,
-                                    height: h,
-                                    mazeAlgorithm: mz.algorithm,   // §17 slice 2 params (MazeLevel defaults fill gaps)
-                                    braid: mz.braid,               // 0..1 (dead-ends ↔ loops)
-                                    roomDensity: mz.roomDensity,   // 0..100 (rooms carved into the maze)
-                                    dungeonPool: skeleton.dungeonPool,   // §17 follow-up: designer enemy pool → maze rooms
-                                    poolMode: skeleton.poolMode,
-                                    roomKinds: skeleton.roomKinds,       // authored special-room mix (levels/roomKinds.js)
-                                    defaultStance: f.defaultStance,      // this floor's default enemy stance
-                                    theme,                       // dungeon-wide palette (§15.10)
-                                    propPalette: recipe.propPalette,
-                                    seed,
-                                },
-                            }
-                        }
-                        const areas = (f && Array.isArray(f.areas) && f.areas.length) ? f.areas : minimalFloorAreas(grid)
-                        return {
-                            type: AuthoredLevel,
-                            config: {
-                                skeleton: {
-                                    grid,
-                                    areas,
-                                    routePoints: f.routePoints,
-                                    connections: f.connections,   // authored portals (§15.9)
-                                    dungeonPool: skeleton.dungeonPool,   // dungeon-wide enemy pool for procedural rooms (§16)
-                                    poolMode: skeleton.poolMode,   // "authored" (pool-only, no random fill) | "random" (legacy) (§16)
-                                    roomKinds: skeleton.roomKinds,   // authored special-room mix rolled over un-authored rooms (levels/roomKinds.js)
-                                    defaultStance: f.defaultStance,   // per-floor default enemy stance; rooms inherit unless they set their own (§16 Stage 2)
-                                    corridorStyle: skeleton.corridorStyle,
-                                    fillSeed: seed,
-                                    fillSeedLocked: true,   // use the seed we computed
-                                },
-                                theme,
-                                propPalette: recipe.propPalette,
-                            },
-                        }
-                    })
-                    this.levelManager = new LevelManager({ levels })
-                    this.authoredGoal = skeleton.goal || null   // dungeon win condition (§15.8)
-                    if (typeof console !== "undefined") {
-                        console.log(`[MapState] authored run loaded (${levels.length} floor(s))`)
-                    }
-                    return
-                }
-                if (typeof console !== "undefined") {
-                    console.warn("[MapState] ?authored set but no valid designer skeleton in localStorage; normal run")
-                }
-            }
-        }
 
         // Run seed for reproducible layout. A `?seed=<value>` URL param pins it
         // (regenerate the exact same run for debugging/replay); otherwise it's
@@ -379,60 +192,40 @@ class MapState {
 
         // Size all 5 floors from the selected run-length preset (defaults to the
         // full "free" dungeon if the pref is missing/unknown).
-        this.runLength = account.getPreferences().runLength || "free"
+        this.runLength = "free"   // v5: no Account/preferences layer (scope doc section 6)
         const profile = RUN_PROFILES[this.runLength] || RUN_PROFILES["free"]
-        // The run's dungeon Recipe (design doc §14.2) — the data object binding
-        // geometry + tileset theme (+ future terrain/roster). 'classic' is the
-        // default (discrete-room 'simple' geometry, current tileset) until themed
-        // realms are authored and a selector is added. The recipe supplies
+        // Each floor's dungeon Recipe (design doc §14.2) — the data object binding
+        // geometry + tileset theme — comes from FLOOR_RECIPES by floor index, so
+        // the descent changes realm as it goes down. The recipe supplies
         // geometry + theme; the run-length profile sizes each floor; doors:false
         // stays while door placement is reworked (corridors guarantee connectivity).
-        const recipe = getRecipe(DEFAULT_RECIPE)
         const modes = ["banded", "tree", "banded", "tree", "banded"]
-        const levels = modes.map((mode, i) => ({
-            type: BSPLevel,
-            config: {
-                ...profile,
-                ...recipe.geometry,
-                theme: recipe.theme,
-                propPalette: recipe.propPalette,
-                doors: false,
-                startEndMode: mode,
-                seed: `${this.runSeed}:${i}`,
+        // The LAST floor is a stronghold: one inhabited place with a single
+        // resident species and a leader, instead of a random assortment. Rolled
+        // once per run so the finale differs between playthroughs. Geometry is
+        // unchanged — only the population reads differently. See
+        // levels/strongholds.js.
+        const strongholdKey = pickStronghold()
+        const lastFloor = modes.length - 1
+        const levels = modes.map((mode, i) => {
+            const recipe = getRecipe(FLOOR_RECIPES[i])
+            return {
+                type: BSPLevel,
+                config: {
+                    ...profile,
+                    ...recipe.geometry,
+                    theme: recipe.theme,
+                    propPalette: recipe.propPalette,
+                    doors: false,
+                    startEndMode: mode,
+                    seed: `${this.runSeed}:${i}`,
+                    stronghold: i === lastFloor ? strongholdKey : null,
+                }
             }
-        }))
+        })
         this.levelManager = new LevelManager({ levels })
     }
 
-    // Every sheet key an authored floor's theme needs, so World.preload can load
-    // them before bind() paints the tilemap (the theme is chosen in the designer,
-    // so it isn't in the game's fixed preload sets). A theme may name a different
-    // pack per role, and a sheet that isn't loaded when bind() asks for its frame
-    // count silently shifts every later pack's tiles — so this must return ALL of
-    // them, not just the ground. Empty outside authored mode or when the theme is
-    // absent/incomplete/the default. Reads localStorage directly because start()
-    // (which stores the level) runs after preload.
-    getAuthoredThemeSheets() {
-        if (typeof window === "undefined" || !window.location) return []
-        const params = new URLSearchParams(window.location.search)
-        if (params.get("authored") == null) return []
-        const skeleton = loadAuthoredSkeleton()
-        const t = skeleton && skeleton.theme
-        if (!validAuthoredTheme(t)) return []
-        return [...new Set([t.sheet, t.wallSheet, t.envSheet, t.propSheet, t.debrisSheet].filter(Boolean))]
-    }
-
-    // The sheet key the authored goal item's Atlas sprite needs, so World.preload
-    // can load it before the goal is spawned (mirrors getAuthoredThemeSheets).
-    // Null outside authored mode or when the goal isn't an Atlas-sourced item.
-    getAuthoredGoalSheet() {
-        if (typeof window === "undefined" || !window.location) return null
-        const params = new URLSearchParams(window.location.search)
-        if (params.get("authored") == null) return null
-        const skeleton = loadAuthoredSkeleton()
-        const item = skeleton && skeleton.goal && skeleton.goal.item
-        return (item && item.source === "atlas" && item.sheet) ? item.sheet : null
-    }
 
     // Snapshot the current floor's geometry from levelManager and build
     // the Phaser tilemap layer for it. Called on every floor entry from
@@ -492,6 +285,11 @@ class MapState {
         // its own edges and corners. Each terrain is looked up on ITS role's sheet.
         const autotileSet = theme.autotile ? autotileTerrains(roleSheet.floor)[theme.autotile] : null
         const wallSet = theme.wallAutotile ? autotileTerrains(roleSheet.wall)[theme.wallAutotile] : null
+        // A wall sheet may instead declare a PATCH scheme in its own _meta (mask x
+        // position cuts, plus elevation faces along the mass's south edge). The
+        // sheet declares it, not the theme — see autotile.js. Absent on every
+        // sheet that predates it, so this is null for all existing themes.
+        const wallPatch = wallPatchSpec(this._sheetMeta(roleSheet.wall))
         const grid = this.level
         const isFloor = (x, y) => !!(grid[y] && grid[y][x] === 0)
         // For a wall cell, "same terrain" means "also wall". OUT OF BOUNDS COUNTS
@@ -501,6 +299,10 @@ class MapState {
         const isWall = (x, y) => !(grid[y] && grid[y][x] === 0)
         this.levelWithTiles = grid.map((row, y) => row.map((t, x) => {
             if (t === 1) {
+                if (wallPatch) {
+                    const f = pickWallPatchFrame(wallPatch, x, y, isWall)
+                    if (f != null) return f + gidWall
+                }
                 if (wallSet) {
                     const f = pickAutotileFrame(wallSet, (dx, dy) => isWall(x + dx, y + dy))
                     if (f != null) return f + gidWall
@@ -516,10 +318,27 @@ class MapState {
         }))
         this._applyOutdoorThemes()
 
+        // Build the layer at the SHEETS' native tile size, then scale it back to
+        // the world grid. Phaser draws a tile at its TILESET's size but positions
+        // it by the MAP's, so a 32px pack on a 16px map renders every tile at 2x,
+        // overlapping its neighbours — every theme sheet until now happened to be
+        // 16px, so this path had never been exercised.
+        //
+        // Scaling is safe for coordinates because Phaser derives tileToWorldX /
+        // worldToTileX from baseTileWidth * scaleX: 32 at 0.5 is 16 per tile, the
+        // same number those return today. Everything positioning an entity through
+        // mapState.map keeps working untouched.
+        //
+        // A floor whose roles disagree on size falls back to the world grid — the
+        // old behaviour — because one layer has a single base size and scaling to
+        // suit one role would mis-size the other. When native === tileSize (every
+        // pre-existing theme) this is byte-for-byte what it was.
+        const natives = sheetOrder.map(key => this._sheetSlice(key, theme).tileSize)
+        const native = natives.length && natives.every(n => n === natives[0]) ? natives[0] : this.tileSize
         const config = {
             data: this.levelWithTiles,
-            tileWidth: this.tileSize,
-            tileHeight: this.tileSize,
+            tileWidth: native,
+            tileHeight: native,
         }
         const phaserMap = scene.make.tilemap(config)
         // Slice each tileset at ITS OWN sheet's source tile size / spacing, while
@@ -535,6 +354,7 @@ class MapState {
             )
         }).filter(Boolean)
         this.map = phaserMap.createLayer(0, tilesets, 0, 0)
+        if (this.map && native !== this.tileSize) this.map.setScale(this.tileSize / native)
         this._drawOutdoorUnderlays(scene)
     }
 
@@ -542,9 +362,15 @@ class MapState {
     // the Atlas and the validator slice by); the theme's own values are the
     // fallback, which is what keeps DEFAULT_THEME working — its "tiles" key is
     // the World-preloaded Kenney texture and has no assetSheets entry.
-    _sheetSlice(key, theme) {
+    // A registered sheet's `_meta`, or null for a key with no assetSheets entry
+    // (DEFAULT_THEME's "tiles" is the World-preloaded Kenney texture and has none).
+    _sheetMeta(key) {
         const sheet = SHEETS.find(s => s.key === key)
-        const meta = (sheet && sheet.ref && sheet.ref._meta) || null
+        return (sheet && sheet.ref && sheet.ref._meta) || null
+    }
+
+    _sheetSlice(key, theme) {
+        const meta = this._sheetMeta(key)
         if (!meta) {
             return { tileSize: theme.tileSize ?? 16, spacing: theme.spacing ?? 0, margin: theme.margin ?? 0 }
         }
@@ -648,11 +474,13 @@ class MapState {
         return this.rooms.find(r => x >= r.x && x < r.x + r.w && y >= r.y && y < r.y + r.h) || null
     }
     freeWalkableTileNear(cx, cy, maxRadius) { return worldQueries.freeWalkableTileNear(cx, cy, maxRadius) }
+    wouldSplitFloor(x, y) { return worldQueries.wouldSplitFloor(x, y) }
     findPathToRandomReachable(entity, maxAttempts) { return worldQueries.findPathToRandomReachable(entity, maxAttempts) }
     gridForEntity(entity) { return worldQueries.gridForEntity(entity) }
     findPath(entity, tx, ty, opts) { return worldQueries.findPath(entity, tx, ty, opts) }
     getRandomFloorTile() { return worldQueries.getRandomFloorTile() }
     entityAtTile(x, y) { return worldQueries.entityAtTile(x, y) }
+    combatantAtTile(x, y) { return worldQueries.combatantAtTile(x, y) }
     blockingStructureAt(x, y, entity) { return worldQueries.blockingStructureAt(x, y, entity) }
     isDoorAt(x, y) { return worldQueries.isDoorAt(x, y) }
     isBlockingDoorAt(x, y) { return worldQueries.isBlockingDoorAt(x, y) }

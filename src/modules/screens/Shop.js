@@ -1,11 +1,13 @@
 import Phaser from 'phaser'
 import dungeon from '../Dungeon.js'
 import tm from '../TurnManager.js'
-import router from '../SceneRouter.js'
 import gameLog from '../GameLog.js'
+import router from '../SceneRouter.js'
+import audio from '../Audio.js'
+import { addEntityIcon } from '../assetLoader.js'
 import { INVENTORY_CAP } from '../items/Container.js'
-import { shopkeeperLine } from '../dialog/npcBarks.js'
-import { addEntityIcon, preloadSheets, GAME_SHEETS } from '../assetLoader.js'
+import { buyPrice, sellPrice } from '../items/shopStock.js'
+import { itemStatLine, equipDeltas, deltaText } from '../items/compare.js'
 
 const GAME_W = 80 * 16
 const GAME_H = 50 * 16
@@ -13,121 +15,63 @@ const GAME_H = 50 * 16
 const COLOR_PRIMARY = "#cfc6b8"
 const COLOR_DIM = "#7a7466"
 const COLOR_ACCENT = "#facc15"
-const COLOR_OK = "#86efac"
-const COLOR_SPEECH = "#e7d9b0"
+const COLOR_BAD = "#e06c5a"
+const COLOR_GOOD = "#7ed08a"
 
-const COLS = 5
-const ROWS = 2
-const CELL = 40
-const GAP = 6
+// Two-line rows since 2026-10-03: name and price on the first line, the item's
+// numbers and the change it would make on the second, so "worth buying?" is
+// answered here rather than by buying it and opening the Character screen.
+const ROW_H = 42
+const PANEL_W = 380
 
-// Pricing. Items that carry a coin value (gems) price off that; everything
-// else falls back by broad category. Selling pays a fraction of buy price.
-// All tunable — this is the shape, not the economy balance.
-const BUY_FALLBACK_WEAPON = 14
-const BUY_FALLBACK_WEARABLE = 10
-const BUY_FALLBACK_CONSUMABLE = 6
-const SELL_RATE = 0.5
-
-function buyPrice(item) {
-    if (typeof item.value === "function") {
-        const v = item.value()
-        if (typeof v === "number" && v > 0) return v
-    }
-    if (item.weapon) return BUY_FALLBACK_WEAPON
-    if (item.slot) return BUY_FALLBACK_WEARABLE
-    return BUY_FALLBACK_CONSUMABLE
-}
-
-function sellPrice(item) {
-    return Math.max(1, Math.floor(buyPrice(item) * SELL_RATE))
-}
-
-// Buy/sell screen for a single shopkeeper. The shopkeeper instance is handed
-// in via launch data; its `stock` array is mutated directly so purchases
-// persist if the player re-opens the same merchant. Coins live on the hero's
-// tally. The world + UI scenes are paused behind this (see SceneRouter), so
-// the merchant "speaks" through the line of text at the top rather than a
-// world speech bubble.
+// Shop — the modal buy/sell screen for the Camp room's shopkeeper (§10.11).
+//
+// Launched by SceneRouter.openShop(shopkeeper), which PAUSES World+UI so the
+// dungeon freezes underneath and resumes them on close. That routing was already
+// written and had simply never had a scene to point at.
+//
+// Two columns: the shopkeeper's stock on the left, the hero's sellable carry on
+// the right. Clicking a row buys or sells it. Stock lives on the shopkeeper
+// instance, so what is bought stays bought for the rest of the floor.
 export default class Shop extends Phaser.Scene {
     constructor() {
         super({ key: "shop-scene", active: false })
     }
 
-    preload() {
-        if (!this.textures.exists("tiles")) {
-            this.load.spritesheet("tiles", "kenney_1-bit-pack/Tilesheet/colored-transparent.png", {
-                frameWidth: 16,
-                frameHeight: 16,
-                spacing: 1
-            })
-        }
-        preloadSheets(this, GAME_SHEETS)
-    }
-
     create(data) {
-        this._shopkeeper = data && data.shopkeeper
-        if (!this._shopkeeper) {
-            // Defensive: nothing to trade with — bounce back to the world.
-            router.bind(this)
-            router.closeShop()
-            return
-        }
+        this._shopkeeper = (data && data.shopkeeper) || null
+        this._rows = []
 
-        this.add.rectangle(0, 0, GAME_W, GAME_H, 0x000000, 0.92).setOrigin(0)
+        this.add.rectangle(0, 0, GAME_W, GAME_H, 0x000000, 0.88).setOrigin(0)
 
         const cx = GAME_W / 2
-
-        this.add.text(cx, 44, "Shopkeeper", {
-            font: "44px Arial",
-            color: COLOR_ACCENT
+        this.add.text(cx, 48, "Shopkeeper", { font: "44px Arial", color: COLOR_ACCENT })
+            .setOrigin(0.5)
+        this.add.text(cx, 92, "Click an item to buy or sell   ·   Press Esc to leave", {
+            font: "13px Arial", color: COLOR_DIM,
         }).setOrigin(0.5)
 
-        // The merchant's spoken line. Greet on first visit this floor,
-        // a lighter line on return.
-        this._speechText = this.add.text(cx, 88, "", {
-            font: "16px Arial",
-            color: COLOR_SPEECH,
-            fontStyle: "italic"
-        }).setOrigin(0.5)
-        this._setLine(shopkeeperLine(this._shopkeeper.greeted ? "backAgain" : "greet"))
-        this._shopkeeper.greeted = true
+        this._coinText = this.add.text(cx, 118, "", { font: "16px Arial", color: COLOR_PRIMARY })
+            .setOrigin(0.5)
+        this._lineText = this.add.text(cx, 142, "", { font: "13px Arial", color: COLOR_ACCENT })
+            .setOrigin(0.5)
 
-        this._coinsText = this.add.text(cx, 120, "", {
-            font: "18px Arial",
-            color: COLOR_ACCENT
-        }).setOrigin(0.5)
-
-        // Static column headers; the cells below them live in _bodyLayer and
-        // are wiped/redrawn on each transaction.
-        this._buyLabel = this.add.text(GAME_W * 0.30, 160, "", {
-            font: "14px Arial", color: COLOR_PRIMARY
-        }).setOrigin(0.5)
-        this._sellLabel = this.add.text(GAME_W * 0.70, 160, "", {
-            font: "14px Arial", color: COLOR_PRIMARY
-        }).setOrigin(0.5)
-
-        this._tooltip = this.add.text(0, 0, "", {
-            font: "12px Arial",
-            color: "#fff",
-            backgroundColor: "#000000cc",
-            padding: { x: 6, y: 4 },
-            wordWrap: { width: 220 }
-        }).setDepth(1000).setVisible(false)
-
-        this._bodyLayer = []
         this._render()
 
-        this._makeButton(cx, GAME_H - 90, "Leave", () => {
-            this._setLine(shopkeeperLine("leave"))
-            router.bind(this)
-            router.closeShop()
+        // The pointerup that OPENED this scene can still be in flight when this
+        // listener registers, which would dismiss the shop instantly. Same
+        // 150ms arming the Controls screen uses.
+        this._armedAt = this.time.now + 150
+        this.input.keyboard.on("keyup", (event) => {
+            if (event.key !== "Escape") return
+            this._close()
         })
+    }
 
-        this.add.text(cx, GAME_H - 48, "Click an item on the left to buy, on the right to sell.", {
-            font: "12px Arial",
-            color: COLOR_DIM
-        }).setOrigin(0.5)
+    _close() {
+        if (this.time.now < this._armedAt) return
+        router.bind(this)
+        router.closeShop()
     }
 
     _coins() {
@@ -135,101 +79,142 @@ export default class Shop extends Phaser.Scene {
         return (p && p.tallies && p.tallies.coins) || 0
     }
 
-    _setLine(text) {
-        this._speechText.setText(`"${text}"`)
+    _setLine(msg, bad = false) {
+        this._lineText.setText(msg)
+        this._lineText.setColor(bad ? COLOR_BAD : COLOR_ACCENT)
     }
 
+    // Full redraw after every transaction. The panels are small (6 stock rows, at
+    // most 10 carry rows) so rebuilding beats diffing two lists.
     _render() {
-        this._bodyLayer.forEach(w => w.destroy())
-        this._bodyLayer = []
+        for (const obj of this._rows) obj.destroy()
+        this._rows = []
+
+        this._coinText.setText(`Coins: ${this._coins()}`)
 
         const player = dungeon.player
+        const stock = (this._shopkeeper && this._shopkeeper.stock) || []
+        // Cursed items cannot be offloaded on the merchant — that is a different,
+        // hostile design. Everything else the hero carries is sellable.
         this._sellable = ((player && player.items) || []).filter(i => !i.cursed)
-        const stock = this._shopkeeper.stock
 
-        this._coinsText.setText(`Coins: ${this._coins()}`)
-        this._buyLabel.setText(`For sale  (${stock.length})`)
-        this._sellLabel.setText(`Your pack  (${this._sellable.length}/${INVENTORY_CAP})`)
+        const leftX = cxLeft()
+        const rightX = cxRight()
+        const headY = 180
 
-        this._renderGrid({
-            items: stock,
-            cx: GAME_W * 0.30,
-            topY: 185,
-            priceFn: buyPrice,
-            verb: "Buy",
-            onCellClick: (idx) => this._buy(idx)
-        })
+        this._header(leftX, headY, "FOR SALE")
+        this._header(rightX, headY, "YOUR PACK")
 
-        this._renderGrid({
-            items: this._sellable,
-            cx: GAME_W * 0.70,
-            topY: 185,
-            priceFn: sellPrice,
-            verb: "Sell",
-            onCellClick: (idx) => this._sell(idx)
-        })
+        if (stock.length === 0) {
+            this._note(leftX, headY + 34, "(sold out)")
+        } else {
+            stock.forEach((item, i) => {
+                this._row(leftX, headY + 34 + i * ROW_H, item, buyPrice(item), "buy", () => this._buy(i))
+            })
+        }
+
+        if (this._sellable.length === 0) {
+            this._note(rightX, headY + 34, "(nothing to sell)")
+        } else {
+            this._sellable.forEach((item, i) => {
+                this._row(rightX, headY + 34 + i * ROW_H, item, sellPrice(item), "sell", () => this._sell(i))
+            })
+        }
     }
 
-    _renderGrid({ items, cx, topY, priceFn, verb, onCellClick }) {
-        const totalW = COLS * CELL + (COLS - 1) * GAP
-        const startX = cx - totalW / 2
-        const totalCells = COLS * ROWS
+    _header(x, y, label) {
+        this._rows.push(
+            this.add.text(x, y, label, { font: "15px Arial", color: COLOR_ACCENT }).setOrigin(0, 0.5),
+            this.add.rectangle(x, y + 16, PANEL_W, 1, 0x7a7466, 0.5).setOrigin(0, 0.5)
+        )
+    }
 
-        for (let i = 0; i < totalCells; i++) {
-            const col = i % COLS
-            const row = Math.floor(i / COLS)
-            const cellX = startX + col * (CELL + GAP)
-            const cellY = topY + row * (CELL + GAP)
-            const slot = this.add.rectangle(cellX, cellY, CELL, CELL, 0x2a2a2a, 0.8)
-                .setOrigin(0)
-                .setStrokeStyle(1, 0x4a4a4a)
-            this._bodyLayer.push(slot)
+    _note(x, y, msg) {
+        this._rows.push(
+            this.add.text(x, y, msg, { font: "13px Arial", color: COLOR_DIM }).setOrigin(0, 0.5)
+        )
+    }
 
-            const item = items[i]
-            if (!item) continue
+    // One clickable item row: hit area, icon, name (+ stack count), price.
+    _row(x, y, item, price, mode, onClick) {
+        const hit = this.add.rectangle(x, y, PANEL_W, ROW_H - 2, 0xffffff, 0.001)
+            .setOrigin(0, 0.5)
+            .setInteractive({ useHandCursor: true })
+        hit.on("pointerover", () => hit.setFillStyle(0xffffff, 0.07))
+        hit.on("pointerout", () => hit.setFillStyle(0xffffff, 0.001))
+        hit.on("pointerup", onClick)
 
-            const sprite = addEntityIcon(this, cellX + CELL / 2, cellY + CELL / 2, item, { display: 32 })
-            this._bodyLayer.push(sprite)
+        const icon = addEntityIcon(this, x + 8, y, item, {
+            display: 16, originX: 0, originY: 0.5, tintFill: true,
+        })
 
-            const price = priceFn(item)
-            const priceLabel = this.add.text(cellX + CELL / 2, cellY + CELL - 4, `${price}`, {
-                font: "11px Arial", color: COLOR_ACCENT
-            }).setOrigin(0.5, 1)
-            this._bodyLayer.push(priceLabel)
+        // Stacked consumables render as "Health Potion x3" — the count is on the
+        // item, not a separate row (see scope doc §10.10).
+        const count = item.count > 1 ? ` x${item.count}` : ""
+        const name = this.add.text(x + 32, y - 9, `${item.name}${count}`, {
+            font: "14px Arial", color: COLOR_PRIMARY,
+        }).setOrigin(0, 0.5)
 
-            slot.setInteractive({ useHandCursor: true })
-            slot.on("pointerover", () => {
-                slot.setFillStyle(0x3a3a3a, 0.9)
-                this._showTooltip(item, `${verb}: ${price} coins`, cellX, cellY)
-            })
-            slot.on("pointerout", () => {
-                slot.setFillStyle(0x2a2a2a, 0.8)
-                this._tooltip.setVisible(false)
-            })
-            slot.on("pointerup", () => onCellClick(i))
+        const affordable = mode === "sell" || this._coins() >= price
+        const cost = this.add.text(x + PANEL_W - 8, y - 9, `${price}c`, {
+            font: "14px Arial", color: affordable ? COLOR_PRIMARY : COLOR_BAD,
+        }).setOrigin(1, 0.5)
+
+        this._rows.push(hit, icon, name, cost)
+
+        // Second line: the item's numbers, then the delta against what the hero
+        // wears in that slot (green up, red down). Same helper the Character
+        // screen uses, so the two can never disagree about an item. A potion has
+        // neither and the line stays empty.
+        const player = dungeon.player
+        const line = itemStatLine(item)
+        const { up, down } = deltaText(player ? equipDeltas(player, item) : null)
+        let lx = x + 32
+        const ly = y + 9
+        if (line) {
+            const t = this.add.text(lx, ly, line, { font: "11px Arial", color: COLOR_DIM }).setOrigin(0, 0.5)
+            this._rows.push(t)
+            lx += t.width + 10
+        }
+        if (up) {
+            const t = this.add.text(lx, ly, up, { font: "bold 11px Arial", color: COLOR_GOOD }).setOrigin(0, 0.5)
+            this._rows.push(t)
+            lx += t.width + 10
+        }
+        if (down) {
+            this._rows.push(this.add.text(lx, ly, down, { font: "bold 11px Arial", color: COLOR_BAD }).setOrigin(0, 0.5))
         }
     }
 
     _buy(idx) {
         const item = this._shopkeeper.stock[idx]
         if (!item) return
-        const price = buyPrice(item)
-        if (this._coins() < price) {
-            this._setLine(shopkeeperLine("cantAfford"))
-            return
-        }
         const player = dungeon.player
-        if (player.items.length >= INVENTORY_CAP) {
-            this._setLine(shopkeeperLine("full"))
+        const price = buyPrice(item)
+
+        if (this._coins() < price) {
+            this._setLine("You cannot afford that.", true)
+            audio.play('ui-error')
             return
         }
+        // canAccept, not items.length — a FULL pack must still take an item that
+        // merges into a stack it already holds, or stacking reads as broken.
+        if (!player.inventory.canAccept(item)) {
+            this._setLine("Your pack is full.", true)
+            audio.play('ui-error')
+            return
+        }
+
         player.tallies.coins -= price
-        // Mirror a chest pickup: into carry (HUD refresh) + tracked by tm.
+        // Mirror a chest pickup: into carry (which refreshes the HUD) and tracked
+        // by the turn manager, exactly as Container.onInteract does.
         player.inventory.add(item)
         tm.addEntity(item)
         this._shopkeeper.stock.splice(idx, 1)
+
+        audio.play('ui-select')
         gameLog.log(`Bought ${item.name} for ${price} coins.`)
-        this._setLine(shopkeeperLine("buy"))
+        this._setLine(`Bought ${item.name}.`)
         this._render()
     }
 
@@ -239,34 +224,26 @@ export default class Shop extends Phaser.Scene {
         const player = dungeon.player
         const carryIndex = player.items.indexOf(item)
         if (carryIndex === -1) return
+
         const price = sellPrice(item)
         player.tallies.coins += price
-        // Reverse of pickup: out of carry (HUD refresh) + untracked by tm.
+        // Reverse of pickup. removeAt takes ONE unit off a stack and leaves the
+        // rest (§10.10), so selling a stack of three potions is three clicks at
+        // one price each — which is the behaviour you want in a shop: selling
+        // the whole stack by accident because it shared a row would be worse.
+        // tm.removeEntity only when the entry actually left the pack, or the
+        // remaining units would be untracked.
+        const stillCarried = player.items.includes(item)
         player.inventory.removeAt(carryIndex)
-        tm.removeEntity(item)
+        if (stillCarried && !player.items.includes(item)) tm.removeEntity(item)
+
+        audio.play('ui-select')
         gameLog.log(`Sold ${item.name} for ${price} coins.`)
-        this._setLine(shopkeeperLine("sell"))
+        this._setLine(`Sold ${item.name}.`)
         this._render()
     }
-
-    _showTooltip(item, priceText, cellX, cellY) {
-        const tagText = item._tags && item._tags.length
-            ? "\n" + item._tags.map(t => `#${t}`).join(" ")
-            : ""
-        const desc = item.description ? `\n${item.description}` : ""
-        this._tooltip.setText(`${item.name}${tagText}${desc}\n${priceText}`)
-        this._tooltip.setPosition(cellX + CELL + 6, cellY)
-        this._tooltip.setVisible(true)
-    }
-
-    _makeButton(x, y, label, onClick, textColor = COLOR_OK) {
-        const w = 220
-        const h = 40
-        const rect = this.add.rectangle(x, y, w, h, 0x2a2a2a).setStrokeStyle(1, 0x4a4a4a)
-        this.add.text(x, y, label, { font: "18px Arial", color: textColor }).setOrigin(0.5)
-        rect.setInteractive({ useHandCursor: true })
-        rect.on("pointerover", () => rect.setFillStyle(0x3a3a3a))
-        rect.on("pointerout", () => rect.setFillStyle(0x2a2a2a))
-        rect.on("pointerup", onClick)
-    }
 }
+
+// Two panels centred as a pair, so the layout holds if PANEL_W changes.
+function cxLeft() { return GAME_W / 2 - PANEL_W - 20 }
+function cxRight() { return GAME_W / 2 + 20 }

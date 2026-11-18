@@ -1,0 +1,20 @@
+// The mobile bow (scope doc §10.16): shorter reach, closer minimum, more dodge.
+export default {
+    itemClass: 'RangedWeapon',
+    weaponCategory: 'bow',
+    throwable: false,
+    name: "Short Bow",
+    description: "A quick hunting bow. Causes between 2 and 4 damage at range five and adds +2 dodge.",
+    tile: 331,
+    art: { sheet: "32rogues-items", name: "shortBow" },
+    attackTile: 285,
+    attackAngle: -Math.PI / 4,
+    drawType: 'bow',
+    attackPowerStat: 'rangedAttackPower',
+    damageMin: 2,
+    damageMax: 4,
+    range: 5,
+    minRange: 2,
+    statContribution: { dodge: 2 },
+    minFloor: 1,
+}

@@ -1,0 +1,48 @@
+{
+    "_meta": {
+        "pack": "game_dev_sprites — original dungeon set",
+        "key": "tileReference.verdant-pillars",
+        "mode": "spritesheet",
+        "sheet": "game_dev_sprites/sprites/verdant/dungeon_pillars.png",
+        "tileSize": 32,
+        "spacing": 0,
+        "margin": 0,
+        "columns": 2,
+        "rows": 2,
+        "total": 4,
+        "view": "top-down dungeon map tile",
+        "license": "Original art made for this game (game_dev_sprites). Owned outright — free to ship. No third-party pack was used as input.",
+        "kind": "pillar",
+        "biome": "verdant",
+        "layer": "overlay",
+        "pivot": {
+            "x": 0.5,
+            "y": 1
+        },
+        "elevation": 0,
+        "placement": "Draw over the floor layer, one cell per pillar. There is no overhead variant: a pillar is always seen in elevation, because a cap that does not fill its cell cannot stack above a shaft. A taller hall wants a second face row, not a cap.",
+        "note": "GRID VERIFIED by scripts/build_sprite_reference.mjs against the PNG header (64x64 / 32 = 2x2, 4 frames, no remainder). Generated from verdant/dungeon_pillars.json — do not hand-edit; re-run the script instead. Frame names are the exporter's own, kept verbatim so a re-export cannot drift from the reference."
+    },
+    "pillars": {
+        "pillar": {
+            "frame": 0,
+            "col": 0,
+            "row": 0
+        },
+        "pillar_broken": {
+            "frame": 1,
+            "col": 1,
+            "row": 0
+        },
+        "spire": {
+            "frame": 2,
+            "col": 0,
+            "row": 1
+        },
+        "spire_broken": {
+            "frame": 3,
+            "col": 1,
+            "row": 1
+        }
+    }
+}

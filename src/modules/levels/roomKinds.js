@@ -25,15 +25,6 @@ export const SPECIFIC_ENEMY_KINDS = ["bats-only", "skeletons-only", "orcs-only",
 // from turning entirely into special rooms with nowhere to fight.
 const DEFAULT_MIN_REMAINING = 3
 
-// A settlement room is a themed enemy group scaled by a "form" (see
-// documents/v3_enemy_settlements.md). Both settlement rules write kind
-// "settlement" and differ only in which forms they roll and how big a room they
-// need, so they are two rules over one kind rather than two kinds.
-const settlementPayload = (forms) => (room, rng) => {
-    room.settlement = { species: "orc", form: rng.pick(forms), faction: "orc" }
-    room.floorTheme = "outdoor"
-}
-
 export const ROOM_KIND_RULES = [
     {
         key: "treasure", label: "Treasure", kind: "treasure", rate: 0.75,
@@ -45,36 +36,35 @@ export const ROOM_KIND_RULES = [
         kindFrom: SPECIFIC_ENEMY_KINDS,
         hint: "a room of one species (bats / skeletons / orcs / trolls)",
     },
-    { key: "shrine", label: "Shrine", kind: "shrine", rate: 0.5, hint: "a buff shrine" },
-    { key: "duelist", label: "Duelist", kind: "duelist", rate: 0.4, hint: "a single champion" },
     { key: "secret", label: "Secret", kind: "secret", rate: 0.5, hint: "sealed behind a hidden passage" },
-    // The four rates below were pinned at 1.0 while their features were verified
-    // end-to-end, not because a shop/rest/pact/font on every floor is the right
-    // game. They are now authored defaults rather than buried constants, which is
-    // the point — tune them per dungeon instead of editing this file.
-    { key: "shop", label: "Shop", kind: "shop", rate: 1.0, hint: "a shopkeeper" },
-    { key: "rest", label: "Rest", kind: "rest", rate: 1.0, hint: "a safe camp — heal and recover" },
-    { key: "pact", label: "Pact", kind: "pact", rate: 1.0, hint: "an advanced-affinity pact offer" },
-    { key: "essence", label: "Essence", kind: "essence", rate: 1.0, hint: "attune a basic affinity at a font" },
-    { key: "grove", label: "Grove", kind: "grove", rate: 0.35, hint: "a mythical beast bestows an empowered affinity" },
-    {
-        // Needs a genuinely large room and takes the BIGGEST eligible one, not a
-        // random pick — hence a selector rather than a size filter.
-        key: "settlement-fortress", label: "Fortress", kind: "settlement", rate: 1.0,
-        select: "fortress",
-        apply: settlementPayload(["fortress", "outpost"]),
-        hint: "a warlord fortress or leaderless outpost",
-    },
-    {
-        key: "settlement-camp", label: "Camp / village", kind: "settlement", rate: 1.0,
-        minRoom: { w: 9, h: 8 },
-        // A camp only needs a room that fits it, so unlike the fortress it has no
-        // minimum-remaining gate — it was written that way and stays that way.
-        minRemaining: 0,
-        apply: settlementPayload(["encampment", "village"]),
-        hint: "a hostile encampment or a neutral village",
-    },
+    // The CAMP — a shopkeeper and a campfire in one safe room (scope doc §10.11).
+    // Rate 1.0 is deliberate and is the one rule that should stay pinned: the
+    // guaranteed health and cure potions are only a guarantee if every floor has
+    // somewhere to buy them.
+    //
+    // This replaces the separate `shop` and `rest` rules, which BOTH sat here at
+    // rate 1.0 since the port and were both filled by nothing — two empty rooms
+    // on every floor. Merging them also hands a room back to the floor's combat
+    // budget, which matters more at five floors than it did at v3's depth.
+    { key: "camp", label: "Camp", kind: "camp", rate: 1.0, hint: "a shopkeeper and a campfire — trade, rest, and be safe" },
 ]
+
+// REMOVED 2026-09-22 (scope doc §10.11): `shrine`, `duelist`, `pact`, `essence`,
+// `grove` and the two `settlement` rules. Every one of them stamped a kind that
+// NOTHING in v5 reads — spawnFromTable has no branch for any of them, and the
+// systems they belong to (shrines, affinity pacts, essence fonts, settlements)
+// are cut in scope doc §6. They were not harmless: each rule claims a room from
+// the unclaimed pool before later rules get to look at it, and five of the seven
+// ran at rate 1.0 or near it. On a floor of a dozen rooms they were quietly
+// eating the room budget every single floor to produce ordinary combat rooms
+// with a misleading `kind` on them.
+//
+// `settlementPayload` went with them — it wrote `room.settlement`, which nothing
+// in v5 has ever read.
+//
+// The `fortressSelector` export below is kept: it is referenced by BSPLevel's
+// `selectors` argument, and a selector nothing requests is inert rather than
+// wrong. Deleting it would be a second edit in a second file for no gain.
 
 const RULES_BY_KEY = Object.fromEntries(ROOM_KIND_RULES.map(r => [r.key, r]))
 

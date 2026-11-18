@@ -695,8 +695,13 @@ export default class BSPLevel extends BaseLevel {
         const floor = mapState.levelManager.currentLevel
         const count = Math.min(3 + floor, 12)
         const SPAWN_SAFE_RADIUS = 3
+        // A trap in the camp would undo the point of a sanctuary. "shop" and
+        // "rest" are gone as kinds (merged into "camp", scope doc §10.11) and the
+        // rest belong to rules removed from roomKinds.js — kept here only because
+        // an extra name in this set costs nothing and a missing one costs a trap
+        // in a safe room.
         const SAFE_KINDS = new Set([
-            "starting", "ending", "shop", "rest", "treasure", "secret", "settlement", "pact", "essence", "grove",
+            "starting", "ending", "camp", "treasure", "secret",
         ])
 
         const roomAt = (x, y) => this.regions.find(r =>

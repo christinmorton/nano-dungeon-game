@@ -1,6 +1,6 @@
 import mapState from "./MapState.js"
 import tm from "./TurnManager.js"
-import account from "./Account.js"
+import prefs from "./Prefs.js"
 import dungeon from "./Dungeon.js"
 import { createDarkEyes } from "./Animations.js"
 import { resolveAmbient, lightingPreset, DEFAULT_LIGHTING, PHASE_MESSAGES } from "./levels/lighting.js"
@@ -166,7 +166,11 @@ class FogOfWar {
     // beacon), zero once burned out. The mortal counter to the Void's dark.
     _heroLightBonus(hero) {
         const off = hero?.inventory?.equippedSlots?.offhand
-        return off?.isLightSource ? (off.currentLight?.() ?? 0) : 0
+        const held = off?.isLightSource ? (off.currentLight?.() ?? 0) : 0
+        // Worn light (§10.17): `sight` is a stat key gear can contribute (the
+        // Beacon Crown), summed with the held torch. It never burns down.
+        const worn = hero?.stat?.('sight') ?? 0
+        return held + worn
     }
 
     // Re-resolve how lit this floor is right now, from its sky type and the
@@ -263,7 +267,7 @@ class FogOfWar {
         // Dev toggle: when fog of war is off, render nothing — the world
         // shows through with no dim/black overlay. Entity visibility is
         // handled in syncEntities; isVisible short-circuits to true.
-        if (!account.getPreferences().showFogOfWar) return
+        if (!prefs.getPreferences().showFogOfWar) return
         this._ensureDarkMask()
         const h = this.visibility.length
         const w = this.visibility[0].length
@@ -315,7 +319,7 @@ class FogOfWar {
 
     syncEntities() {
         if (!this.visibility) return
-        const fogEnabled = account.getPreferences().showFogOfWar
+        const fogEnabled = prefs.getPreferences().showFogOfWar
         // Catch preference flips between moves so the overlay clears /
         // reappears on the same frame the toggle changes, not the next
         // hero step.
@@ -323,7 +327,7 @@ class FogOfWar {
             this._lastFogEnabled = fogEnabled
             this.render()
         }
-        // Sense (Elf S) bypasses FoW for enemy visibility — the hero
+        // Sense (Ranger S) bypasses FoW for enemy visibility — the hero
         // sees every enemy on the floor regardless of LoS while the
         // tag is active. Read directly off dungeon.player each frame
         // (cheap; doesn't affect when fog isn't enabled).
@@ -421,7 +425,7 @@ class FogOfWar {
 
     isVisible(x, y) {
         if (!this.visibility) return true
-        if (!account.getPreferences().showFogOfWar) return true
+        if (!prefs.getPreferences().showFogOfWar) return true
         const row = this.visibility[y]
         if (!row) return false
         return row[x] === VISIBLE

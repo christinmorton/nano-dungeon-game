@@ -1,25 +1,30 @@
+// The Wizard's second starter-tier scroll (scope doc §10.16). Lightning is a
+// visual-only flavour in Combat (every hit stunning was judged too strong), so
+// this one carries no status — its edge over the fireball is the roll and the
+// point of spell power.
 export default {
     itemClass: 'RangedWeapon',
-    name: "A Scroll of Lightning",
-    description: "A scroll of Lightning. Causes between 1 and 2 damage. Range is seven tiles.",
+    weaponCategory: 'arcane',
+    name: "Scroll of Lightning",
+    description: "A crackling scroll. Causes between 2 and 6 damage at range seven and sharpens your spells.",
     tile: 768,
-    tint: 0x0022ff,
-    attackTile: 7,
-    attackTexture: "retroImpactLightning",
-    attackScale: 0.25,
-    // Bolt sprite (frame 7) is vertical; rotate it to aim along the attack
-    // axis (issue #26). Eyeball the sign if it points the wrong way.
-    attackAngle: -Math.PI / 2,
-    damageColor: 0xc084fc,
-    castType: 'frost',
+    art: { sheet: "32rogues-items", name: "scroll2" },
+    tint: 0xfff0a0,
+    attackTile: 567,
+    damageColor: 0xfff66a,
+    castType: 'arcane',
     damageType: 'magic',
-    // Magic-typed spell. damageFlavor 'lightning' has no status mapping
-    // in v1 (Stun lands with the tag rework) — flavor still drives the
-    // visual identity and future weakness interactions.
     attackPowerStat: 'magicPower',
     damageFlavor: 'lightning',
-    damageMin: 1,
-    damageMax: 2,
+    damageMin: 2,
+    damageMax: 6,
     range: 7,
     minRange: 3,
+    statContribution: { magicPower: 1 },
+    minFloor: 1,
+    // The scroll's point (§10.16): Arc Lightning strikes every target it reaches
+    // TWICE, and lightning spells stun one hit in five.
+    empower: {
+        lightning: { extraHits: 1, onHitStatus: { name: "Stun", chance: 0.2 } },
+    },
 }

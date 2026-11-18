@@ -2,9 +2,33 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>v3</title>
+    <title>The Lantern Company</title>
+    <style>
+      /* Phaser's Scale.FIT (see screens/Game.js) sizes the canvas to fit its
+         PARENT's box, so the parent needs a real one. A bare #game div in a
+         default-margin body is zero height, and the fit computes against
+         nothing. Full-viewport parent + no margin is the whole requirement.
+
+         overflow:hidden stops the letterboxed canvas from producing a scrollbar
+         that then changes the viewport and re-triggers the fit. */
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        background: #000;
+        overflow: hidden;
+      }
+      #game {
+        width: 100%;
+        height: 100%;
+      }
+      /* Canvas is inline by default; the descender gap adds phantom height. */
+      #game canvas {
+        display: block;
+      }
+    </style>
   </head>
   <body>
     <div id="game"></div>

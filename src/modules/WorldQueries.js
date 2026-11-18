@@ -24,6 +24,8 @@ import mapState from './MapState.js'
 // existing imports keep working. New code should import this module
 // directly.
 
+const CARDINALS = [[0, -1], [1, 0], [0, 1], [-1, 0]]
+
 // An entity's FOOTPRINT — how many tiles it covers, anchored TOP-LEFT at
 // (entity.x, entity.y) and extending right and down. Almost everything in the
 // game is 1x1 and declares nothing; only multi-tile props (a cottage, a rock
@@ -99,26 +101,60 @@ class WorldQueries {
         return mapState.level[y][x] !== 1
     }
 
-    randomWalkableTile() {
-        // Doors block pathfinding by default, so skip them as AI destinations
-        // even though they sit on floor tiles in the underlying level grid.
-        let x = Phaser.Math.Between(0, mapState.level[0].length - 1)
-        let y = Phaser.Math.Between(0, mapState.level.length - 1)
-        while (mapState.level[y] === undefined || mapState.level[y][x] !== 0 || this.isDoorAt(x, y)) {
-            x = Phaser.Math.Between(0, mapState.level[0].length - 1)
-            y = Phaser.Math.Between(0, mapState.level.length - 1)
-        }
-        return { x, y }
+    // Is (x, y) a tile something can be PLACED on? Floor, in bounds, not a door
+    // (doors block pathfinding by default, so they're never a valid destination
+    // even though they sit on floor in the underlying grid).
+    _placeable(x, y) {
+        const row = mapState.level[y]
+        return row !== undefined && row[x] === 0 && !this.isDoorAt(x, y)
     }
 
-    randomWalkableTileInRoom(x, y, w, h) {
-        let rx = Phaser.Math.Between(x, (x + w) - 1)
-        let ry = Phaser.Math.Between(y, (y + h) - 1)
-        while (mapState.level[ry] === undefined || mapState.level[ry][rx] !== 0 || this.isDoorAt(rx, ry)) {
-            rx = Phaser.Math.Between(x, (x + w) - 1)
-            ry = Phaser.Math.Between(y, (y + h) - 1)
+    // Pick a random placeable tile in a rect, WITHOUT looping forever.
+    //
+    // These were `do { pick } while (!ok)` — unbounded rejection sampling. That is
+    // fine while every rect is known to contain floor, and it hangs the browser
+    // outright the moment one doesn't: no error, no console, just a pegged main
+    // thread inside Phaser.Math.Between. An authored floor whose area rect never
+    // got carved is exactly that case, and it froze the game at level load with
+    // nothing to go on.
+    //
+    // Random first (cheap, and keeps the original distribution on the normal
+    // path), then an exhaustive scan of the rect, which also answers the question
+    // sampling cannot: whether a valid tile exists AT ALL. Returns null only when
+    // the rect is genuinely empty of floor — callers decide what that means rather
+    // than the engine spinning.
+    _randomPlaceableIn(x, y, w, h) {
+        if (!mapState.level || !mapState.level.length) return null
+        for (let i = 0; i < 40; i++) {
+            const rx = Phaser.Math.Between(x, x + w - 1)
+            const ry = Phaser.Math.Between(y, y + h - 1)
+            if (this._placeable(rx, ry)) return { x: rx, y: ry }
         }
-        return { x: rx, y: ry }
+        const found = []
+        for (let ry = y; ry < y + h; ry++) {
+            for (let rx = x; rx < x + w; rx++) if (this._placeable(rx, ry)) found.push({ x: rx, y: ry })
+        }
+        if (!found.length) return null
+        return found[Phaser.Math.Between(0, found.length - 1)]
+    }
+
+    randomWalkableTile() {
+        const t = this._randomPlaceableIn(0, 0, mapState.level[0].length, mapState.level.length)
+        if (t) return t
+        console.warn("[worldQueries] randomWalkableTile: the floor has NO walkable tile — returning (0,0)")
+        return { x: 0, y: 0 }
+    }
+
+    // NOTE: every caller dereferences .x/.y immediately (23 call sites across
+    // spawnFromTable, the archetypes, Quest and Dungeon), so this keeps its
+    // contract and always returns a tile. When the room has no floor it falls
+    // back to anywhere on the level, and only then to (0,0) — degraded and
+    // LOUD, which is strictly better than the freeze it replaces.
+    randomWalkableTileInRoom(x, y, w, h) {
+        const inRoom = this._randomPlaceableIn(x, y, w, h)
+        if (inRoom) return inRoom
+        console.warn(`[worldQueries] room (${x},${y} ${w}x${h}) contains no walkable tile — falling back to the level`)
+        return this.randomWalkableTile()
     }
 
     // Nearest walkable tile to (cx, cy), spiralling outward in Chebyshev rings —
@@ -139,6 +175,71 @@ class WorldQueries {
             }
         }
         return walkableFallback || { x: cx, y: cy }
+    }
+
+    // Would a BLOCKING entity standing on (x, y) split the floor's walkable graph?
+    //
+    // The placement question every blocker should ask — furniture, chests, the
+    // campfire, the shopkeeper. The furnisher used to answer it with a BFS over
+    // the ROOM's own tiles, which cannot see a corridor mouth (the mouth is the
+    // tile one step OUTSIDE the room rectangle), and chest placement never asked
+    // at all. Either could seal a doorway, and because the floor is a near-perfect
+    // tree of corridors that pass THROUGH rooms, one sealed choke cut off
+    // everything beyond it — measured at ~30% of floors with some area sealed and
+    // ~5% with the down stairs unreachable (standalone simulation, 2026-10-03).
+    //
+    // Open = floor in the passability grid with no standing blocker on it. The
+    // hero and enemies are not blockers here (they move), nor is walk-over
+    // dressing or an open door. BFS from one open neighbour of the candidate; if
+    // every other open neighbour is reached, the tile is not a choke. A tile with
+    // one open neighbour is a dead-end stub and always safe to fill.
+    //
+    // Cost: one scan of tm.entities plus a BFS that stops as soon as the last
+    // neighbour is found — on a chokepoint it walks the smaller side, on an open
+    // tile it usually finishes within a few dozen tiles. Called per candidate at
+    // populate time only.
+    wouldSplitFloor(x, y) {
+        const level = mapState.level
+        if (!level || !level[y] || level[y][x] !== 0) return false
+        const blocked = this._standingBlockers()
+        const open = (tx, ty) => level[ty] !== undefined && level[ty][tx] === 0 && !blocked.has(`${tx},${ty}`)
+        const nbrs = CARDINALS.map(([dx, dy]) => [x + dx, y + dy]).filter(([nx, ny]) => open(nx, ny))
+        if (nbrs.length <= 1) return false
+        blocked.add(`${x},${y}`)
+        const want = new Set(nbrs.map(([nx, ny]) => `${nx},${ny}`))
+        const seen = new Set([`${nbrs[0][0]},${nbrs[0][1]}`])
+        const queue = [nbrs[0]]
+        let found = 1
+        while (queue.length && found < want.size) {
+            const [cx, cy] = queue.shift()
+            for (const [dx, dy] of CARDINALS) {
+                const nx = cx + dx, ny = cy + dy
+                const k = `${nx},${ny}`
+                if (seen.has(k) || !open(nx, ny)) continue
+                seen.add(k)
+                if (want.has(k)) found++
+                queue.push([nx, ny])
+            }
+        }
+        return found < want.size
+    }
+
+    // Tiles covered by entities that stand still and block: furniture, chests,
+    // stairs, closed doors, the camp pieces. Keyed "x,y". Multi-tile props stamp
+    // their whole footprint, the same rule gridForEntity applies.
+    _standingBlockers() {
+        const out = new Set()
+        for (const e of tm.entities) {
+            if (!e.sprite || e.x == null || e.y == null) continue
+            if (e.walkable) continue
+            if (e.type === "hero" || e.type === "enemy") continue
+            if (e.type === "door" && e.state === "open") continue
+            const { w, h } = footprintOf(e)
+            for (let dy = 0; dy < h; dy++) {
+                for (let dx = 0; dx < w; dx++) out.add(`${e.x + dx},${e.y + dy}`)
+            }
+        }
+        return out
     }
 
     findPathToRandomReachable(entity, maxAttempts = 5) {
@@ -233,13 +334,24 @@ class WorldQueries {
         return tiles
     }
 
+    // Same unbounded-retry defect as randomWalkableTile above, and the same fix.
+    // Only ScrollOfTeleport calls this, so it never hung anyone — but a scroll
+    // read on a floor with no free tile would have locked the game just as hard.
+    // `isWalkableTile` (not _placeable) is deliberate: teleport cares about
+    // occupancy, so the destination must be genuinely free to stand on.
     getRandomFloorTile() {
-        let x, y
-        do {
-            x = Math.floor(Math.random() * mapState.level[0].length)
-            y = Math.floor(Math.random() * mapState.level.length)
-        } while (!this.isWalkableTile(x, y))
-        return { x, y }
+        for (let i = 0; i < 40; i++) {
+            const x = Math.floor(Math.random() * mapState.level[0].length)
+            const y = Math.floor(Math.random() * mapState.level.length)
+            if (this.isWalkableTile(x, y)) return { x, y }
+        }
+        const found = []
+        for (let y = 0; y < mapState.level.length; y++) {
+            for (let x = 0; x < mapState.level[0].length; x++) if (this.isWalkableTile(x, y)) found.push({ x, y })
+        }
+        if (found.length) return found[Math.floor(Math.random() * found.length)]
+        console.warn("[worldQueries] getRandomFloorTile: no free tile on this floor — returning (0,0)")
+        return { x: 0, y: 0 }
     }
 
     entityAtTile(x, y) {
@@ -256,6 +368,29 @@ class WorldQueries {
             }
         }
         return false
+    }
+
+    // The COMBATANT at (x, y) — an enemy or the hero — ignoring everything else
+    // standing there.
+    //
+    // entityAtTile returns the FIRST match in tm.entities and stops, which is
+    // right for "what do I bump into" but wrong for "who do I damage": an enemy
+    // can legitimately share a tile with a dropped item or a loot bag (both are
+    // walked over, not blocked), and whichever entered the Set first wins the
+    // lookup. An AOE that tested `entityAtTile(...).type === 'enemy'` therefore
+    // MISSED any enemy standing on loot — intermittently, depending on what the
+    // furnisher and previous kills had scattered around the blast.
+    //
+    // That was a real bug in The Unraveling (2026-09-20): sometimes it damaged
+    // everything, sometimes an enemy in plain view took nothing. Damage-dealing
+    // callers want this; movement and collision callers still want entityAtTile.
+    combatantAtTile(x, y) {
+        for (const entity of tm.entities) {
+            if (entity.walkable) continue
+            if (entity.type !== 'enemy' && entity.type !== 'hero') continue
+            if (entity.sprite && occupiesTile(entity, x, y)) return entity
+        }
+        return null
     }
 
     // A blocking structure (wall segment / palisade / war-hall — anything with

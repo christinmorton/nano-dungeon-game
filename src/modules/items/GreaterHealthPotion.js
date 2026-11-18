@@ -1,32 +1,29 @@
-import Phaser from 'phaser'
 import GenericItem from "./GenericItem.js"
 import dungeon from "../Dungeon.js"
 import { spawnHealNumber, playCast } from "../Animations.js"
 import gameLog from "../GameLog.js"
-import { bestHealTarget } from "../companions/party.js"
+
+// Twice the lesser potion's fraction — the reason to carry the heavy one. See
+// HealthPotion for why these are percentages of max health rather than flat.
+const HEAL_FRACTION = 0.5
 
 export default class GreaterHealthPotion extends GenericItem {
     constructor(x, y) {
         super(x, y, 669, null, { sheet: "32rogues-items", name: "largeDarkPotion" })
         this.name = "Greater Health Potion"
-        this.description = "A potent potion that cures between 8 and 12 health points when consumed."
+        this.description = "A potent potion that restores half of your maximum health when consumed."
+        this.stackable = true
     }
 
     equip(itemNumber) {
-        const points = Phaser.Math.Between(8, 12)
-        // Drink it yourself, or — if you're already full and a companion is hurt
-        // — give it to your most-wounded party member instead of wasting it.
-        const target = bestHealTarget(dungeon.player)
-        gameLog.log(target === dungeon.player
-            ? `A surge of vitality restores ${points} health points.`
-            : `${dungeon.player.name} feeds the draught to ${target.name}, restoring ${points} health points.`)
-        playCast(target, {
-            type: 'heal',
-            onComplete: () => {
-                target.healthPoints = Math.min(target.healthPoints + points, target.maxHealthPoints)
-                spawnHealNumber(target, points)
-                dungeon.player.removeItem(itemNumber)
-            }
-        })
+        // v5 has no party, so a draught always heals the drinker.
+        const target = dungeon.player
+        const points = Math.max(1, Math.round(target.maxHealthPoints * HEAL_FRACTION))
+        gameLog.log(`A surge of vitality restores ${points} health points.`)
+        // Effect resolves NOW; the cast pulse is cosmetic. See HealthPotion.
+        target.healthPoints = Math.min(target.healthPoints + points, target.maxHealthPoints)
+        spawnHealNumber(target, points)
+        target.removeItem(itemNumber)
+        playCast(target, { type: 'heal' })
     }
 }

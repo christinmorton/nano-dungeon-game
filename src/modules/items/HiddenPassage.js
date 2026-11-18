@@ -1,5 +1,6 @@
 import Door from "./Door.js"
 import gameLog from "../GameLog.js"
+import inputMap from "../InputMap.js"
 
 // TILE_HIDDEN reads as a distinct wall variant in-game (picked visually
 // via test.html — json note says "white ladder, tall pattern" but the
@@ -9,7 +10,7 @@ const TILE_HIDDEN = 246
 const TILE_OPEN = 447
 
 // A Door variant that starts in a "hidden" state: blocks movement,
-// renders as a special wall variant, and is revealed by pressing E
+// renders as a special wall variant, and is revealed by the interact key
 // adjacent. Once revealed, behaves like a normal open door — the player
 // can walk through, and the door state participates in FloorMemory the
 // same way regular doors do.
@@ -33,7 +34,7 @@ export default class HiddenPassage extends Door {
     }
 
     interactPrompt(actor) {
-        if (this.state === "hidden") return "[E] Search the wall"
+        if (this.state === "hidden") return `[${inputMap.keyLabel('interact')}] Search the wall`
         return super.interactPrompt(actor)
     }
 

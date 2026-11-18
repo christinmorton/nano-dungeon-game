@@ -3,7 +3,6 @@ import mapState from "../MapState.js"
 import gameLog from "../GameLog.js"
 import archetypes from "./index.js"
 import { combatTargetFor } from "../Targeting.js"
-import { moraleBreakBark } from "../dialog/combatBarks.js"
 
 // Enemy side of universal flee. Distinct from skirmisher's in-combat
 // hit-and-run (which stays engaged): this is a MORALE BREAK — the enemy
@@ -68,8 +67,6 @@ function beginFlee(enemy) {
         enemy.battle = null
     }
     gameLog.log(`The ${enemy.name} flees!`)
-    // Cry out as morale breaks — kind-varied panic line above its head.
-    moraleBreakBark(enemy)
 }
 
 // Step one tile away from the threat. Prefers the away-diagonal, then the two

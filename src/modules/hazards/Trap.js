@@ -69,13 +69,25 @@ export default class Trap {
     }
 
     // Show the trap art as a floor decal (NOT this.sprite — see class note).
+    //
+    // `revealed` is set LAST, only once a decal actually exists. It used to be
+    // set on the first line, before the scene/art guards below — which meant a
+    // trap whose art failed to resolve was permanently flagged revealed with
+    // nothing drawn, and could never redraw. That state also made the disarm
+    // prompt appear for a trap the player cannot see. Keeping the flag honest
+    // ("revealed" means "there is a decal on the floor") costs nothing and makes
+    // a future art failure degrade into a retry rather than a dead trap.
     _reveal() {
         if (this.revealed) return
-        this.revealed = true
         const scene = dungeon.scene
         if (!scene || this.decal) return
         const art = resolveArt(this.art)
-        if (!art || !scene.textures.exists(art.key)) return
+        if (!art || !scene.textures.exists(art.key)) {
+            // Loud on purpose: the whole trap roster was invisible for the entire
+            // port because this path returned in silence. See data/assetSheets.js.
+            console.warn(`Trap: no art for '${this.name}' (sheet '${this.art?.sheet}') — trap stays invisible`)
+            return
+        }
         const wx = mapState.map.tileToWorldX(this.x)
         const wy = mapState.map.tileToWorldY(this.y)
         this.decal = art.isImage
@@ -83,6 +95,7 @@ export default class Trap {
             : scene.add.sprite(wx, wy, art.key, art.frame)
         this.decal.setOrigin(0).setDepth(7)   // on the floor, below actors (10)
         this.decal.setScale(mapState.tileSize / art.nativeSize)
+        this.revealed = true
     }
 
     // Detection — the hero ended a move within auraRadius (moveEntityTo's loop).

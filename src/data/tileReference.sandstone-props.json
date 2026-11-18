@@ -1,0 +1,118 @@
+{
+    "_meta": {
+        "pack": "game_dev_sprites — original dungeon set",
+        "key": "tileReference.sandstone-props",
+        "mode": "spritesheet",
+        "sheet": "game_dev_sprites/sprites/sandstone/dungeon_props.png",
+        "tileSize": 32,
+        "spacing": 0,
+        "margin": 0,
+        "columns": 9,
+        "rows": 2,
+        "total": 18,
+        "view": "top-down dungeon map tile",
+        "license": "Original art made for this game (game_dev_sprites). Owned outright — free to ship. No third-party pack was used as input.",
+        "kind": "prop",
+        "biome": "sandstone",
+        "layer": "overlay",
+        "pivot": {
+            "x": 0.5,
+            "y": 1
+        },
+        "elevation": 0,
+        "placement": "Draw over the floor layer, one cell per prop, pivot at the bottom centre. Row 0 is the intact state and row 1 is the depleted one, same column. There is no overhead variant: a prop is always seen in elevation, because a cell that does not fill its own square cannot stack above one.",
+        "note": "GRID VERIFIED by scripts/build_sprite_reference.mjs against the PNG header (288x64 / 32 = 9x2, 18 frames, no remainder). Generated from sandstone/dungeon_props.json — do not hand-edit; re-run the script instead. Frame names are the exporter's own, kept verbatim so a re-export cannot drift from the reference."
+    },
+    "props": {
+        "rubble": {
+            "frame": 0,
+            "col": 0,
+            "row": 0
+        },
+        "slab": {
+            "frame": 1,
+            "col": 1,
+            "row": 0
+        },
+        "bones": {
+            "frame": 2,
+            "col": 2,
+            "row": 0
+        },
+        "crate": {
+            "frame": 3,
+            "col": 3,
+            "row": 0
+        },
+        "urn": {
+            "frame": 4,
+            "col": 4,
+            "row": 0
+        },
+        "brazier": {
+            "frame": 5,
+            "col": 5,
+            "row": 0
+        },
+        "citrine": {
+            "frame": 6,
+            "col": 6,
+            "row": 0
+        },
+        "thornbrush": {
+            "frame": 7,
+            "col": 7,
+            "row": 0
+        },
+        "pot_shards": {
+            "frame": 8,
+            "col": 8,
+            "row": 0
+        },
+        "rubble_disturbed": {
+            "frame": 9,
+            "col": 0,
+            "row": 1
+        },
+        "slab_toppled": {
+            "frame": 10,
+            "col": 1,
+            "row": 1
+        },
+        "bones_scattered": {
+            "frame": 11,
+            "col": 2,
+            "row": 1
+        },
+        "crate_smashed": {
+            "frame": 12,
+            "col": 3,
+            "row": 1
+        },
+        "urn_shattered": {
+            "frame": 13,
+            "col": 4,
+            "row": 1
+        },
+        "brazier_cold": {
+            "frame": 14,
+            "col": 5,
+            "row": 1
+        },
+        "citrine_mined": {
+            "frame": 15,
+            "col": 6,
+            "row": 1
+        },
+        "thornbrush_cut back": {
+            "frame": 16,
+            "col": 7,
+            "row": 1
+        },
+        "pot_shards_swept": {
+            "frame": 17,
+            "col": 8,
+            "row": 1
+        }
+    }
+}

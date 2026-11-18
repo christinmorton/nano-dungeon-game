@@ -1,168 +1,75 @@
-import Phaser from "phaser"
-
-import CursedGem from "./items/CursedGem.js"
-import DungeonKey from "./items/DungeonKey.js"
-import Gem from "./items/Gem.js"
-import GreaterHealthPotion from "./items/GreaterHealthPotion.js"
 import HealthPotion from "./items/HealthPotion.js"
-import Potion from "./items/Potion.js"
-import ScrollOfBlink from "./items/ScrollOfBlink.js"
-import ScrollOfTeleport from "./items/ScrollOfTeleport.js"
+import GreaterHealthPotion from "./items/GreaterHealthPotion.js"
 import StaminaPotion from "./items/StaminaPotion.js"
+import Potion from "./items/Potion.js"
+import Gem from "./items/Gem.js"
+import DungeonKey from "./items/DungeonKey.js"
 import { makeItem, ITEM_PROFILES } from "./items/itemProfiles.js"
-import { getRandomTagsForItem } from "./Tags.js"
 
-// Item registry. Two flavors of entry coexist here:
+// Registry of BEHAVIOUR-VARIED items — the ones that are real classes because
+// they do something on use — plus capitalized aliases for the profile-based
+// weapons and armor, so drop tables can write `new items.Sword()` without
+// knowing whether a given item is a class or a profile.
 //
-//   1. Behavior-varied items (potions, utility scrolls, currency,
-//      quest items) remain as real classes — their per-item logic
-//      lives in equip()/value()/etc. and resists data-only modeling.
+// v3's version registers nine classes and ~45 aliases. v5's registers six and
+// fifteen, because that is what the nineteen profiles in itemProfiles.js and the
+// five carried consumables add up to.
 //
-//   2. Data-varied items (weapons, armor) are profile-based via
-//      makeItem(). The dict entry for e.g. items.Sword is a function
-//      that returns a fresh MeleeWeapon configured from the sword
-//      profile, so `new items.Sword()` still works (JS treats `new`
-//      on a function that returns an object as "use that object",
-//      ignoring `this`).
-//
-// getRandomItem picks uniformly across both flavors; nothing in the
-// game code needs to know which path produced an item.
-
-// Capitalized aliases so the existing items.Sword / items.Axe call
-// sites keep working. Profile name -> aliased factory entry.
-const PROFILE_ALIASES = {
-    Sword: 'sword',
-    Axe: 'axe',
-    Hammer: 'hammer',
-    LongSword: 'longSword',
-    Spear: 'spear',
-    Bow: 'bow',
-    ScrollOfFireball: 'scrollOfFireball',
-    ScrollOfLightning: 'scrollOfLightning',
-    Shield: 'shield',
-    Helmet: 'helmet',
-    Dagger: 'dagger',
-    Mace: 'mace',
-    Quarterstaff: 'quarterstaff',
-    Greatsword: 'greatsword',
-    Crossbow: 'crossbow',
-    Wand: 'wand',
-    Buckler: 'buckler',
-    TowerShield: 'towerShield',
-    Tome: 'tome',
-    Orb: 'orb',
-    HuntersCap: 'huntersCap',
-    AcolyteHood: 'acolyteHood',
-    WardenGreatHelm: 'wardenGreatHelm',
-    RealmCuirass: 'realmCuirass',
-    RealmHauberk: 'realmHauberk',
-    HuntersLeathers: 'huntersLeathers',
-    AcolyteRobe: 'acolyteRobe',
-    WardenSabatons: 'wardenSabatons',
-    HuntersBoots: 'huntersBoots',
-    WandererShoes: 'wandererShoes',
-    WardenGauntlets: 'wardenGauntlets',
-    HuntersGloves: 'huntersGloves',
-    AcolyteWraps: 'acolyteWraps',
-    RingOfMight: 'ringOfMight',
-    RingOfTheCat: 'ringOfTheCat',
-    RingOfFocus: 'ringOfFocus',
-    RingOfVigor: 'ringOfVigor',
-    WardingPendant: 'wardingPendant',
-    Torch: 'torch',
-    Lantern: 'lantern',
-    LightsBeacon: 'lightsBeacon',
+// A profile entry is a FACTORY FUNCTION, not a class. `new items.Sword()` works
+// because a constructor that returns an object yields that object — which is also
+// why `instanceof` can never recover a profile item's name, and why makeItem
+// stamps `profileKey` onto the instance instead.
+function profileFactory(key) {
+    return function (x, y) {
+        return makeItem(key, x, y)
+    }
 }
 
 const items = {
-    CursedGem,
-    DungeonKey,
-    Gem,
-    GreaterHealthPotion,
+    // Real classes — each overrides equip() to do something.
     HealthPotion,
-    Potion,
-    ScrollOfBlink,
-    ScrollOfTeleport,
+    GreaterHealthPotion,
     StaminaPotion,
-}
-for (const [alias, profileName] of Object.entries(PROFILE_ALIASES)) {
-    items[alias] = function (x, y) {
-        return makeItem(profileName, x, y)
-    }
-}
+    Potion,
+    Gem,
+    DungeonKey,
 
-// Reverse map: lowercase profileName -> capitalized registry alias. makeItem
-// stamps the lowercase profileName as `profileKey`, but aliased weapons/armor
-// are registered ONLY under the capitalized alias (the auto-register loop below
-// deliberately skips the lowercase name to avoid double-weighting the drop pool).
-// Serialization resolves through this so a dropped Sword is recoverable by its
-// registry key — without it, gear in a container serializes to null and vanishes
-// from FloorMemory snapshots on floor revisit.
-const PROFILE_TO_ALIAS = {}
-for (const [alias, profileName] of Object.entries(PROFILE_ALIASES)) {
-    PROFILE_TO_ALIAS[profileName] = alias
-}
-
-// Auto-register every other DROPPABLE profile (e.g. reagents) into the drop
-// pool so catalog items appear without a per-item alias. System-pending items
-// set `droppable: false` and are skipped — still constructible via makeItem and
-// browsable, just kept out of random drops until their system ships (#47).
-const aliasedProfiles = new Set(Object.values(PROFILE_ALIASES))
-for (const [name, profile] of Object.entries(ITEM_PROFILES)) {
-    if (profile.droppable === false) continue
-    if (aliasedProfiles.has(name) || items[name]) continue
-    // Regular function (not arrow): getRandomItem does `new items[key]()`,
-    // and arrow functions have no [[Construct]]. Returning an object from a
-    // normal function makes `new` yield that object.
-    items[name] = function (x, y) { return makeItem(name, x, y) }
-}
-
-// Never let an ultimate-teaching tome sit in the drop pool — ultimates are
-// role-unique and unlearnable (see BaseHero.learnAbility). The tier check needs
-// the ability registry, but a STATIC import here would be fatal: Items.js is
-// imported by BaseEnemy during BaseEnemy's own init, and the registry eagerly
-// globs every ability (incl. Follower, which extends BaseEnemy) → re-entrant TDZ
-// crash. A dynamic import resolves on a microtask AFTER the sync graph settles, so
-// BaseEnemy is fully built by then. None exist today; this future-proofs the rule.
-import("./classes/abilities/abilityRegistry.js").then(({ abilityByName }) => {
-    for (const key of Object.keys(items)) {
-        const profile = ITEM_PROFILES[key]
-        if (profile?.itemClass === 'Tome' && abilityByName(profile.teaches)?.tier === 'ultimate') {
-            delete items[key]
-        }
-    }
-}).catch(() => {})
-
-// Resolve a makeItem `profileKey` to the registry key its factory is stored
-// under. Non-aliased profiles (reagents, etc.) register under their own name;
-// aliased weapons/armor register under the capitalized alias. Returns null for
-// an unknown profile. Used by ItemSerializer to round-trip container contents.
-export function registryKeyForProfile(profileKey) {
-    if (!profileKey) return null
-    if (items[profileKey]) return profileKey
-    const alias = PROFILE_TO_ALIAS[profileKey]
-    return alias && items[alias] ? alias : null
+    // Profile aliases (capitalized), resolved through makeItem.
+    Sword: profileFactory("sword"),
+    Dagger: profileFactory("dagger"),
+    Axe: profileFactory("axe"),
+    Mace: profileFactory("mace"),
+    LongSword: profileFactory("longSword"),
+    Greatsword: profileFactory("greatsword"),
+    Spear: profileFactory("spear"),
+    Quarterstaff: profileFactory("quarterstaff"),
+    Bow: profileFactory("bow"),
+    Crossbow: profileFactory("crossbow"),
+    Wand: profileFactory("wand"),
+    Shield: profileFactory("shield"),
+    Buckler: profileFactory("buckler"),
+    Helmet: profileFactory("helmet"),
+    Torch: profileFactory("torch"),
 }
 
 export default items
 export { makeItem, ITEM_PROFILES }
 
-
-export function getRandomItem(x, y, modifierCount = 1, effectCount = 1) {
-    const key = Phaser.Utils.Array.GetRandom(Object.keys(items))
-    const instance = new items[key](x, y)
-    return applyDefaultRandomTags(instance, modifierCount, effectCount)
+// v3 rolled material tags (Golden / Silver / Iron) and effect tags onto a dropped
+// item here, so a dropped Gem or Potion picked up a rarity flavour. v5 items are
+// FLAT — no tier, no rarity, no material tags (scope doc section 5) — so there is
+// nothing to apply and this is a pass-through.
+//
+// Kept as a function rather than deleted at every call site: the drop tables in
+// BaseEnemy read much better as `applyDefaultRandomTags(new items.Gem())` than as
+// a bare construction, and if item tags ever return under section 9 this is the
+// one place they reattach.
+export function applyDefaultRandomTags(instance) {
+    return instance
 }
 
-// Apply the standard random-tag pass (materials + effects) to an item
-// instance, respecting the item's tagPolicy. Shared by getRandomItem
-// (uniform-random spawns) and BaseEnemy.onDestroy (weighted humanoid
-// drops) so a dropped Gem still rolls Iron/Silver/Golden and a dropped
-// Potion still picks up modifier tags.
-export function applyDefaultRandomTags(instance, modifierCount = 1, effectCount = 1) {
-    const policy = instance.tagPolicy || { materials: true, effects: true }
-    const mods = policy.materials ? modifierCount : 0
-    const effs = policy.effects ? effectCount : 0
-    const tags = getRandomTagsForItem(mods, effs)
-    return instance.addTags(tags)
+// A random item instance, used by loot paths that just want "something".
+export function getRandomItem(x, y) {
+    const key = Object.keys(items)[Math.floor(Math.random() * Object.keys(items).length)]
+    return applyDefaultRandomTags(new items[key](x, y))
 }

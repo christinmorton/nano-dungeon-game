@@ -4,10 +4,8 @@ import mapState from "../MapState.js"
 import { combatTargetFor } from "../Targeting.js"
 import { detects } from "../Perception.js"
 import { approachGoal } from "./orderBias.js"
-import speech from "../SpeechBubble.js"
 import gameLog from "../GameLog.js"
 import { hunterDebugOn } from "../debugFlags.js"
-import { rollHunterRole, hunterPersistence, hunterBark } from "../dialog/hunterBarks.js"
 
 // The hunter is a targeted pursuer that puts on an act. Instead of beelining
 // the shortest path the instant it spawns, it runs a three-stage hunt:
@@ -15,7 +13,7 @@ import { rollHunterRole, hunterPersistence, hunterBark } from "../dialog/hunterB
 //   travel  -> head to the hero's last-known area (seeded at spawn / refreshed
 //              whenever it actually sees the hero)
 //   search  -> reaching that area empty, check a few nearby rooms one at a
-//              time, barking in-character (assassin / bounty-hunter / ...)
+//              time
 //   close   -> drop the act and beeline to the hero's true position
 //
 // LOS-accel: seeing the hero at any non-close stage jumps straight to `close`.
@@ -24,8 +22,8 @@ import { rollHunterRole, hunterPersistence, hunterBark } from "../dialog/hunterB
 //   - relentless (bounty/zealot): close in anyway — inevitable, always catches
 //   - tracker    (assassin/stalker): lose the trail, drop to a wander, and can
 //                reacquire later if the hero reappears — evadable
-// `hunterRole` / `huntPersistence` can be authored onto an enemy later; absent,
-// they roll at spawn. See documents/v3_ai_behavior_system.md (Hunter).
+// `huntPersistence` can be authored onto an enemy later; absent, it rolls at
+// spawn. See documents/v3_ai_behavior_system.md (Hunter).
 //
 // High SPD shapes the identity; STR/CON are average. Migrated from
 // tags/hunter.js (2026-05-25); reworked from a pure beeline 2026-07-12.
@@ -41,8 +39,13 @@ function lazyInit(enemy) {
     enemy.tint = HUNTER_TINT
     if (enemy.sprite) enemy.sprite.tint = HUNTER_TINT
 
-    enemy.hunterRole = enemy.hunterRole || rollHunterRole()
-    enemy.huntPersistence = enemy.huntPersistence || hunterPersistence(enemy.hunterRole)
+    // v3 rolled a hunter ROLE (assassin / stalker / bounty / zealot) from
+    // dialog/hunterBarks.js, which supplied both its bark lines and a default
+    // persistence. The barks go with the rest of the dialog layer, but PERSISTENCE
+    // is real behaviour — it gates whether a hunter keeps tracking after losing
+    // you. v3's four roles split exactly two "tracker" and two "relentless", so
+    // the same 50/50 is rolled directly here and the variety survives the cut.
+    enemy.huntPersistence = enemy.huntPersistence || (Math.random() < 0.5 ? "tracker" : "relentless")
 
     const p = dungeon.player
     enemy._huntAnchorX = p ? p.x : enemy.x
@@ -50,13 +53,7 @@ function lazyInit(enemy) {
     enemy._huntStage = "travel"
     enemy._huntChecked = []
     enemy._huntRoomsChecked = 0
-    bark(enemy, "travel")
-    narrate(enemy, `hunting you — ${enemy.hunterRole}/${enemy.huntPersistence}, travel to last-known (${enemy._huntAnchorX},${enemy._huntAnchorY})`)
-}
-
-function bark(enemy, phase) {
-    const line = hunterBark(enemy.hunterRole, phase)
-    if (line) speech.say(enemy, line)
+    narrate(enemy, `hunting you — ${enemy.huntPersistence}, travel to last-known (${enemy._huntAnchorX},${enemy._huntAnchorY})`)
 }
 
 // Debug-only narration of the hunt to the game log, so the whole travel ->
@@ -116,11 +113,9 @@ function finishSearch(enemy) {
     if (enemy.huntPersistence === "tracker") {
         enemy._huntStage = "lost"
         enemy.alerted = false
-        bark(enemy, "lose")
         narrate(enemy, "budget spent, no trail — giving up, wandering (tracker)")
     } else {
         enemy._huntStage = "close"
-        bark(enemy, "close")
         narrate(enemy, "budget spent — closing in on your true position (relentless)")
     }
 }
@@ -150,7 +145,6 @@ function huntSearch(enemy) {
     // and move on — or run out the budget and branch.
     markChecked(enemy, room)
     enemy._huntRoomsChecked += 1
-    bark(enemy, "search")
     narrate(enemy, `searched a room (${enemy._huntRoomsChecked}/${SEARCH_ROOMS}) — empty`)
     if (enemy._huntRoomsChecked >= SEARCH_ROOMS) { finishSearch(enemy); return spend(enemy) }
     const next = pickNextSearchRoom(enemy)
@@ -233,7 +227,6 @@ function turn(enemy) {
         if (enemy._huntStage !== "close") {
             enemy._huntStage = "close"
             enemy.alerted = true
-            bark(enemy, "close")
             narrate(enemy, "spotted you — dropping the act, closing in")
         }
     }

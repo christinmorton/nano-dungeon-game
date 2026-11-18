@@ -11,6 +11,7 @@
 // / icon as instance fields.
 
 import Phaser from 'phaser'
+import { empowerDamage } from '../../abilities/empower.js'
 
 // Fields the progression snapshot must never capture/restore: the hero ref,
 // runtime state, and the progression bookkeeping/definitions themselves.
@@ -59,6 +60,14 @@ export default class Ability {
     channeled = false
     invokeVerb = 'invoking'
     breaksOnLineOfSight = true
+    // FRAME-PACED channels: tick() is driven every frame by World.update rather
+    // than once per round. Set this on any channel whose tick() paces itself by
+    // WALL CLOCK — i.e. anything built on chargedCast.js — because a once-a-round
+    // tick gives such a cast a single animation frame per round and its wind-up
+    // reads as a blink (found 2026-09-20). Leave it false for channels whose
+    // tick() IS the per-round effect (a drain, a per-round heal): frame-pacing
+    // those would fire them sixty times a second. See HeroController.tickInvocation.
+    framePaced = false
     target = 'self'
     // Optional minimum stat thresholds — { Magic: 10, INT: 10 } means
     // canActivate fails unless hero.stat('Magic') >= 10 AND hero.stat('INT')
@@ -119,6 +128,18 @@ export default class Ability {
     damageMin = 0
     damageMax = 0
     damageStat = null         // e.g. 'magicPower', 'attackPower'
+    // Multiplier on the STAT part of a self-computed roll (scope doc §10.16).
+    // The melee kit multiplies hero.attack() (Mighty Blow is 2x); the spell kit
+    // only ever ADDED its stat to a small roll, which is why a Rime Lance was
+    // five percent of a floor-5 brute. 1 = the old behaviour; the Wizard's
+    // damage spells set 1.8 to 3.5. Also what makes a +3 spell-power staff
+    // matter: the staff's bonus is multiplied too.
+    damageScale = 1
+    // The spell's element ('fire' | 'ice' | 'lightning' | 'arcane'), or null for
+    // a non-spell. Read by abilities/empower.js: the caster's weapon may empower
+    // the spells of one element (a lightning scroll → Arc Lightning) or all of
+    // them. Scope doc §10.16.
+    element = null
     damageType = 'physical'   // 'physical' | 'magic' — passed to resolveDamage
 
     // Status inflicted on a surviving victim — a tag template (e.g. the imported
@@ -210,11 +231,15 @@ export default class Ability {
     // converted abilities compute their hit from here rather than inlining a
     // Between() roll. Non-damaging abilities (min/max 0, no stat) return 0.
     rollDamage(caster = this.hero) {
-        const base = this.damageStat ? caster.stat(this.damageStat) : 0
+        const base = this.damageStat
+            ? Math.round(caster.stat(this.damageStat) * (this.damageScale ?? 1))
+            : 0
         const spread = (this.damageMin || this.damageMax)
             ? Phaser.Math.Between(this.damageMin, this.damageMax)
             : 0
-        return base + spread
+        // The caster's weapon may add to or multiply the roll (§10.16). A
+        // no-op for every weapon that declares no `empower`.
+        return empowerDamage(this, caster, base + spread)
     }
 
     // --- Progression mechanics --------------------------------------------------

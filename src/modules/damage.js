@@ -29,5 +29,19 @@ export function applyDamage(victim, amount) {
         }
     }
     victim.healthPoints -= amount
-    return { absorbed, dealt: amount }
+    // LAST BREATH (§10.17, the Revenant Mail): once per run, a blow that would
+    // kill the bearer leaves them at a quarter of max HP instead. It lives
+    // HERE because this is the one choke both damage paths share; a proc in
+    // Combat alone would let a Dark Priest's curse (resolveDamage) kill through
+    // it. `lastBreath` is a stat key the hero's reducer defaults to 0 and the
+    // mail contributes 1 to; the flag on the victim makes it once per run. The
+    // caller logs it from the `revived` flag — this module imports nothing.
+    // A DoT ticking HP directly (burning, poison) bypasses this; accepted.
+    let revived = false
+    if (victim.healthPoints <= 0 && !victim._lastBreathUsed && (victim.stat?.('lastBreath') ?? 0) > 0) {
+        victim._lastBreathUsed = true
+        victim.healthPoints = Math.max(1, Math.ceil((victim.maxHealthPoints || 1) * 0.25))
+        revived = true
+    }
+    return { absorbed, dealt: amount, revived }
 }

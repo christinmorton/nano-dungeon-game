@@ -1,7 +1,7 @@
 import tm from '../TurnManager.js'
 import gameLog from '../GameLog.js'
 import mapState from '../MapState.js'
-import Container from '../items/Container.js'
+import Container, { INVENTORY_CAP } from '../items/Container.js'
 import { spawnBuffNumber } from '../Animations.js'
 import { SLOT_NAMES } from '../items/GenericItem.js'
 
@@ -30,14 +30,64 @@ export default class HeroInventory {
         for (const name of SLOT_NAMES) this.equippedSlots[name] = null
     }
 
+    // STACKING (added 2026-09-20, scope doc §10.9).
+    //
+    // A stack is ONE item object carrying a `count`, not a list of objects — so
+    // everything that already walks this.items (the digit keys, the Pause panel,
+    // dropAt, the carry cap) keeps working unchanged and only needs to render the
+    // count. Only items declaring `stackable` participate; gear never does,
+    // because two swords can differ in what they contribute.
+    //
+    // Items are matched by NAME rather than by class. Two potions built by the
+    // same constructor are interchangeable, and the name is what the player sees.
+    stackCountOf(item) {
+        return item?.stackable ? (item.count ?? 1) : 1
+    }
+
+    // The existing stack an incoming item should join, or null for a new slot.
+    _stackFor(item) {
+        if (!item?.stackable) return null
+        return this.items.find(i => i.stackable && i.name === item.name) ?? null
+    }
+
+    // Can this item be taken, given the carry cap? True when there is a free slot
+    // OR when it merges into a stack already held — a full pack must still accept
+    // a third potion when two are already in one slot, or stacking would make the
+    // inventory feel BROKEN rather than roomier. Every pickup path asks this
+    // instead of testing items.length directly.
+    canAccept(item) {
+        if (this._stackFor(item)) return true
+        return this.items.length < INVENTORY_CAP
+    }
+
     add(item) {
+        const stack = this._stackFor(item)
+        if (stack) {
+            // Absorb into the existing stack. The incoming object is discarded —
+            // it was never placed on the map or in the list, so nothing else can
+            // be holding a reference to it.
+            stack.count = this.stackCountOf(stack) + this.stackCountOf(item)
+            this.hero.hud?.refresh()
+            return
+        }
+        if (item?.stackable && item.count == null) item.count = 1
         this.items.push(item)
         this.hero.hud?.refresh()
     }
 
+    // Remove ONE from the entry at `index`. A stack of more than one loses a
+    // single unit and stays in place; anything else leaves the list entirely.
+    //
+    // This is what a consumable's own equip() calls when it is used, so drinking
+    // one potion from a stack of three must not remove the other two.
     removeAt(index) {
         const item = this.items[index]
         if (!item) return
+        if (item.stackable && this.stackCountOf(item) > 1) {
+            item.count = this.stackCountOf(item) - 1
+            this.hero.hud?.refresh()
+            return
+        }
         this.items = this.items.filter(i => i !== item)
         this.hero.hud?.refresh()
     }
@@ -75,6 +125,9 @@ export default class HeroInventory {
         this.items = this.items.filter(i => i !== item)
         this.equippedSlots[slot] = item
         item.active = true
+        // An item that reads its wearer's state (the Berserker's Charm, §10.17)
+        // needs to know who that is. Cleared on unequip and on displacement.
+        item.owner = this.hero
 
         gameLog.log(`${this.hero.name} equips ${item.name}: ${item.description}.`)
         const carryIndex = this.items.indexOf(item)  // -1 now; equip() doesn't need the index
@@ -87,6 +140,7 @@ export default class HeroInventory {
 
         if (displaced) {
             displaced.active = false
+            displaced.owner = null
             displaced.unequip?.(this.hero)
             this.items.push(displaced)
             gameLog.log(`${this.hero.name} unequips ${displaced.name} to make room.`)
@@ -95,18 +149,20 @@ export default class HeroInventory {
         this.hero.hud?.refresh()
     }
 
-    // M/O/H/B/A unequip handler. If carry is full and the slot occupant
-    // can't fit, drop it into a bag on the hero's tile (reusing the
-    // bag-on-drop infra).
+    // Unequip a slot back to carry — the Pause panel's and Character screen's
+    // click-to-unequip (the per-slot letter keys went on 2026-10-03). If carry
+    // is full and the slot occupant can't fit, drop it into a bag on the hero's
+    // tile (reusing the bag-on-drop infra).
     unequipSlot(slotName) {
         const item = this.equippedSlots[slotName]
         if (!item) return
 
         item.active = false
+        item.owner = null
         item.unequip?.(this.hero)
         this.equippedSlots[slotName] = null
 
-        if (this.items.length < 10) {
+        if (this.items.length < INVENTORY_CAP) {
             this.items.push(item)
             gameLog.log(`${this.hero.name} unequips ${item.name}.`)
         } else {
@@ -142,7 +198,15 @@ export default class HeroInventory {
             tm.addEntity(new Container(this.hero.x, this.hero.y, "bag", [item]))
         }
 
-        gameLog.log(`${this.hero.name} dropped ${item.name}.`)
+        // A stack drops WHOLE — the count rides on the item object, so the bag
+        // receives all of them as one entry and picking it back up restores the
+        // stack intact. (Decided 2026-09-20: dropping one at a time would need a
+        // second button for "drop all", and the stack is one inventory entry
+        // everywhere else.)
+        const count = this.stackCountOf(item)
+        gameLog.log(count > 1
+            ? `${this.hero.name} dropped ${item.name} x${count}.`
+            : `${this.hero.name} dropped ${item.name}.`)
     }
 
     equipped() {

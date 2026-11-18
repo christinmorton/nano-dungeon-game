@@ -1,0 +1,72 @@
+{
+    "_meta": {
+        "pack": "game_dev_sprites — original dungeon set",
+        "key": "tileReference.magma-ground",
+        "mode": "spritesheet",
+        "sheet": "game_dev_sprites/sprites/magma/dirt_ground.png",
+        "tileSize": 32,
+        "spacing": 0,
+        "margin": 0,
+        "columns": 3,
+        "rows": 3,
+        "total": 9,
+        "view": "top-down dungeon map tile",
+        "license": "Original art made for this game (game_dev_sprites). Owned outright — free to ship. No third-party pack was used as input.",
+        "kind": "terrain",
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "elevation": 90,
+        "adjacency": "block-3x3",
+        "placement": "index = (row % 3) * 3 + (column % 3)",
+        "note": "GRID VERIFIED by scripts/build_sprite_reference.mjs against the PNG header (96x96 / 32 = 3x3, 9 frames, no remainder). Generated from magma/dirt_ground.json — do not hand-edit; re-run the script instead. Frame names are the exporter's own, kept verbatim so a re-export cannot drift from the reference."
+    },
+    "terrains": {
+        "magma_00": {
+            "frame": 0,
+            "col": 0,
+            "row": 0
+        },
+        "magma_01": {
+            "frame": 1,
+            "col": 1,
+            "row": 0
+        },
+        "magma_02": {
+            "frame": 2,
+            "col": 2,
+            "row": 0
+        },
+        "magma_03": {
+            "frame": 3,
+            "col": 0,
+            "row": 1
+        },
+        "magma_04": {
+            "frame": 4,
+            "col": 1,
+            "row": 1
+        },
+        "magma_05": {
+            "frame": 5,
+            "col": 2,
+            "row": 1
+        },
+        "magma_06": {
+            "frame": 6,
+            "col": 0,
+            "row": 2
+        },
+        "magma_07": {
+            "frame": 7,
+            "col": 1,
+            "row": 2
+        },
+        "magma_08": {
+            "frame": 8,
+            "col": 2,
+            "row": 2
+        }
+    }
+}

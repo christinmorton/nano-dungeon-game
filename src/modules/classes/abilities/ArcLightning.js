@@ -15,17 +15,22 @@ const LIGHTNING_PROJECTILE_TILE = 7
 
 export default class ArcLightning extends Ability {
     name = 'Arc Lightning'
-    icon = 31
-    description = 'Bolt a picked enemy (range 5), then chain to nearby foes — magic damage that bounces across a pack, weakening each hop. 1 AP, cd 6.'
+    icon = 14
+    description = 'Bolt a picked enemy (range 5), then chain to nearby foes: 2.2x spell power + 8..14, weakening each hop. 1 AP, cd 6.'
     cost = { ap: 1, mp: 0 }
     cooldown = 6
     range = 5
     target = 'pickEnemy'
 
     // Declarative payload — each link rolls from these (then x arcFalloff^hop, + bonus).
-    damageMin = 6
-    damageMax = 10
+    // Rescaled 2026-10-04 (scope doc §10.16): was magicPower + 6..10.
+    damageScale = 2.2
+    damageMin = 8
+    damageMax = 14
     damageStat = 'magicPower'
+    // A lightning scroll or the Stormcaller Staff empowers this (§10.16): the
+    // chain pattern strikes each target extra times and rolls a stun per hit.
+    element = 'lightning'
     damageType = 'magic'
 
     // Chain shape (ladder-tuned). arcs = BOUNCES after the first hit; arcFalloff
@@ -34,34 +39,6 @@ export default class ArcLightning extends Ability {
     chainRadius = 2
     arcFalloff = 0.85
     bonusDamage = 0
-
-    // --- Progression ladder (AoE spreader; arc count is the core knob) ---
-    //   L1 : 2 bounces, 6..10 dmg, 0.85 falloff
-    //   L2 : 3 bounces, 9..13 dmg
-    //   L3 : augment — Surge (+dmg) | Farreach (+range, +1 bounce) | Cascade (+2 bounces)
-    //   L4 : 5 bounces, 12..17 dmg + a trait slot (Conductive / Tempest / Supercharged)
-    maxLevel = 4
-    augmentLevel = 3
-    traitLevel = 4
-    maxTraits = 1
-
-    levelBoosts = {
-        2: a => { a.arcs = 3; a.damageMin = 9; a.damageMax = 13 },
-        4: a => { a.arcs = 5; a.damageMin = 12; a.damageMax = 17 },
-    }
-
-    augments = {
-        surge:    { label: 'Surge',    apply: a => { a.damageMin += 3; a.damageMax += 5 } },
-        farreach: { label: 'Farreach', apply: a => { a.chainRadius += 1; a.arcs += 1 } },
-        cascade:  { label: 'Cascade',  apply: a => { a.arcs += 2 } },
-    }
-
-    traits = {
-        // Conductive (your pick): flat bonus damage AND bounces stop weakening.
-        conductive:   { label: 'Conductive',   apply: a => { a.bonusDamage += 3; a.arcFalloff = 1.0 } },
-        tempest:      { label: 'Tempest',      apply: a => { a.arcs += 1 } },
-        supercharged: { label: 'Supercharged', apply: a => { a.damageMax += 5 } },
-    }
 
     activate(hero, target) {
         chain(this, hero, target.entity, {

@@ -1,10 +1,7 @@
 import Ability from './Ability.js'
 import gameLog from '../../GameLog.js'
-import sunder from '../../tags/sunder.js'
-import slow from '../../tags/slow.js'
 import { resolveDamage, knockback } from '../../abilities/universals.js'
 import { playSlashArc } from '../../Animations.js'
-import { addStatus, quickened, bump } from '../../abilities/traitDefs.js'
 
 // Mighty Blow (the de-WoW rename of Power Strike) — one heavy committed blow on
 // an adjacent enemy for a MULTIPLE of your normal hit, GUARANTEED (no crit/block
@@ -14,7 +11,7 @@ import { addStatus, quickened, bump } from '../../abilities/traitDefs.js'
 // and Charge (gap-close). Works unarmed (no weapon gate).
 export default class MightyBlow extends Ability {
     name = 'Mighty Blow'
-    icon = 31
+    icon = 3
     description = 'A heavy single strike on an adjacent enemy for double damage. 1 AP, cd 4.'
     cost = { ap: 1, mp: 0 }
     cooldown = 4
@@ -27,32 +24,6 @@ export default class MightyBlow extends Ability {
     bonusDamage = 0
     appliesStatus = null
     knockbackTiles = 0
-
-    // --- Progression ladder ----------------------------------------------------
-    //   L1 : 2.0x damage, guaranteed
-    //   L2 : 2.4x damage                                             [boost]
-    //   L3 : augment — Devastating (+dmg) | Sundering (+sunder) | Overbearing (knockback)
-    //   L4 : a trait slot (Quickened | Brutal +mult | Staggering +slow)
-    maxLevel = 4
-    augmentLevel = 3
-    traitLevel = 4
-    maxTraits = 1
-
-    levelBoosts = {
-        2: a => { a.damageMult = 2.4 },
-    }
-
-    augments = {
-        devastating: { label: 'Devastating', apply: a => { a.bonusDamage += 8 } },
-        sundering:   addStatus('Sundering', sunder),
-        overbearing: { label: 'Overbearing', apply: a => { a.knockbackTiles = 1 } },
-    }
-
-    traits = {
-        quickened:  quickened(1),
-        brutal:     bump('Brutal', 'damageMult', 0.4),
-        staggering: addStatus('Staggering', slow),
-    }
 
     activate(hero, target) {
         const victim = target.entity

@@ -53,6 +53,23 @@ export default class RangedWeapon extends GenericItem {
         if (profile.damageColor != null) this.damageColor = profile.damageColor
         if (profile.castType) this.castType = profile.castType
         if (profile.drawType) this.drawType = profile.drawType
+
+        // Weapon riders (scope doc §10.16), read by Combat.attack after a hit
+        // lands. Data on the profile, no code per weapon:
+        //   splash { radius, mult }     — the other enemies within `radius` of the
+        //                                 victim take `mult` of a normal hit
+        //   onHitStatus { name, chance } — a status by registered name, rolled per hit
+        if (profile.splash) this.splash = profile.splash
+        if (profile.onHitStatus) this.onHitStatus = profile.onHitStatus
+        // Spell empowerment (abilities/empower.js): what this weapon does to the
+        // caster's SPELLS, keyed by element or `all`. A scroll is an amplifier.
+        if (profile.empower) this.empower = profile.empower
+        // Legendary procs (§10.17), read by Combat.attack like the riders above.
+        if (profile.lifesteal) this.lifesteal = profile.lifesteal
+        if (profile.executeBelow) this.executeBelow = profile.executeBelow
+        if (profile.bonusVs) this.bonusVs = profile.bonusVs
+        if (profile.legendary) this.legendary = true
+        if (profile.special) this.special = profile.special
     }
 
     damage() {

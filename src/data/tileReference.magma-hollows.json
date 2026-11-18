@@ -1,0 +1,189 @@
+{
+    "_meta": {
+        "pack": "game_dev_sprites — original dungeon set",
+        "key": "tileReference.magma-hollows",
+        "mode": "spritesheet",
+        "sheet": "game_dev_sprites/sprites/magma/dungeon_hollows.png",
+        "tileSize": 32,
+        "spacing": 0,
+        "margin": 0,
+        "columns": 8,
+        "rows": 4,
+        "total": 32,
+        "view": "top-down dungeon map tile",
+        "license": "Original art made for this game (game_dev_sprites). Owned outright — free to ship. No third-party pack was used as input.",
+        "kind": "hollow",
+        "biome": "magma",
+        "layer": "floor",
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "elevation": 90,
+        "adjacency": "autotile",
+        "placement": "These REPLACE the floor cell rather than drawing over it. index = N*1 + E*2 + S*4 + W*8, where the bit is set when that neighbour is the same hollow -- a pit beside a pool is a shore for both. Cells 0-15 are pits, cells 16-31 are pools.",
+        "note": "GRID VERIFIED by scripts/build_sprite_reference.mjs against the PNG header (256x128 / 32 = 8x4, 32 frames, no remainder). Generated from magma/dungeon_hollows.json — do not hand-edit; re-run the script instead. Frame names are the exporter's own, kept verbatim so a re-export cannot drift from the reference."
+    },
+    "hollows": {
+        "pit_00": {
+            "frame": 0,
+            "col": 0,
+            "row": 0
+        },
+        "pit_01": {
+            "frame": 1,
+            "col": 1,
+            "row": 0
+        },
+        "pit_02": {
+            "frame": 2,
+            "col": 2,
+            "row": 0
+        },
+        "pit_03": {
+            "frame": 3,
+            "col": 3,
+            "row": 0
+        },
+        "pit_04": {
+            "frame": 4,
+            "col": 4,
+            "row": 0
+        },
+        "pit_05": {
+            "frame": 5,
+            "col": 5,
+            "row": 0
+        },
+        "pit_06": {
+            "frame": 6,
+            "col": 6,
+            "row": 0
+        },
+        "pit_07": {
+            "frame": 7,
+            "col": 7,
+            "row": 0
+        },
+        "pit_08": {
+            "frame": 8,
+            "col": 0,
+            "row": 1
+        },
+        "pit_09": {
+            "frame": 9,
+            "col": 1,
+            "row": 1
+        },
+        "pit_10": {
+            "frame": 10,
+            "col": 2,
+            "row": 1
+        },
+        "pit_11": {
+            "frame": 11,
+            "col": 3,
+            "row": 1
+        },
+        "pit_12": {
+            "frame": 12,
+            "col": 4,
+            "row": 1
+        },
+        "pit_13": {
+            "frame": 13,
+            "col": 5,
+            "row": 1
+        },
+        "pit_14": {
+            "frame": 14,
+            "col": 6,
+            "row": 1
+        },
+        "pit_15": {
+            "frame": 15,
+            "col": 7,
+            "row": 1
+        },
+        "water_00": {
+            "frame": 16,
+            "col": 0,
+            "row": 2
+        },
+        "water_01": {
+            "frame": 17,
+            "col": 1,
+            "row": 2
+        },
+        "water_02": {
+            "frame": 18,
+            "col": 2,
+            "row": 2
+        },
+        "water_03": {
+            "frame": 19,
+            "col": 3,
+            "row": 2
+        },
+        "water_04": {
+            "frame": 20,
+            "col": 4,
+            "row": 2
+        },
+        "water_05": {
+            "frame": 21,
+            "col": 5,
+            "row": 2
+        },
+        "water_06": {
+            "frame": 22,
+            "col": 6,
+            "row": 2
+        },
+        "water_07": {
+            "frame": 23,
+            "col": 7,
+            "row": 2
+        },
+        "water_08": {
+            "frame": 24,
+            "col": 0,
+            "row": 3
+        },
+        "water_09": {
+            "frame": 25,
+            "col": 1,
+            "row": 3
+        },
+        "water_10": {
+            "frame": 26,
+            "col": 2,
+            "row": 3
+        },
+        "water_11": {
+            "frame": 27,
+            "col": 3,
+            "row": 3
+        },
+        "water_12": {
+            "frame": 28,
+            "col": 4,
+            "row": 3
+        },
+        "water_13": {
+            "frame": 29,
+            "col": 5,
+            "row": 3
+        },
+        "water_14": {
+            "frame": 30,
+            "col": 6,
+            "row": 3
+        },
+        "water_15": {
+            "frame": 31,
+            "col": 7,
+            "row": 3
+        }
+    }
+}

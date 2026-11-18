@@ -1,0 +1,42 @@
+{
+  "_meta": {
+    "pack": "mixed (see per-entry licence notes)",
+    "key": "tileReference.containers",
+    "mode": "images",
+    "dir": "art/containers",
+    "tileSize": 32,
+    "view": "top-down / front-facing prop",
+    "license": "Per entry. `chest_rare_*` are 32rogues (Seth Boyles) — commercial OK, NO redistribute/resell, NO generative-AI input. `chest_wood_*` and `sack` are the Fantasy RPG Tileset Pack (Time Fantasy) under the GameDev Market Pro Licence via the RPG Humble Bundle, with the multi-project amendment — commercial OK, no redistribution. Both verified in full: see documents/v3_asset_licensing.md.",
+    "generated": "2026-09-22",
+    "note": "The three-tier container set (scope doc §10.12). Cut as individual PNGs rather than registering two whole spritesheets, because the game needs five frames out of ~1600 and an images-mode sheet preloads every entry it lists. Frames were located VISUALLY on a grid overlay and confirmed against a rendered strip before wiring — see the memory note about contact-sheet picks drifting. Sources: fantasy dungeon.png (51 cols, 16px) col28/row3 + col29/row3 + col32/row4; 32rogues tiles.png (17 cols, 32px) frames 289 + 290. THE SOURCES HAVE DIFFERENT NATIVE SIZES — fantasy is 16px, 32rogues is 32px — and resolveArt returns ONE nativeSize per sheet, so a mixed sheet would draw half of its entries at half scale. The three 16px frames were therefore upscaled 2x NEAREST on extraction, making every entry here a true 32px. Re-extracting any of them means re-applying that upscale, or the piece silently renders small.",
+    "referenceDoc": "documents/v5_scope_and_cut_list.md (§10.12)"
+  },
+
+  "containers": {
+    "chestWoodClosed": {
+      "file": "chest_wood_closed.png",
+      "name": "Wooden Chest",
+      "note": "UNCOMMON tier. Fantasy RPG Tileset Pack, dungeon.png col 28 row 3. Native 16px, upscaled 2x NEAREST to 32px on extraction."
+    },
+    "chestWoodOpen": {
+      "file": "chest_wood_open.png",
+      "name": "Wooden Chest (open)",
+      "note": "Opened state for the uncommon tier. dungeon.png col 29 row 3. Native 16px, upscaled 2x NEAREST to 32px on extraction."
+    },
+    "chestRareClosed": {
+      "file": "chest_rare_closed.png",
+      "name": "Ornate Chest",
+      "note": "RARE tier — the only container that may hold a legendary. 32rogues tiles.png frame 289. Native 32px."
+    },
+    "chestRareOpen": {
+      "file": "chest_rare_open.png",
+      "name": "Ornate Chest (open)",
+      "note": "Opened state for the rare tier. 32rogues tiles.png frame 290. Native 32px."
+    },
+    "sack": {
+      "file": "sack.png",
+      "name": "Sack",
+      "note": "The dropped loot bag. Fantasy RPG Tileset Pack, dungeon.png col 32 row 4. Native 16px upscaled to 32px, and rendered smaller still — see BAG_SCALE in items/Container.js."
+    }
+  }
+}

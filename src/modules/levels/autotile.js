@@ -159,3 +159,78 @@ export function pickAutotileFrame(set, same) {
     else key = "c"
     return set[key] != null ? set[key] : (set.c != null ? set.c : null)
 }
+
+// ---------------------------------------------------------------------------
+// WALL PATCH SETS — a second autotile scheme, for sheets that ship one.
+//
+// The 3x3 terrain block above is a BORDERED PATCH: nine tiles, chosen by which
+// cardinals match. It has two limits that show badly on a large wall mass —
+// every cell of the interior is the same pixels (so the mass reads as a lattice),
+// and every wall is drawn from directly overhead.
+//
+// The original `game_dev_sprites` wall sheets solve both by indexing on more than
+// the mask. Each of the 16 neighbour masks carries a `block x block` patch of
+// CUTS, and which cut a cell draws is decided by its position on the map — so
+// neighbouring cells of one flat mass draw different pixels and the surface reads
+// as rock rather than tiling. On top of that the sheet ships a separate row of
+// FACE frames: where the cell below is open floor you are looking at the front of
+// the wall, not the top of it, and the art switches to elevation.
+//
+// The scheme is declared by the SHEET (`_meta.block` / `capRange` / `faceRange`,
+// written by scripts/build_sprite_reference.mjs from the pack's own manifest),
+// not by the theme. That is deliberate: there is exactly one right way to paint a
+// given sheet, so detecting it from the art removes a theme field that would have
+// to be threaded through the producer, normalizeTheme AND the designer round-trip
+// — the field-dropped-in-one-of-three-places bug, avoided by not adding a field.
+//
+// NOT EVERY CAP IS REACHABLE, and that is not a defect. With faces in use, a cell
+// only draws a cap when the cell below is wall, so the S bit is always set and the
+// eight masks without it go unused. The sheet carries all sixteen so the same art
+// also supports a pure top-down look with no faces at all.
+
+// Read a sheet's patch declaration off its `_meta`, or null if it doesn't have
+// one. Pure — takes the meta rather than reaching for the sheet registry — so
+// this module stays free of import-order concerns.
+export function wallPatchSpec(meta) {
+    if (!meta) return null
+    const { block, capRange, faceRange } = meta
+    if (!Number.isFinite(block) || block < 1) return null
+    if (!Array.isArray(capRange) || capRange.length !== 2) return null
+    if (!Array.isArray(faceRange) || faceRange.length !== 2) return null
+    return { block, capRange, faceRange }
+}
+
+// The representative single frame for a patch wall — the fully-enclosed cap
+// (mask 15, first cut), i.e. what a cell deep inside a wall mass draws. Themes
+// carry one flat wall frame alongside the scheme, both as the fallback and to
+// satisfy MapState's validAuthoredTheme check, which requires real FRAMES.
+export function wallPatchFillFrame(spec) {
+    if (!spec) return null
+    return spec.capRange[0] + 15 * spec.block * spec.block
+}
+
+// Pick the frame for a wall cell at map position (x, y). `isWall(x, y)` answers
+// whether a cell is part of the same wall mass; the caller owns the grid, and is
+// expected to treat OUT OF BOUNDS AS WALL so the map border reads as solid rather
+// than being framed by an edge (same rule the terrain path uses).
+export function pickWallPatchFrame(spec, x, y, isWall) {
+    if (!spec) return null
+    const { block, capRange, faceRange } = spec
+    // Positive modulo: grid coords are never negative today, but a cut chosen by
+    // position must not flip if that ever changes.
+    const cut = n => ((n % block) + block) % block
+
+    // The cell below is open, so this is the SOUTH FACE of the mass — the wall
+    // seen from the front. Only the horizontal neighbours matter, because a face
+    // runs left/right along the edge and has no top or bottom to match.
+    if (!isWall(x, y + 1)) {
+        const m = (isWall(x - 1, y) ? 1 : 0) + (isWall(x + 1, y) ? 2 : 0)
+        const frame = faceRange[0] + m * block + cut(x)
+        return frame >= faceRange[0] && frame <= faceRange[1] ? frame : null
+    }
+
+    const mask = (isWall(x, y - 1) ? 1 : 0) + (isWall(x + 1, y) ? 2 : 0)
+               + (isWall(x, y + 1) ? 4 : 0) + (isWall(x - 1, y) ? 8 : 0)
+    const frame = capRange[0] + mask * block * block + cut(y) * block + cut(x)
+    return frame >= capRange[0] && frame <= capRange[1] ? frame : null
+}

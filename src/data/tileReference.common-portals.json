@@ -1,0 +1,67 @@
+{
+    "_meta": {
+        "pack": "game_dev_sprites — original dungeon set",
+        "key": "tileReference.common-portals",
+        "mode": "spritesheet",
+        "sheet": "game_dev_sprites/sprites/common/dungeon_portals.png",
+        "tileSize": 32,
+        "spacing": 0,
+        "margin": 0,
+        "columns": 4,
+        "rows": 2,
+        "total": 8,
+        "view": "top-down dungeon map tile",
+        "license": "Original art made for this game (game_dev_sprites). Owned outright — free to ship. No third-party pack was used as input.",
+        "kind": "portal",
+        "layer": "overlay",
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "elevation": 90,
+        "placement": "Draw over the floor cell, after the floor layer. Frames play in index order and loop: the last runs into the first, so there is no reverse leg and no hold frame.",
+        "note": "GRID VERIFIED by scripts/build_sprite_reference.mjs against the PNG header (128x64 / 32 = 4x2, 8 frames, no remainder). Generated from common/dungeon_portals.json — do not hand-edit; re-run the script instead. Frame names are the exporter's own, kept verbatim so a re-export cannot drift from the reference."
+    },
+    "portals": {
+        "portal_00": {
+            "frame": 0,
+            "col": 0,
+            "row": 0
+        },
+        "portal_01": {
+            "frame": 1,
+            "col": 1,
+            "row": 0
+        },
+        "portal_02": {
+            "frame": 2,
+            "col": 2,
+            "row": 0
+        },
+        "portal_03": {
+            "frame": 3,
+            "col": 3,
+            "row": 0
+        },
+        "portal_04": {
+            "frame": 4,
+            "col": 0,
+            "row": 1
+        },
+        "portal_05": {
+            "frame": 5,
+            "col": 1,
+            "row": 1
+        },
+        "portal_06": {
+            "frame": 6,
+            "col": 2,
+            "row": 1
+        },
+        "portal_07": {
+            "frame": 7,
+            "col": 3,
+            "row": 1
+        }
+    }
+}

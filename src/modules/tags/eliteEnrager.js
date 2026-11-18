@@ -6,8 +6,6 @@ import gameLog from "../GameLog.js"
 import Container from "../items/Container.js"
 import GreaterHealthPotion from "../items/GreaterHealthPotion.js"
 import StaminaPotion from "../items/StaminaPotion.js"
-import ScrollOfBlink from "../items/ScrollOfBlink.js"
-import ScrollOfTeleport from "../items/ScrollOfTeleport.js"
 import items from "../Items.js"
 
 const ELITE_TINT = 0xff3333
@@ -15,14 +13,18 @@ const ENRAGE_THRESHOLD = 0.5
 const ENRAGE_DAMAGE_BONUS = 2
 const BLOCK_CHANCE = 0.20
 
-// items.Helmet is a factory wrapper that returns an Armor instance —
-// callable with `new` like the other class entries in this pool.
+// items.* are factory wrappers returning real instances — callable with `new`
+// like the class entries beside them.
+//
+// v3's pool also held ScrollOfBlink and ScrollOfTeleport. v5 carries neither, so
+// they are replaced with gear drawn from the nineteen item profiles rather than
+// left as imports that could never resolve.
 const ELITE_DROP_POOL = [
     GreaterHealthPotion,
     StaminaPotion,
-    ScrollOfBlink,
     items.Helmet,
-    ScrollOfTeleport
+    items.Shield,
+    items.LongSword
 ]
 
 const eliteEnrager = {

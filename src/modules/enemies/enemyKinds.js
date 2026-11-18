@@ -36,6 +36,12 @@ const HUMANOID_NAMES = new Set([
     "EvilPriest",
     "Ghoul",
     "Goblin",
+    // Added 2026-09-22. GoblinArcher is a v5 addition (scope doc §10.4) and was
+    // never registered here, so kindOf fell through to "creature" and it dropped
+    // NOTHING — while the plain Goblin standing next to it dropped gear. The
+    // whole file keys on constructor.name, so a new enemy class is invisible to
+    // it until named. Check this list whenever the roster grows.
+    "GoblinArcher",
     "GoblinFiendish",
     "GoblinHigher",
     "HumanoidMarauder",

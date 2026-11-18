@@ -1,4 +1,4 @@
-import account from './Account.js'
+import prefs from './Prefs.js'
 
 // Central keybinding map — the single source of truth for key -> action, so the
 // hardcoded `event.key === "f"` checks scattered through HeroController collapse
@@ -44,9 +44,10 @@ const DEFAULT_ACTIONS = {
     interact:  ['f'],
     retreat:   ['x'],
     passTurn:  ['Space'],
-    // Open the skillbook / spend-skill-points screen (§14 B7). Rebindable like
-    // any other discrete action via the Controls UI.
-    skillbook: ['k'],
+    // NOTE: 'skillbook' (K) was removed on 2026-09-10. The screen it opened is
+    // cut in v5, and its handler paused World+UI before launching an
+    // unregistered scene — a soft-lock, not a no-op. Do not re-add the binding
+    // without registering the scene.
     // General yes/no for decisions — the "accept" (Y) and "decline" (N) pair.
     // First consumer is a pending pact offer (F hears it, then Y/N answer); future
     // yes/no prompts reuse these. Both rebindable in the Controls UI.
@@ -58,7 +59,20 @@ const DEFAULT_ACTIONS = {
     // Provisional letters (b/c/g/m/o/h/t are taken by unequip-slot keys); rebindable.
     beckon:  ['v'],
     dismiss: ['d'],
+    // The Character screen (screens/Character.js): stats, gear, and what each
+    // carried item would change. Opens AND closes on the same key. Added
+    // 2026-10-03; C was free because the unequip letters went the same day.
+    character: ['c'],
 }
+
+// Unequip keys: token -> equipment slot. EMPTY as of 2026-10-03 — the user's
+// call. The seven letters (M O H B T G C) were a stopgap from before the Pause
+// panel could unequip by click; with that panel and the Character screen both
+// doing it by click, a letter per slot was seven bindings to learn for nothing,
+// and two of the slots (feet, gloves) have no items in the game at all. The
+// table is kept rather than deleted so the Controls screen's reader and a
+// future rebind UI need no change: an empty map prints no section.
+const DEFAULT_EQUIP_SLOT_KEYS = {}
 
 function cloneActions(actions) {
     const out = {}
@@ -77,7 +91,7 @@ class InputMap {
     // is unavailable, leaving defaults intact.
     _loadSaved() {
         try {
-            const cfg = account.getPreferences().keybinds
+            const cfg = prefs.getPreferences().keybinds
             if (cfg) this.applyConfig(cfg)
         } catch (e) {
             // localStorage unavailable (private mode / headless) — keep defaults.
@@ -88,14 +102,14 @@ class InputMap {
     // Controls screen after each rebind.
     persist() {
         try {
-            account.setPreference('keybinds', this.toConfig())
+            prefs.setPreference('keybinds', this.toConfig())
         } catch (e) { /* ignore — see _loadSaved */ }
     }
 
     // Drop the saved override (the Controls "Reset to defaults" path).
     clearSaved() {
         try {
-            account.setPreference('keybinds', null)
+            prefs.setPreference('keybinds', null)
         } catch (e) { /* ignore */ }
     }
 
@@ -103,6 +117,7 @@ class InputMap {
         this.abilitySlotKeys = [...DEFAULT_ABILITY_SLOT_KEYS]
         this.movement = { ...DEFAULT_MOVEMENT }
         this.actions = cloneActions(DEFAULT_ACTIONS)
+        this.equipSlotKeys = { ...DEFAULT_EQUIP_SLOT_KEYS }
         this._rebuildIndex()
     }
 
@@ -113,6 +128,29 @@ class InputMap {
         }
         this._slotByToken = new Map()
         this.abilitySlotKeys.forEach((token, i) => this._slotByToken.set(token, i))
+    }
+
+    // --- display -------------------------------------------------------------
+
+    // Printable label for an action's primary key: 'interact' -> 'F'. Every UI
+    // string that names a key should read this rather than hardcode a letter.
+    //
+    // It exists because they didn't: the interact prompts on containers, doors
+    // and hidden passages all read "[E] ..." long after interact moved to F, and
+    // nothing caught it because the string and the binding had no connection.
+    // Rebinding through the Controls UI had the same problem in waiting.
+    //
+    // Single characters uppercase; named keys ('Space', 'ArrowUp') pass through.
+    keyLabel(action) {
+        const token = this.actions[action]?.[0]
+        if (!token) return '?'
+        return token.length === 1 ? token.toUpperCase() : token
+    }
+
+    // Same thing for an ability-bar slot index, including the ultimate slot.
+    slotLabel(index) {
+        const token = this.abilitySlotKeys[index]
+        return token ? (token.length === 1 ? token.toUpperCase() : token) : '?'
     }
 
     // --- resolvers (the hot path) --------------------------------------------

@@ -18,6 +18,13 @@ export default {
     Orc: M("orc_south.png"),
     OrcHigher: M("elite_orc_south.png"),
     Goblin: M("goblin_south.png"),
+    // Added 2026-09-22. GoblinArcher is a v5 addition (scope doc §10.4) and was never
+    // registered here, so BaseEnemy set this.art = null and the render path fell back to
+    // the Kenney tile — it was drawing as a 1-bit ghost while its own sprite sat unused
+    // on disk. Third omission of the same shape on this class in one day (the other two:
+    // enemyKinds.HUMANOID_NAMES, and its drop table). A new enemy class needs an entry in
+    // EVERY class-name-keyed map, not just this one.
+    GoblinArcher: M("goblin_archer_south.png"),
     GoblinHigher: M("elite_goblin_south.png"),
     GoblinFiendish: M("goblin_south.png"),
     Troll: M("troll_south.png"),

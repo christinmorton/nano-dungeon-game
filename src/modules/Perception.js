@@ -10,7 +10,7 @@ export function inDetectionRange(observer, target, radius) {
 
 export function canSee(observer, target) {
     // Targets burrowed underground (Dwarf Dig) or hidden in stealth
-    // (Elf Stealth) are unseeable. Applies to every perception consumer
+    // (Ranger Stealth) are unseeable. Applies to every perception consumer
     // that goes through canSee — enemy notice checks, FoW reveal,
     // ability targeting — so these statuses uniformly block every
     // "do you see X?" question.

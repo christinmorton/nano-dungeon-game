@@ -51,6 +51,16 @@ export default class MeleeWeapon extends GenericItem {
         // Opt-in (defaults false) — the self-contained throws (Throw Knives) carry
         // their own ammo and don't read this.
         this.throwable = profile.throwable ?? false
+        // Weapon riders (scope doc §10.16) — same two fields RangedWeapon copies,
+        // so a legendary blade can burst or stun through the same Combat path.
+        if (profile.splash) this.splash = profile.splash
+        if (profile.onHitStatus) this.onHitStatus = profile.onHitStatus
+        // Legendary procs (§10.17), read by Combat.attack like the riders above.
+        if (profile.lifesteal) this.lifesteal = profile.lifesteal
+        if (profile.executeBelow) this.executeBelow = profile.executeBelow
+        if (profile.bonusVs) this.bonusVs = profile.bonusVs
+        if (profile.legendary) this.legendary = true
+        if (profile.special) this.special = profile.special
     }
 
     damage() {

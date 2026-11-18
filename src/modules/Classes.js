@@ -1,22 +1,20 @@
-import cleric from "./classes/profiles/cleric.js"
-import dwarf from "./classes/profiles/dwarf.js"
-import elf from "./classes/profiles/elf.js"
-import shaman from "./classes/profiles/shaman.js"
+import ranger from "./classes/profiles/ranger.js"
 import warrior from "./classes/profiles/warrior.js"
 import wizard from "./classes/profiles/wizard.js"
 
-// Hero class registry — now profile data objects rather than subclasses.
-// Keys are the player-facing class names (Intro.js reads Object.keys to
-// build the picker; dungeon.hero stores the chosen key as a string).
-// Dungeon.placePlayer instantiates a plain BaseHero and calls
-// .applyProfile(profiles[name]) to specialize it.
+// Hero class registry — profile data objects rather than subclasses. Keys are the
+// player-facing class names (the class picker reads Object.keys; dungeon.hero
+// stores the chosen key as a string). Dungeon.placePlayer instantiates a plain
+// BaseHero and calls .applyProfile(classes[name]) to specialize it.
+//
+// Three, not v3's six. Warrior / Ranger / Wizard were chosen for play-feel
+// contrast — pure melee, pure ranged, pure caster — rather than for which had the
+// most content already written. Cleric, Dwarf and Shaman are cut (scope doc
+// section 10). The Ranger was called the Elf until the class picker was built.
 const classes = {
-    Cleric: cleric,
-    Dwarf: dwarf,
-    Elf: elf,
-    Shaman: shaman,
+    Ranger: ranger,
     Warrior: warrior,
-    Wizard: wizard
+    Wizard: wizard,
 }
 
 export default classes

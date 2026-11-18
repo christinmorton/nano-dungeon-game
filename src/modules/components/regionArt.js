@@ -21,20 +21,35 @@
 // position and its display size, which IS one tile.
 
 import { findRegion, regionFrames } from "../levels/tileRegions.js"
-import { resolveArt } from "../assetLoader.js"
+import { resolveArt, frameForName } from "../assetLoader.js"
 
-// { sheet, name } -> { sheet, frames[][], w, h }, or null when the region is
-// unknown / empty. Callers fall back to their own single tile on null.
+// { sheet, name } -> { sheet, frames[][], w, h }, or null when the name resolves
+// nowhere. Callers fall back to their own single tile on null.
+//
+// TWO STORES HOLD NAMES, and a name is looked up in both. Sheets that were
+// hand-labeled in the Atlas keep their objects as REGIONS (rectangles of frames)
+// in the label store — that is the multi-tile case this module exists for. Sheets
+// that arrive with their own manifest (the original game_dev_sprites pack) are
+// registered as tileReference NAMED ENTRIES instead, one frame per name, and have
+// no regions at all.
+//
+// Checking only the label store is what made every role on such a sheet resolve
+// to nothing; checking only named entries would lose every multi-tile object. The
+// region store wins when both have the name, because it can express more.
 export function resolveRegion(region, who = "regionArt") {
     if (!region || !region.sheet || !region.name) return null
     const found = findRegion(region.sheet, region.name)
-    if (!found) {
-        console.warn(`[${who}] unknown region '${region.name}' on sheet '${region.sheet}' — falling back to 1x1`)
-        return null
+    if (found) {
+        const frames = regionFrames(region.sheet, found)
+        if (!frames.length || !frames[0].length) return null
+        return { sheet: region.sheet, frames, w: found.w, h: found.h }
     }
-    const frames = regionFrames(region.sheet, found)
-    if (!frames.length || !frames[0].length) return null
-    return { sheet: region.sheet, frames, w: found.w, h: found.h }
+    // A single-frame object addressed by name — a 1x1 "region", so every consumer
+    // downstream (footprint, extra sprites, FloorMemory) treats it uniformly.
+    const frame = frameForName(region.sheet, region.name)
+    if (frame != null) return { sheet: region.sheet, frames: [[frame]], w: 1, h: 1 }
+    console.warn(`[${who}] '${region.name}' is neither a region nor a named entry on sheet '${region.sheet}' — falling back to 1x1`)
+    return null
 }
 
 // Draw the rest of a region beside the anchor sprite. Safe to call when there's

@@ -37,6 +37,48 @@ export const DEFAULT_THEME = {
     wallTile: 555,
 }
 
+// One game_dev_sprites biome as a recipe. The pack is uniform: nine ground
+// frames sampled per cell; a wall sheet whose _meta declares the mask x position
+// PATCH scheme (block 3, capRange, faceRange) that autotile.js reads, so no wall
+// frame list is needed — `wallTile` is only the representative frame
+// normalizeTheme insists on (mask 15, centre cut: the deep-mass fill); a props
+// sheet with six shared pieces and three of the biome's own; a stairs pair.
+//
+// Scenery and debris are frame NAMES on the props sheet, consumed by
+// levels/furnish.js: `props` block and go against walls, `debris` is walk-over
+// litter. Names, not indices, so a re-export that reorders frames drops a piece
+// with a warning instead of painting the wrong one. The pack ships no chest,
+// so Container keeps its Kenney tile.
+function spritePackRecipe(biome, { name, props, debris }) {
+    return {
+        key: biome,
+        name,
+        geometry: { corridorStyle: "simple", corridorWidth: 1 },
+        theme: {
+            sheet: `${biome}-ground`,
+            tileSize: 32,
+            spacing: 0,
+            margin: 0,
+            floorTiles: [0, 1, 2, 3, 4, 5, 6, 7, 8],
+            wallSheet: `${biome}-walls`,
+            wallTile: 15 * 9 + 4,
+            propSheet: `${biome}-props`,
+            props,
+            debrisSheet: `${biome}-props`,
+            debris,
+            roles: {
+                // The down staircase is the 32rogues one on every biome (user's
+                // call, 2026-10-03): one recognisable "the way on" across the
+                // whole descent rather than a different staircase per realm. The
+                // sheet rides RECIPE_SHEETS below, so it preloads with the rest.
+                // Up-stairs keep the biome's own art; v5 never places them.
+                stairsDown: { sheet: "32rogues-tiles", name: "staircaseDown" },
+                stairsUp: { sheet: `${biome}-stairs`, name: "stairs_up" },
+            },
+        },
+    }
+}
+
 export const RECIPES = {
     // Today's dungeon, unchanged. The default realm and the behavior-preserving
     // baseline that proves the seam.
@@ -50,17 +92,32 @@ export const RECIPES = {
         propPalette: "wilderness",
     },
 
-    // First themed realm — a cave/dungeon painted from the 16px Time-Fantasy
-    // "fantasyrpg-dungeon" sheet (public/tilesets/fantasyrpg/dungeon.png, 51x29).
-    // Frames verified on test.html (labels r{row}_c{col}; frame = row*51 + col):
-    //   floor r13_c19 = 682 (brown dungeon floor), wall r6_c19 = 325 (cave rock).
-    fantasy: {
-        key: "fantasy",
-        name: "Fantasy Dungeon",
-        geometry: { corridorStyle: "simple", corridorWidth: 1 },
-        theme: { sheet: "fantasyrpg-dungeon", tileSize: 16, spacing: 0, margin: 0, floorTile: 682, wallTile: 325 },
-        propPalette: "wilderness",
-    },
+    // v3's second recipe, "fantasy", is NOT carried. It painted from the
+    // fantasyrpg-dungeon sheet, a PURCHASED pack, and v5 ships only art that is
+    // owned outright or CC0 (scope doc section 10) — so that sheet is not in
+    // data/assetSheets.js and the recipe could never resolve a tileset. It was
+    // also v3's DEFAULT_RECIPE, which is exactly why v5's first floor rendered
+    // as an empty black screen: preloadSheets found nothing, addTilesetImage
+    // returned null, and the layer painted no tiles.
+
+    // The owned game_dev_sprites pack (scope doc section 10.5) — the art v5 ships
+    // on. All five biomes share one structure (see spritePackRecipe), so each
+    // realm is the biome key plus the three props that are its own.
+    cavern: spritePackRecipe("cavern", {
+        name: "Cavern",
+        props: ["slab", "crate", "urn", "brazier", "calcite", "dripstone"],
+        debris: ["rubble", "bones", "cave_cap", "slab_toppled", "bones_scattered"],
+    }),
+    verdant: spritePackRecipe("verdant", {
+        name: "Verdant Ruin",
+        props: ["slab", "crate", "urn", "brazier", "malachite", "glowcap"],
+        debris: ["rubble", "bones", "fern_clump", "slab_toppled", "bones_scattered"],
+    }),
+    magma: spritePackRecipe("magma", {
+        name: "Magma Deep",
+        props: ["slab", "crate", "urn", "brazier", "obsidian", "magma_vent"],
+        debris: ["rubble", "bones", "embercap", "slab_toppled", "bones_scattered"],
+    }),
 }
 
 // Non-default tilesets any recipe paints from — World preloads these so a themed
@@ -70,16 +127,28 @@ export const RECIPES = {
 export const RECIPE_SHEETS = [
     ...new Set(
         Object.values(RECIPES)
-            .flatMap(r => [r.theme.sheet, r.theme.wallSheet, r.theme.envSheet, r.theme.propSheet, r.theme.debrisSheet])
+            .flatMap(r => [
+                r.theme.sheet, r.theme.wallSheet, r.theme.envSheet, r.theme.propSheet, r.theme.debrisSheet,
+                // Role art sheets too (stairs and the like) — a role whose sheet
+                // never loads falls back to Kenney with no warning, which is the
+                // silent-missing-tileset class again, one level down.
+                ...Object.values(r.theme.roles || {}).map(a => a && a.sheet),
+            ])
             .filter(s => s && s !== "tiles")
     )
 ]
 
-// TEMPORARY: pointed at 'fantasy' to verify the themed-sheet pipeline in-game
-// (sheet load -> recipe -> tilemap paint). The floor/wall frames are still
-// placeholders, so expect the wrong tiles until they're picked on test.html.
-// Switch back to "classic" (or add a real selector) once the look is dialed in.
-export const DEFAULT_RECIPE = "fantasy"
+// 'cavern' is the owned game_dev_sprites pack, which is the art decision (scope
+// doc section 10). 'classic' (Kenney, CC0) stays registered as the fallback
+// that always resolves — World preloads its sheet directly — and as the
+// baseline to flip back to if a themed floor ever paints nothing.
+export const DEFAULT_RECIPE = "cavern"
+
+// The run's descent, one recipe key per floor (scope doc section 5: three
+// themes). Read by MapState.start; a floor beyond the list's end (or a key that
+// doesn't resolve) gets DEFAULT_RECIPE via getRecipe, so the list can never
+// leave a floor unpainted.
+export const FLOOR_RECIPES = ["cavern", "cavern", "verdant", "verdant", "magma"]
 
 // Resolve a recipe by key, falling back to the default. Central so callers
 // (MapState now; a Settings selector later) don't each re-implement the guard.

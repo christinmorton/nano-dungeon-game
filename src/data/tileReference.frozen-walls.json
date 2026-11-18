@@ -1,0 +1,42 @@
+{
+    "_meta": {
+        "pack": "game_dev_sprites — original dungeon set",
+        "key": "tileReference.frozen-walls",
+        "mode": "spritesheet",
+        "sheet": "game_dev_sprites/sprites/frozen/dungeon_walls.png",
+        "tileSize": 32,
+        "spacing": 0,
+        "margin": 0,
+        "columns": 9,
+        "rows": 18,
+        "total": 162,
+        "view": "top-down dungeon map tile",
+        "license": "Original art made for this game (game_dev_sprites). Owned outright — free to ship. No third-party pack was used as input.",
+        "kind": "wall",
+        "usedFrames": 156,
+        "biome": "frozen",
+        "pivot": {
+            "x": 0.5,
+            "y": 0.5
+        },
+        "adjacency": "autotile",
+        "placement": "cap index = (N*1 + E*2 + S*4 + W*8) * block^2 + (row % block) * block + (column % block), where the mask bit is set when that neighbour is also wall and row/column are the cell's map position. The mask picks the shape, the position picks which cut of the wrapping patch -- without the position term every wall cell is the same pixels and the mass reads as a lattice. Use the cap when the cell below is wall. When the cell below is floor use face index = (W*1 + E*2) * block + (column % block), offset by face_range[0].",
+        "browseAllFrames": true,
+        "formula": {
+            "cap": "index = (N*1 + E*2 + S*4 + W*8) * block^2 + (row % block) * block + (column % block)",
+            "face": "index = face_range[0] + (W*1 + E*2) * block + (column % block)",
+            "when": "Use the cap where the cell BELOW is wall; use the face where the cell below is floor."
+        },
+        "block": 3,
+        "capRange": [
+            0,
+            143
+        ],
+        "faceRange": [
+            144,
+            155
+        ],
+        "material": "rock",
+        "note": "GRID VERIFIED by scripts/build_sprite_reference.mjs against the PNG header (288x576 / 32 = 9x18, 156 frames, no remainder). Generated from frozen/dungeon_walls.json — do not hand-edit; re-run the script instead. Frame names are the exporter's own, kept verbatim so a re-export cannot drift from the reference."
+    }
+}

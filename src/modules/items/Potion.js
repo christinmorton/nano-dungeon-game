@@ -13,23 +13,20 @@ export default class Potion extends GenericItem {
     equip(itemNumber) {
         const player = dungeon.player
         gameLog.log(`A healing wave passes through your body and removes all cursed items.`)
-        playCast(player, {
-            type: 'arcane',
-            onComplete: () => {
-                // Convert any cursed tally items (e.g. CursedGem) to currency
-                // before they get removed — cleansing turns the curse into a
-                // payout.
-                const cursedItems = player.items.filter(i => i.cursed)
-                for (const it of cursedItems) {
-                    if (it.tallyKey) {
-                        const v = it.value?.() ?? 1
-                        player.tallies[it.tallyKey] = (player.tallies[it.tallyKey] || 0) + v
-                        gameLog.log(`Cleansed ${it.name} converts to ${v} ${it.tallyKey}.`)
-                    }
-                }
-                player.removeItem(itemNumber)
-                player.removeItemByProperty("cursed", true)
+        // Effect resolves NOW rather than in playCast's onComplete, which never
+        // fires while the World scene is paused. See HealthPotion for the full
+        // reasoning. Ordering matters here: the tally conversion reads the carry
+        // list, so it has to run before either removal empties it.
+        const cursedItems = player.items.filter(i => i.cursed)
+        for (const it of cursedItems) {
+            if (it.tallyKey) {
+                const v = it.value?.() ?? 1
+                player.tallies[it.tallyKey] = (player.tallies[it.tallyKey] || 0) + v
+                gameLog.log(`Cleansed ${it.name} converts to ${v} ${it.tallyKey}.`)
             }
-        })
+        }
+        player.removeItem(itemNumber)
+        player.removeItemByProperty("cursed", true)
+        playCast(player, { type: 'arcane' })
     }
 }

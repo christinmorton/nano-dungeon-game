@@ -77,3 +77,29 @@ notes.txt
 # Python bytecode
 __pycache__/
 *.py[cod]
+
+
+# ---------------------------------------------------------------------------
+# Added with The Lantern Company v1.0.0 — same fail-closed rule, extended to
+# audio and to the original sprite pack.
+# ---------------------------------------------------------------------------
+
+# Audio: licensed libraries, used in the game but not redistributable here.
+*.wav
+*.mp3
+*.ogg
+*.flac
+*.aiff
+*.m4a
+**/public/audio/
+__MACOSX/
+
+# Original terrain art. Owned outright, but held back by choice so the pack
+# travels as one thing (its JSON manifests included).
+**/public/game_dev_sprites/
+
+# Raw purchased libraries, if any are ever unpacked under public/.
+**/public/assets/
+
+# Release upload bundles built from dist/ — reproducible from a tagged commit.
+*.zip

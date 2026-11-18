@@ -3,27 +3,26 @@ import {
     playOverheadStrike,
     playProjectile,
     spawnDamageNumber,
+    spawnHealNumber,
     spawnMissNumber,
     spawnBlockNumber,
     spawnCriticalNumber,
     playCast,
     playHitReaction,
     playFlinch,
-    playDraw
+    playDraw,
+    playBurst
 } from './Animations.js'
 import gameLog from './GameLog.js'
 import dungeon from './Dungeon.js'
+import tm from './TurnManager.js'
+import audio from './Audio.js'
 import { applyDamage } from './damage.js'
-import { reactHeroLowHp } from './dialog/heroReactions.js'
-import { reactEnemyLowHp } from './dialog/enemyReactions.js'
+import { getStatusTemplate } from './tags/Status.js'
+import { isUndead } from './enemies/enemyKinds.js'
 import burning from './tags/burning.js'
-import cursed from './tags/cursed.js'
 import poison from './tags/poison.js'
 import slow from './tags/slow.js'
-import acid from './tags/acid.js'
-import { tryCounter } from './tags/counter.js'
-import { isBurrowed } from './tags/underground.js'
-import { affinityBonus, applyAffinityStatus } from './abilities/affinities.js'
 
 // Element flavor -> status tag dispatch table. A flavored hit applies the mapped
 // tag to the victim after damage settles — this is the "magic trait" a weapon
@@ -34,10 +33,8 @@ import { affinityBonus, applyAffinityStatus } from './abilities/affinities.js'
 // documents/v3_magic_and_elements.md §"Status routing".
 const STATUS_BY_FLAVOR = {
     fire: burning,
-    curse: cursed,
     poison: poison,
     ice: slow,
-    acid: acid,
 }
 
 // The status tag a damage flavor applies, or null. Shared so the throwing path
@@ -76,14 +73,6 @@ class Combat {
             return
         }
 
-        // Burrowed (Dig) targets are untouchable by weapon/melee attacks — you
-        // can't strike something beneath the ground. Only AoE magic reaches them,
-        // and that flows through resolveDamage (which has its own burrow gate), not
-        // here. A safety net beyond perception already hiding the target.
-        if (isBurrowed(victim)) {
-            spawnMissNumber(victim)
-            return
-        }
 
         // Combat recency (Momentum): any attack the hero is part of — landing or
         // receiving — counts as being in combat. markCombat only exists on the hero.
@@ -106,6 +95,7 @@ class Combat {
             if (attacker.attackHits && attacker.attackHits() === false) {
                 gameLog.log(`${attacker.name} is blinded and swings wide of ${victim.name}!`)
                 spawnMissNumber(victim)
+                audio.play('melee-miss')
                 return
             }
 
@@ -120,6 +110,7 @@ class Combat {
             if (dodgeChance > 0 && Math.random() < dodgeChance) {
                 gameLog.log(`${victim.name} dodges ${attacker.name}'s attack!`)
                 spawnMissNumber(victim)
+                audio.play('melee-miss')
                 playFlinch(victim)
                 victim.onDodge?.(attacker)   // dodge-triggered passives (Adrenaline)
                 return
@@ -129,6 +120,7 @@ class Combat {
             if (!unblockable && victim.blockAttack && victim.blockAttack(attacker)) {
                 gameLog.log(`${victim.name} blocks ${attacker.name}'s attack!`)
                 spawnBlockNumber(victim)
+                audio.play('melee-hit-light')
                 playFlinch(victim)
                 return
             }
@@ -139,6 +131,7 @@ class Combat {
                 if (blockChance > 0 && Math.random() < blockChance) {
                     gameLog.log(`${victim.name} blocks ${attacker.name}'s attack!`)
                     spawnBlockNumber(victim)
+                    audio.play('melee-hit-light')
                     playFlinch(victim)
                     return
                 }
@@ -159,6 +152,18 @@ class Combat {
             if (opts.damageMult && opts.damageMult !== 1) {
                 damage = Math.round(damage * opts.damageMult)
             }
+            // Legendary weapon procs on the OUTGOING number (§10.17), before
+            // mitigation so armor still applies:
+            //   executeBelow { fraction, mult } — The Executioner against a
+            //     target already under `fraction` of its max HP
+            //   bonusVs { undead }               — Dawnbreaker against the undead
+            if (weapon?.executeBelow && victim.maxHealthPoints) {
+                const { fraction = 0.25, mult = 2 } = weapon.executeBelow
+                if (victim.healthPoints / victim.maxHealthPoints < fraction) damage = Math.round(damage * mult)
+            }
+            if (weapon?.bonusVs?.undead && isUndead(victim)) {
+                damage = Math.round(damage * weapon.bonusVs.undead)
+            }
             // Protection minus the attacker's penetration for this damage type
             // (Arcane Spell Pierce shaves magic barrier). Floored at 0 — pen can
             // negate mitigation but not turn it into bonus damage.
@@ -173,20 +178,30 @@ class Combat {
             // Opportunist etc. — attacker-side bonus keyed to the victim's state.
             const outMult = attacker.outgoingDamageMult?.(victim) ?? 1
             if (outMult !== 1) damage = Math.round(damage * outMult)
-            // Affinity rider (§14): the attacker's affinity adds flat elemental
-            // damage on top of the weapon hit (amp when it matches the weapon flavor).
-            damage += affinityBonus(attacker, weapon?.damageFlavor)
             damage = Math.max(1, damage)
 
             // Shield soak (absorb): a Shield pool spends before HP. `dealt` is
             // the HP loss after the pool eats what it can; `absorbed` is what the
             // pool ate. A fully-soaked hit deals 0 and reads as a block.
-            const { absorbed, dealt } = applyDamage(victim, damage)
-            // Voice: cry out the first time this hit drops the victim to low
-            // HP. Each is a no-op unless the victim is of its type (and, for
-            // enemies, not already fleeing). See hero/enemyReactions.
-            reactHeroLowHp(victim)
-            reactEnemyLowHp(victim)
+            const { absorbed, dealt, revived } = applyDamage(victim, damage)
+            if (revived) gameLog.log(`${victim.name} should have fallen — the Revenant Mail refuses it!`)
+            // Impact sound. A ranged weapon lands as an arrow; melee scales
+            // with how much got through, so a crit and a chipped hit do not
+            // sound the same. Kept beside the damage numbers so the audio and
+            // the visible feedback can never disagree about what happened.
+            //
+            // Recomputed here rather than reusing the `isRanged` below: that
+            // const is declared AFTER this closure, and the opts.skipFx path
+            // calls resolveAttack() before reaching it — reading it from in
+            // here would be a temporal-dead-zone crash on every skipFx ability.
+            const rangedHit = !!(weapon?.range?.() && weapon.attackTile)
+            if (dealt > 0) {
+                if (rangedHit) audio.play('arrow-hit-flesh')
+                else if (isCrit) audio.play('melee-crit')
+                else audio.play(dealt >= 8 ? 'melee-hit-heavy' : 'melee-hit')
+            } else {
+                audio.play('melee-hit-light')
+            }
             if (dealt > 0) {
                 if (isCrit) {
                     spawnCriticalNumber(victim, dealt, weapon)
@@ -207,6 +222,28 @@ class Combat {
             // dealt HP, on BOTH a surviving and a lethal hit, before the kill branch.
             if (dealt > 0) attacker.onDealtDamage?.(victim, dealt)
 
+            // Legendary procs on the landed hit (§10.17):
+            //   lifesteal — the attacker heals this fraction of HP dealt (Lifedrinker)
+            //   thorns    — the VICTIM's gear cuts a melee attacker back for a flat
+            //               amount (Bramblecoat); straight to HP, no second roll, and
+            //               never for a ranged hit — thorns bite what touches them.
+            if (dealt > 0 && weapon?.lifesteal && attacker.maxHealthPoints) {
+                const heal = Math.round(dealt * weapon.lifesteal)
+                if (heal > 0) {
+                    attacker.healthPoints = Math.min(attacker.maxHealthPoints, attacker.healthPoints + heal)
+                    spawnHealNumber(attacker, heal)
+                }
+            }
+            const thorns = dealt > 0 && !rangedHit ? (victim.stat?.('thorns') ?? 0) : 0
+            if (thorns > 0 && attacker.healthPoints > 0 && attacker.sprite) {
+                const { dealt: cut } = applyDamage(attacker, thorns)
+                if (cut > 0) {
+                    spawnDamageNumber(attacker, cut, weapon)
+                    gameLog.log(`${attacker.name} is cut for ${cut} by ${victim.name}'s thorns.`)
+                    if (attacker.healthPoints <= 0) dungeon.removeEntity(attacker)
+                }
+            }
+
             // 6) Element status trigger. Flavored hit applies the mapped
             // status tag (idempotent via Taggable's name-dedupe). Only fires
             // when the hit actually reached HP (a fully-absorbed hit shouldn't
@@ -215,14 +252,46 @@ class Combat {
                 const status = STATUS_BY_FLAVOR[weapon.damageFlavor]
                 if (status) victim.addTag(status)
             }
-            // Affinity status rider (§14): layer the attacker's affinity element's
-            // status too (skipped when it matches the weapon's own flavor above).
-            if (dealt > 0 && victim.healthPoints > 0) applyAffinityStatus(attacker, victim, weapon?.damageFlavor)
 
-            // Reactive: a surviving victim with an armed Counter strikes back at
-            // the attacker (the `reactive` pattern). After damage lands, before
-            // the hit-reaction; guarded against counter-of-a-counter recursion.
-            if (dealt > 0 && victim.healthPoints > 0) tryCounter(victim, attacker, dealt)
+            // 6b) Weapon riders (scope doc §10.16) — the data fields that let a
+            // higher-tier staff or bow do something a lower one cannot, read off
+            // the weapon so no weapon needs code of its own.
+            //
+            //   onHitStatus { name, chance } — a status by REGISTERED name (the
+            //     tag's `name`, as applyStatuses matches it), rolled per landed hit.
+            //     This is how the Stormcaller stuns on one hit in five while the
+            //     lightning FLAVOR above stays visual-only: every hit stunning was
+            //     judged too strong, so the chance lives on the weapon that earns it.
+            //   splash { radius, mult } — every other enemy within `radius` of the
+            //     victim takes `mult` of a normal hit through THIS same pipeline
+            //     (dodge, block, armour, flavour all apply), resolved at once with
+            //     no second projectile. `opts.splashed` stops a splash from
+            //     splashing again. The snapshot of tm.entities matters: a splash
+            //     kill removes an entity mid-loop.
+            if (dealt > 0 && victim.healthPoints > 0 && weapon?.onHitStatus) {
+                const rider = weapon.onHitStatus
+                if (Math.random() < (rider.chance ?? 1)) {
+                    const template = getStatusTemplate(rider.name)
+                    if (template) victim.addTag(template)
+                    else console.warn(`[combat] ${weapon.name}: onHitStatus '${rider.name}' is not a registered status`)
+                }
+            }
+            if (dealt > 0 && weapon?.splash && !opts.splashed) {
+                const radius = weapon.splash.radius ?? 1
+                const mult = weapon.splash.mult ?? 0.5
+                const cx = victim.x, cy = victim.y
+                playBurst(cx, cy, { radius: radius + 0.5, color: weapon.damageColor ?? 0xffffff })
+                for (const other of [...tm.entities]) {
+                    if (other === victim || other === attacker || !other.sprite) continue
+                    if (other.type !== 'enemy' && other.type !== 'hero') continue
+                    if (other.healthPoints <= 0) continue
+                    if (Math.max(Math.abs(other.x - cx), Math.abs(other.y - cy)) > radius) continue
+                    // Through Dungeon so the same-team guard applies: a Warrior's
+                    // splash never catches the hero's own allies.
+                    dungeon.attackEntity(attacker, other, weapon, { skipFx: true, splashed: true, damageMult: mult })
+                }
+            }
+
 
             // On-damaged passives (Thorns/Retaliation) — a separate hook from the
             // Counter tag, so an always-on thorns passive doesn't collide with the
@@ -251,6 +320,11 @@ class Combat {
         // scrolls), play a cast pulse at the attacker first, then fire
         // the projectile.
         const isRanged = weapon.range() && weapon.attackTile
+        // Launch sound, paired with the animation that is about to play: a
+        // spell pulse for a cast, a bow for a shot, a blade for a swing.
+        if (weapon.castType) audio.play('cast')
+        else if (isRanged) audio.play('bow-shot')
+        else audio.playPool('swing')
         if (isRanged) {
             if (weapon.castType) {
                 playCast(attacker, {

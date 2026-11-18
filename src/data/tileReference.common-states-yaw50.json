@@ -1,0 +1,67 @@
+{
+    "_meta": {
+        "pack": "game_dev_sprites — original dungeon set",
+        "key": "tileReference.common-states-yaw50",
+        "mode": "spritesheet",
+        "sheet": "game_dev_sprites/sprites/common/states_yaw50.png",
+        "tileSize": 48,
+        "spacing": 0,
+        "margin": 0,
+        "columns": 3,
+        "rows": 3,
+        "total": 9,
+        "view": "top-down dungeon map tile",
+        "license": "Original art made for this game (game_dev_sprites). Owned outright — free to ship. No third-party pack was used as input.",
+        "kind": "entity",
+        "usedFrames": 8,
+        "layer": "entity",
+        "pivot": {
+            "x": 0.5,
+            "y": 0.8817
+        },
+        "elevation": 40,
+        "note": "GRID VERIFIED by scripts/build_sprite_reference.mjs against the PNG header (144x144 / 48 = 3x3, 8 frames, no remainder). Generated from common/states_yaw50.json — do not hand-edit; re-run the script instead. Frame names are the exporter's own, kept verbatim so a re-export cannot drift from the reference."
+    },
+    "entitys": {
+        "a_pose": {
+            "frame": 0,
+            "col": 0,
+            "row": 0
+        },
+        "contrapposto": {
+            "frame": 1,
+            "col": 1,
+            "row": 0
+        },
+        "run_contact": {
+            "frame": 2,
+            "col": 2,
+            "row": 0
+        },
+        "run_down": {
+            "frame": 3,
+            "col": 0,
+            "row": 1
+        },
+        "run_passing": {
+            "frame": 4,
+            "col": 1,
+            "row": 1
+        },
+        "run_stride": {
+            "frame": 5,
+            "col": 2,
+            "row": 1
+        },
+        "run_up": {
+            "frame": 6,
+            "col": 0,
+            "row": 2
+        },
+        "sit": {
+            "frame": 7,
+            "col": 1,
+            "row": 2
+        }
+    }
+}

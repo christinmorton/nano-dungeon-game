@@ -1,15 +1,28 @@
 import Phaser from 'phaser'
 import router from '../SceneRouter.js'
-import dungeon from '../Dungeon.js'
-import inputMap, { tokenFor } from '../InputMap.js'
+import inputMap from '../InputMap.js'
 
-// Keybind configuration screen. A full handoff from Settings (see
-// SceneRouter.openControls): only one of the two is active at a time, so this
-// scene owns Escape outright and there's no multi-scene race.
+// The controls reference. Reachable from the title screen (before you start)
+// and from Pause (mid-run), because a player who needs it needs it in both
+// places.
 //
-// Each row rebinds one action: click the key button → "press a key…" capture
-// mode → the next key press sets the binding (live immediately via InputMap;
-// persisted to Account). Conflicts and reserved keys are rejected.
+// This screen exists because nothing else in the game said any of it. The core
+// loop is mouse-playable — click to move, click to attack, click to interact —
+// but abilities, items, equipment and pausing are all keyboard, and none of
+// those keys appeared anywhere in the UI. A stranger opening this on itch had
+// no way to learn them short of pressing every key.
+//
+// EVERY BINDING HERE IS READ FROM InputMap, never typed as a literal. The
+// interact prompts on doors and chests said "[E]" for months after interact
+// moved to F, precisely because a human typed the letter into a string. A
+// controls screen is the worst possible place to repeat that: it is the one
+// screen a player will believe.
+//
+// What is deliberately NOT listed: Y/N (accept/decline, for the cut pact
+// system), V/D (beckon/dismiss, for cut companions). Their handlers survive as
+// harmless no-ops on an empty follower list, but a documented key that does
+// nothing reads as a broken game — the same reasoning that removed four
+// buttons from the Pause menu.
 
 const GAME_W = 80 * 16
 const GAME_H = 50 * 16
@@ -17,25 +30,17 @@ const GAME_H = 50 * 16
 const COLOR_PRIMARY = "#cfc6b8"
 const COLOR_DIM = "#7a7466"
 const COLOR_ACCENT = "#facc15"
-const COLOR_GOLD = "#ffcc66"
-const COLOR_ON = "#4ade80"
-const COLOR_BAD = "#ef4444"
+const COLOR_KEY = "#e8dfd0"
 
-// Tokens the keymap can't claim: Escape (back/cancel), the item digits, the
-// unequip letters (still hardcoded in HeroController), and modifier keys.
-const RESERVED = new Set([
-    'Escape', 'Tab', 'Shift', 'Control', 'Alt', 'Meta',
-    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
-    'm', 'o', 'h', 'b', 't', 'g', 'c',
-])
-
-// Human-readable label for a key token.
-function keyLabel(token) {
-    if (!token) return '—'
-    if (token === 'Space') return 'Space'
-    if (token.startsWith('Arrow')) return token.replace('Arrow', 'Arrow ')
-    return token.length === 1 ? token.toUpperCase() : token
-}
+// Layout. Two columns, because the full binding list does not fit in one at a
+// readable size — the item section alone is three rows of seven keys.
+const COL_L = 120
+const COL_R = 700
+const COL_W = 470
+const KEY_W = 135          // gutter between the key column and its description
+const ROW_H = 26           // minimum row pitch; a wrapped description gets more
+const SECTION_GAP = 22
+const TOP = 190
 
 export default class Controls extends Phaser.Scene {
     constructor() {
@@ -43,196 +48,149 @@ export default class Controls extends Phaser.Scene {
     }
 
     create() {
-        this._capture = null
-        this._rows = []
-
-        this.add.rectangle(0, 0, GAME_W, GAME_H, 0x000000, 0.9).setOrigin(0)
+        this.add.rectangle(0, 0, GAME_W, GAME_H, 0x000000, 0.92).setOrigin(0)
 
         const cx = GAME_W / 2
 
-        this.add.text(cx, 50, "Controls", { font: "52px Arial", color: COLOR_ACCENT }).setOrigin(0.5)
-        this.add.text(cx, 100, "Click a key, then press the new key. Esc cancels.", {
-            font: "13px Arial", color: COLOR_DIM
+        this.add.text(cx, 60, "Controls", {
+            font: "60px Arial",
+            color: COLOR_ACCENT
         }).setOrigin(0.5)
 
-        // Abilities (slots come from the keymap; the last is the Ultimate).
-        let y = 150
-        this.add.text(cx, y, "ABILITIES", { font: "15px Arial", color: COLOR_PRIMARY }).setOrigin(0.5)
-        y += 30
-        const slots = inputMap.abilitySlotKeys.length
-        const ultimate = inputMap.ultimateSlotIndex
-        for (let i = 0; i < slots; i++) {
-            const label = i === ultimate ? "Ultimate" : `Ability ${i + 1}`
-            this._makeRow(
-                cx, y, label, i === ultimate,
-                () => inputMap.abilitySlotKeys[i],
-                (token) => inputMap.rebindAbilitySlot(i, token),
-                (owner) => owner.type === 'slot' && owner.index === i,
-            )
-            y += 36
-        }
-
-        // Discrete actions.
-        y += 14
-        this.add.text(cx, y, "ACTIONS", { font: "15px Arial", color: COLOR_PRIMARY }).setOrigin(0.5)
-        y += 30
-        const actions = [
-            { id: 'interact', label: 'Interact' },
-            { id: 'accept', label: 'Accept / Yes' },
-            { id: 'decline', label: 'Decline / No' },
-            { id: 'retreat', label: 'Retreat' },
-            { id: 'passTurn', label: 'Pass turn' },
-            { id: 'skillbook', label: 'Skillbook' },
-            { id: 'beckon', label: 'Beckon ally' },
-            { id: 'dismiss', label: 'Dismiss ally' },
-        ]
-        for (const a of actions) {
-            this._makeRow(
-                cx, y, a.label, false,
-                () => inputMap.actions[a.id]?.[0],
-                (token) => inputMap.rebind(a.id, [token]),
-                (owner) => owner.type === 'action' && owner.action === a.id,
-            )
-            y += 36
-        }
-
-        // Movement is keymapped but not rebindable here yet (a later pass).
-        y += 10
-        this.add.text(cx, y, "Movement: Arrow keys  ·  Items: 1–0  (rebinding these comes later)", {
-            font: "12px Arial", color: COLOR_DIM
+        this.add.text(cx, 120, "Press Esc or click anywhere to close", {
+            font: "13px Arial",
+            color: COLOR_DIM
         }).setOrigin(0.5)
 
-        // Status line for save/conflict feedback.
-        this._status = this.add.text(cx, y + 30, "", { font: "13px Arial", color: COLOR_ON }).setOrigin(0.5)
+        this._renderColumn(COL_L, this._leftSections())
+        this._renderColumn(COL_R, this._rightSections())
 
-        // Reset + Back.
-        this._makeButton(cx - 130, GAME_H - 70, "Reset to defaults", () => {
-            inputMap.resetDefaults()
-            inputMap.clearSaved()
-            this._cancelCapture()
-            this._renderAll()
-            this._flash("Reset to defaults", COLOR_ON)
-        }, 200)
-        this._makeButton(cx + 110, GAME_H - 70, "Back", () => this._close(), 160)
+        // Close on Escape or on any click. Both, because this screen is reached
+        // from the mouse-driven title card and from the keyboard-driven pause
+        // menu, and a player arriving by either route reaches for that one.
+        //
+        // The arming delay is the guard against the click that OPENED this
+        // screen also closing it: the button's pointerup can still be in flight
+        // when create() runs, so an unguarded listener dismisses the screen on
+        // the same gesture and it never appears. (SceneRouter.openPause carries
+        // a 200ms debounce for the same reason.)
+        this._armedAt = this.time.now + 150
 
-        this.add.text(cx, GAME_H - 32, "Changes apply immediately; HUD labels refresh on the next floor.", {
-            font: "12px Arial", color: COLOR_DIM
-        }).setOrigin(0.5)
-
-        // One keydown handler owns everything: capture a rebind, or Escape = back.
-        this.input.keyboard.on("keydown", (event) => {
-            if (this._capture) {
-                const token = tokenFor(event)
-                if (token === 'Escape') { this._cancelCapture(); return }
-                this._applyCapture(token)
-                return
-            }
-            if (event.key === "Escape") this._close()
+        this.input.keyboard.on("keyup", (event) => {
+            if (event.key !== "Escape") return
+            this._close()
         })
+        this.input.on("pointerup", () => this._close())
     }
 
     _close() {
-        // Refresh the live HUD so the ability-bar hotkey labels reflect any
-        // rebinds immediately when the player returns to the game (optional
-        // chaining: no hero exists when Controls is opened from the Intro menu).
-        dungeon.player?.hud?.refresh()
+        if (this.time.now < this._armedAt) return
         router.bind(this)
         router.closeControls()
     }
 
-    // --- rebind rows ---------------------------------------------------------
+    // --- content -------------------------------------------------------------
+    // Each section is { title, rows: [[keys, description], ...] }. `keys` is
+    // built from InputMap so a rebind (or a corrected typo) lands here for free.
 
-    _makeRow(cx, y, label, gold, getToken, apply, matchOwner) {
-        const labelX = cx - 20
-        const btnX = cx + 90
-        this.add.text(labelX, y, label, {
-            font: "14px Arial", color: gold ? COLOR_GOLD : COLOR_PRIMARY
-        }).setOrigin(1, 0.5)
+    _leftSections() {
+        const slots = inputMap.abilitySlotKeys
+        // The bar's last slot is the ultimate — see InputMap.ultimateSlotIndex.
+        const kitKeys = slots.slice(0, -1).map(k => k.toUpperCase()).join(" ")
+        const ultimateKey = inputMap.slotLabel(slots.length - 1)
 
-        const rect = this.add.rectangle(btnX, y, 150, 26, 0x2a2a2a).setStrokeStyle(1, 0x4a4a4a)
-        const text = this.add.text(btnX, y, "", { font: "13px Arial", color: COLOR_PRIMARY }).setOrigin(0.5)
+        return [
+            {
+                title: "Moving",
+                rows: [
+                    ["Arrow Keys", "Move one tile"],
+                    ["Click a tile", "Step toward it"],
+                    ["Shift + Click", "Travel there — keeps walking until something interrupts"],
+                    [inputMap.keyLabel('passTurn'), "Wait — pass the rest of your turn"],
+                ],
+            },
+            {
+                title: "Fighting",
+                rows: [
+                    ["Click an enemy", "Attack it, if it is in weapon range"],
+                    // Count comes from the keymap, not a typed word: the bar has
+                    // five kit slots and the classes currently fill four, so a
+                    // hardcoded "four" would go stale the moment a fifth lands.
+                    [kitKeys, `Abilities — your ${slots.length - 1} class skills`],
+                    [ultimateKey, "Ultimate — long cooldown, no cost gate"],
+                    ["Click a target", "Aim an ability that asks for one"],
+                    [inputMap.keyLabel('retreat'), "Retreat from combat"],
+                ],
+            },
+        ]
+    }
 
-        const row = { rect, text, getToken, apply, matchOwner }
-        row.render = () => {
-            if (this._capture === row) {
-                text.setText("press a key…").setColor(COLOR_ACCENT)
-            } else {
-                text.setText(keyLabel(getToken())).setColor(COLOR_PRIMARY)
+    _rightSections() {
+        // Slot letters straight from the keymap, in a stable printed order
+        // rather than object order, so the list reads head-to-toe like a
+        // character sheet instead of however the table happens to be written.
+        const ORDER = ['mainhand', 'offhand', 'head', 'body', 'gloves', 'feet', 'accessory']
+        const byslot = {}
+        for (const [token, slot] of Object.entries(inputMap.equipSlotKeys)) {
+            byslot[slot] = token.toUpperCase()
+        }
+        const unequipRows = ORDER
+            .filter(slot => byslot[slot])
+            .map(slot => [byslot[slot], `Unequip ${slot}`])
+
+        const sections = [
+            {
+                title: "Items",
+                rows: [
+                    ["1 - 0", "Equip or use the item in that carry slot"],
+                    ["Shift + 1 - 0", "Drop that item"],
+                    [inputMap.keyLabel('interact'), "Interact — doors, chests, stairs, bags"],
+                ],
+            },
+        ]
+        // The unequip letters are an empty table as of 2026-10-03 (unequipping
+        // is by click on the Character screen and the Pause panel). The section
+        // only prints if a rebind ever puts something back in it.
+        if (unequipRows.length) sections.push({ title: "Unequip", rows: unequipRows })
+        sections.push({
+            title: "Screens",
+            rows: [
+                [inputMap.keyLabel('character'), "Character — your stats, your gear, and what each item in your pack would change"],
+                ["Esc", "Pause — inventory, volume, and this screen"],
+            ],
+        })
+        return sections
+    }
+
+    // --- rendering -----------------------------------------------------------
+
+    _renderColumn(x, sections) {
+        let y = TOP
+        for (const section of sections) {
+            this.add.text(x, y, section.title.toUpperCase(), {
+                font: "bold 15px Arial",
+                color: COLOR_ACCENT
+            }).setOrigin(0, 0)
+            y += ROW_H + 2
+
+            for (const [keys, description] of section.rows) {
+                this.add.text(x, y, keys, {
+                    font: "bold 14px Arial",
+                    color: COLOR_KEY
+                }).setOrigin(0, 0)
+
+                const text = this.add.text(x + KEY_W, y, description, {
+                    font: "14px Arial",
+                    color: COLOR_PRIMARY,
+                    wordWrap: { width: COL_W - KEY_W }
+                }).setOrigin(0, 0)
+
+                // Advance by what the description ACTUALLY measures, not by a
+                // fixed pitch. Several of these wrap to two lines, and a fixed
+                // ROW_H would run the next row straight through the second one.
+                y += Math.max(ROW_H, text.height + 8)
             }
+            y += SECTION_GAP
         }
-        row.render()
-
-        rect.setInteractive({ useHandCursor: true })
-        rect.on("pointerover", () => { if (this._capture !== row) rect.setFillStyle(0x3a3a3a) })
-        rect.on("pointerout", () => rect.setFillStyle(0x2a2a2a))
-        rect.on("pointerup", () => this._startCapture(row))
-
-        this._rows.push(row)
-    }
-
-    _startCapture(row) {
-        this._cancelCapture()
-        this._capture = row
-        row.rect.setStrokeStyle(1, 0xfacc15)
-        row.render()
-        this._flash("Press a key…  (Esc to cancel)", COLOR_DIM)
-    }
-
-    _cancelCapture() {
-        const row = this._capture
-        this._capture = null
-        if (row) { row.rect.setStrokeStyle(1, 0x4a4a4a); row.render() }
-    }
-
-    _applyCapture(token) {
-        const row = this._capture
-        if (!row || !token) return
-        if (RESERVED.has(token)) {
-            this._flash(`"${keyLabel(token)}" is reserved`, COLOR_BAD)
-            this._cancelCapture()
-            return
-        }
-        const owner = this._ownerOf(token)
-        if (owner && !row.matchOwner(owner)) {
-            this._flash(`"${keyLabel(token)}" is already in use`, COLOR_BAD)
-            this._cancelCapture()
-            return
-        }
-        row.apply(token)
-        inputMap.persist()
-        this._capture = null
-        row.rect.setStrokeStyle(1, 0x4a4a4a)
-        row.render()
-        this._flash(`Bound to "${keyLabel(token)}"`, COLOR_ON)
-    }
-
-    // Which control currently owns a token, or null.
-    _ownerOf(token) {
-        const keys = inputMap.abilitySlotKeys
-        for (let i = 0; i < keys.length; i++) {
-            if (keys[i] === token) return { type: 'slot', index: i }
-        }
-        for (const action in inputMap.actions) {
-            if (inputMap.actions[action].includes(token)) return { type: 'action', action }
-        }
-        if (token in inputMap.movement) return { type: 'movement' }
-        return null
-    }
-
-    _renderAll() {
-        for (const row of this._rows) row.render()
-    }
-
-    _flash(msg, color) {
-        this._status.setText(msg).setColor(color || COLOR_ON)
-    }
-
-    _makeButton(x, y, label, onClick, w = 180) {
-        const rect = this.add.rectangle(x, y, w, 34, 0x2a2a2a).setStrokeStyle(1, 0x4a4a4a)
-        this.add.text(x, y, label, { font: "15px Arial", color: COLOR_PRIMARY }).setOrigin(0.5)
-        rect.setInteractive({ useHandCursor: true })
-        rect.on("pointerover", () => rect.setFillStyle(0x3a3a3a))
-        rect.on("pointerout", () => rect.setFillStyle(0x2a2a2a))
-        rect.on("pointerup", onClick)
     }
 }

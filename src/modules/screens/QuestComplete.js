@@ -1,20 +1,19 @@
 import Phaser from 'phaser'
 import { renderEndScreen } from './EndScreen.js'
-import router from '../SceneRouter.js'
 
+// The win screen.
+//
+// v3 routed wins through a vault-deposit phase first, waiting on that scene's
+// "shutdown" event before rendering the score. The vault is part of the
+// meta-progression layer v5 cuts, and "vault-deposit-scene" is not registered —
+// so that listener would have waited on an event that could never fire, leaving
+// the player on a black screen at the exact moment they won. Renders directly.
 export default class QuestComplete extends Phaser.Scene {
     constructor() {
         super({ key: "quest-complete-scene", active: false })
     }
 
     create() {
-        // Wins go through the vault deposit phase first; the score breakdown
-        // renders only after the player commits their deposit choices.
-        const depositScene = this.scene.get("vault-deposit-scene")
-        depositScene.events.once("shutdown", () => {
-            renderEndScreen(this, { title: "Quest Complete", isWin: true })
-        })
-        router.bind(this)
-        router.openVaultDeposit()
+        renderEndScreen(this, { title: "Quest Complete", isWin: true })
     }
 }

@@ -1,11 +1,10 @@
 import dungeon from '../Dungeon.js'
 import mapState from '../MapState.js'
+import gameLog from '../GameLog.js'
 import { spawnDamageNumber, spawnHealNumber, spawnBlockNumber, playCast, playProjectile, playHitReaction, playImpact, playBurst, playTrail } from '../Animations.js'
 import { getStatusMeta, getStatusTemplate } from '../tags/Status.js'
 import { applyDamage } from '../damage.js'
 import shield from '../tags/shield.js'
-import { isBurrowed } from '../tags/underground.js'
-import { affinityBonus, applyAffinityStatus } from './affinities.js'
 
 // universals.js — engine-level mechanical verbs that class-signature
 // abilities (and future enemy AI / scrolls / level-up unlocks) compose
@@ -40,16 +39,6 @@ import { affinityBonus, applyAffinityStatus } from './affinities.js'
 // follow up (e.g., knockback only if not killed).
 export function resolveDamage(victim, rawDamage, damageType = 'physical', opts = {}) {
     if (!victim || !victim.sprite) return { applied: 0, killed: false }
-    // Burrowed (Dig) targets shrug off everything but AoE MAGIC: only an
-    // area-magic effect (opts.aoe + magic damageType — the dwarf can't dodge a
-    // blast that fills the ground it's under) reaches them. Single-target spells,
-    // physical AoE, and weapons (Combat.attack has its own gate) all miss.
-    if (isBurrowed(victim) && !(opts.aoe && damageType === 'magic')) {
-        return { applied: 0, killed: false }
-    }
-    // Affinity rider (§14): the attacker's affinity adds bonus damage on top of the
-    // hit — amplified when it matches opts.baseFlavor (the ability's own element).
-    rawDamage += affinityBonus(opts.attacker, opts.baseFlavor)
     // Attacker penetration (Arcane Spell Pierce) shaves the victim's protection,
     // floored at 0. Only when an attacker is threaded through this path.
     const protection = Math.max(0, (victim.protection?.(damageType) ?? 0) - (opts.attacker?.armorPen?.(damageType) ?? 0))
@@ -60,9 +49,10 @@ export function resolveDamage(victim, rawDamage, damageType = 'physical', opts =
     const final = Math.max(1, Math.round((rawDamage - protection) * takenMult * outMult))
     // Spend any Shield pool before HP (absorb). `dealt` is the actual HP loss;
     // a fully-absorbed hit deals 0 and shows a block-style number instead.
-    const { dealt } = applyDamage(victim, final)
+    const { dealt, revived } = applyDamage(victim, final)
     if (dealt > 0) spawnDamageNumber(victim, dealt)
     else spawnBlockNumber(victim)
+    if (revived) gameLog.log(`${victim.name} should have fallen — the Revenant Mail refuses it!`)
     // Combat recency (Momentum): any damage that involves the hero marks it
     // in combat. markCombat only exists on the hero, so the guards no-op for
     // enemies. opts.attacker is threaded by the ability-damage patterns.
@@ -81,9 +71,6 @@ export function resolveDamage(victim, rawDamage, damageType = 'physical', opts =
     // No attacker threaded through this path — playHitReaction falls back to
     // an upward jolt rather than a directional recoil.
     playHitReaction(victim, { damageType })
-    // Affinity status rider (§14): layer the attacker's affinity element's status
-    // onto the surviving victim (skipped if the base flavor already applied it).
-    if (dealt > 0) applyAffinityStatus(opts.attacker, victim, opts.baseFlavor)
     // Ability-side on-damaged (Thorns etc.). The reflect call doesn't thread an
     // attacker, so it won't re-enter here — no retaliation loop.
     if (opts.attacker) victim.onDamaged?.(opts.attacker, dealt)
@@ -322,7 +309,9 @@ export function shockwave(origin, { radius = 1, damage = 1, type = 'physical', o
         for (let dx = -reach; dx <= reach; dx++) {
             if (dx === 0 && dy === 0) continue
             if (dx * dx + dy * dy > r2) continue
-            const victim = mapState.entityAtTile(origin.x + dx, origin.y + dy)
+            // combatantAtTile, not entityAtTile: an enemy standing on a dropped
+            // item or a loot bag would otherwise be masked by it and take nothing.
+            const victim = mapState.combatantAtTile(origin.x + dx, origin.y + dy)
             if (!victim || victim.type !== 'enemy') continue
             const result = resolveDamage(victim, damage, type, { aoe: true })
             hits.push({ entity: victim, result })
@@ -344,8 +333,15 @@ export function beam(origin, dx, dy, { length = 5, damage = 1, type = 'magic', o
         const tx = origin.x + dx * i
         const ty = origin.y + dy * i
         if (!mapState.level[ty] || mapState.level[ty][tx] === undefined) break
-        if (!mapState.isWalkableTile(tx, ty)) break
-        const victim = mapState.entityAtTile(tx, ty)
+        // Stop at TERRAIN only. This used to call isWalkableTile, which counts
+        // entity occupancy as non-walkable — so the beam broke on the first enemy
+        // it met instead of piercing it, and an enemy standing adjacent along the
+        // aim ended the beam at i=1 for ZERO hits. A beam is stopped by rock, not
+        // by the people standing in it; piercing is the whole promise of the verb.
+        if (mapState.level[ty][tx] === 1) break
+        // combatantAtTile, not entityAtTile: loot on the floor must not mask the
+        // enemy standing on it.
+        const victim = mapState.combatantAtTile(tx, ty)
         if (victim && victim.type === 'enemy') {
             const result = resolveDamage(victim, damage, type, { aoe: true })
             hits.push({ entity: victim, result })

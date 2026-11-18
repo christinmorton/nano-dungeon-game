@@ -5,10 +5,9 @@ import gameLog from './GameLog.js'
 import mapState from './MapState.js'
 import fogOfWar from './FogOfWar.js'
 import combat from './Combat.js'
+import audio from './Audio.js'
 import classes from './Classes.js'
 import BaseHero from './classes/BaseHero.js'
-import account from './Account.js'
-import floorMemory from './FloorMemory.js'
 import { playDeath, playDeathMarker } from './Animations.js'
 import { kindOf } from './enemies/enemyKinds.js'
 import { resolveArt } from './assetLoader.js'
@@ -116,9 +115,9 @@ class Dungeon {
     // and registers the player + their items with the turn manager.
     placePlayer () {
         const stairs = mapState.stairs
-        const spawnKind = run.lastTransition === "up" ? "ending" : "starting"
-        const startRoom = mapState.rooms.find(r => r.kind === spawnKind)
-            || mapState.rooms.find(r => r.kind === "starting")
+        // v5 is one-way descent, so arrival is always the starting room. v3 also
+        // handled arriving at the "ending" room after climbing UP a staircase.
+        const startRoom = mapState.rooms.find(r => r.kind === "starting")
             || mapState.rooms[0]
         let p = mapState.randomWalkableTileInRoom(startRoom.x, startRoom.y, startRoom.w, startRoom.h)
 
@@ -130,15 +129,6 @@ class Dungeon {
 
         if (portalArrival) {
             p = portalArrival
-        } else if (floorMemory.has(mapState.levelManager.currentLevel)) {
-            // Spawn placement bypasses isWalkableTile (only walking onto
-            // a stair triggers goUp/goDown), so co-occupying the stair
-            // tile is safe.
-            if (run.lastTransition === "down" && stairs.up) {
-                p = { x: stairs.up.x, y: stairs.up.y }
-            } else if (run.lastTransition === "up" && stairs.down) {
-                p = { x: stairs.down.x, y: stairs.down.y }
-            }
         } else {
             const level = mapState.levelManager.getCurrent()
             if (typeof level.getPlayerSpawnTile === "function") {
@@ -149,43 +139,18 @@ class Dungeon {
 
         if (!this.player) {
             const profile = classes[this.hero] || classes.Wizard
-            // Lean-start (§14): default is "build your own" — begin with one ability
-            // + the ultimate and draft the rest through the run. The "classic" pref
-            // restores the full predefined kit. Skipped in the arena/training bench
-            // (full kit there for testing). Reads the account preference.
-            const arena = typeof window !== "undefined" && window.ARENA_MODE
-            const lean = !arena && !account.getPreferences().classicKit
-            this.player = new BaseHero(p.x, p.y).applyProfile(profile, { lean })
+            // v5 spawns a hero with its full class kit. v3 defaulted to a lean
+            // start - one ability plus the ultimate, drafting the rest through the
+            // run - and read a "classic" account preference to opt out. The draft,
+            // the skillbook and the account book are all cut (scope doc section 6),
+            // so there is only one path left and it is the full kit.
+            this.player = new BaseHero(p.x, p.y).applyProfile(profile)
             // Loadout from the Loadout overlay replaces class default
             // starting items. Consumed on first creation; survives floor
             // transitions because this.player persists.
             if (this.pendingLoadout && this.pendingLoadout.length) {
                 this.player.items = this.pendingLoadout
                 this.pendingLoadout = null
-            }
-            // Re-apply account-banked abilities onto the bar (§14 B4). The Loadout
-            // picker sets dungeon.pendingAbilities (a key array); without it, the
-            // whole account book applies. Skipped in the arena/training bench so it
-            // spawns with a clean class kit.
-            if (!arena) {
-                // Establish the in-flight Character for this run (rebuild phase 6a/6c):
-                // from the Intro hero-creation spec, or a Guild Hall "continue" spec.
-                // Stamp its motivation onto the hero so their voice reflects their
-                // backstory (dialog/motivationBarks.js reads hero.motivation). run.start()
-                // already ran (Dungeon.initialize) so run.character is clear.
-                const spec = this.pendingCharacterSpec || { heroClass: this.hero }
-                const character = run.beginCharacter(spec)
-                this.player.motivation = character?.backstory?.motivation || null
-                this.pendingCharacterSpec = null
-                // Abilities onto the bar: a CONTINUED hero (6c) brings ITS OWN saved
-                // learned kit; a fresh hero draws from the Loadout picker / flat account
-                // book (§14 B4) as before.
-                const continuing = !!(spec.continue && character && character.learnedAbilities.length)
-                this.player.applyAccountBook(continuing ? character.learnedAbilities : (this.pendingAbilities || undefined))
-                this.pendingAbilities = null
-                // Lean-start floor-1 draft only for a FRESH build (§14). A continued hero
-                // already has its kit, and classic runs keep the full class kit + skip it.
-                if (lean && !continuing) run.draftPending = true
             }
         } else {
             this.player.x = p.x
@@ -422,6 +387,15 @@ class Dungeon {
         entity.x = x
         entity.y = y
 
+        // Footstep, on the hero only — thirteen call sites route through here,
+        // so this covers walking, gliding, knockback and teleport alike. Enemies
+        // stay silent on purpose: ten of them stepping every round would be a
+        // wall of noise, and the player cannot see most of them through the fog.
+        // No attenuation here: the footstep samples are already ~19 dB quieter
+        // than the rest of the set, and are boosted back up by LEVEL_TRIM in
+        // Audio.js. Halving them here is what made them inaudible.
+        if (entity.type === "hero") audio.playPool('step')
+
         this.scene.tweens.add({
             targets: entity.sprite,
             onComplete: () => {
@@ -532,6 +506,12 @@ class Dungeon {
             && mapState.rooms.some(r => (r.restSafe || r.pacified) && r.contains(x, y))) {
             return
         }
+        // Leash (scope doc §10.18): a thrall raised by a Corrupted Skull never
+        // leaves the room it was raised in. One guard here covers every AI step,
+        // whatever the archetype planned; it simply holds at the threshold.
+        if (entity.leashRoom && !entity.leashRoom.contains(x, y)) {
+            return
+        }
         // Faction barriers (force/stone/ice walls): a wall segment is sprite-less
         // so the caster's side passes through — which also makes it invisible to
         // isWalkableTile/entityAtTile. AI tile-picks (archer sidestep/retreat,
@@ -572,6 +552,20 @@ class Dungeon {
         worldTooltip.hide()
         if (entity.type === 'enemy') {
             playDeath(sprite)
+            // The stronghold's elite leader dies to its own two-phase fanfare;
+            // everything else gets the generic thud plus its own voice, so a
+            // dying ogre still sounds like an ogre.
+            //
+            // Elite status is read off the tag list because that is the only
+            // record of it: spawnLeader marks the leader by adding eliteEnrager
+            // (which carries the whole HPx4/rage/block package) and there is no
+            // isElite flag anywhere. Taggable stores tag NAMES in _tags.
+            if (entity._tags?.includes("Elite Enrager")) {
+                audio.play('boss-death')
+            } else {
+                audio.play('enemy-death')
+                audio.playEnemy(entity)
+            }
             const markerTile = pickDeathMarkerTile(entity)
             if (markerTile !== null) playDeathMarker(entity.x, entity.y, markerTile)
         } else if (entity.type === 'hero') {
@@ -611,6 +605,10 @@ class Dungeon {
     }
 
     itemPicked (entity) {
+        // Every pickup path routes through here — bag items, tally gems and
+        // keys, and the collect-on-touch Amulet — so one hook covers all three
+        // branches in HeroController rather than three copies of the same line.
+        audio.play('pickup')
         entity.sprite.destroy()
         delete entity.sprite
         worldTooltip.hide()

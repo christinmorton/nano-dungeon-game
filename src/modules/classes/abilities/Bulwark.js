@@ -8,7 +8,7 @@ import bulwark from '../../tags/bulwark.js'
 
 export default class Bulwark extends Ability {
     name = 'Bulwark'
-    icon = 31
+    icon = 2
     description = 'Self-buff: pins block chance to 50% for 3 turns. 1 AP, cd 6.'
     cost = { ap: 1, mp: 0 }
     cooldown = 6

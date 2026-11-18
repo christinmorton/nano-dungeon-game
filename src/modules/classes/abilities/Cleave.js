@@ -11,7 +11,7 @@ import gameLog from '../../GameLog.js'
 
 export default class Cleave extends Ability {
     name = 'Cleave'
-    icon = 31
+    icon = 0
     description = 'Strike every adjacent enemy with your mainhand. 1 AP, cd 2.'
     cost = { ap: 1, mp: 0 }
     cooldown = 2

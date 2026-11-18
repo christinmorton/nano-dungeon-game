@@ -1,12 +1,12 @@
 import dungeon from './Dungeon.js'
 import mapState from './MapState.js'
 import router from './SceneRouter.js'
-import floorMemory from './FloorMemory.js'
 import gameLog from './GameLog.js'
 import tm from './TurnManager.js'
-import { makeInFlightCharacter, buildRunRecord, commitWin, commitDeath } from './heroCommit.js'
-// (heroCommit.js + character.js are pure modules — no ability registry, no Phaser —
-// so they are safe to import here despite the registry rule below.)
+// Safe to import here: Audio.js is a leaf — it pulls only Prefs and the
+// generated manifest, nothing from the game — so it cannot re-enter the
+// BaseEnemy init chain the note below is about.
+import audio from './Audio.js'
 // NOTE: do NOT statically import the ability registry (or draft.js, which pulls it)
 // here. Run.js is imported by BaseEnemy during BaseEnemy's own init, and the
 // registry eagerly globs every ability — including Follower, which extends
@@ -28,7 +28,7 @@ const MASTERY_DAMAGE_PER_SHARD = 40
 //   - stats: per-run accumulators (kills, items, deepest floor, turns)
 //   - transitioning: floor-fade gate that prevents input + double-trigger
 //     while the camera fade is in flight
-//   - goDown / goUp: floor transitions (camera fade -> dungeon advance ->
+//   - goDown: floor transition (camera fade -> dungeon advance ->
 //     dungeon-changed event)
 //   - endRun: routes to the EndScreen via SceneRouter
 //   - computeScore: derives the run score from stats
@@ -48,9 +48,9 @@ class Run {
         this.stats = null
         // One free revive per run — consumed by the DeathScreen's Revive choice.
         this.reviveUsed = false
-        // "down" | "up" | "portal" | null — set by goDown/goUp/goToFloor, read by
-        // World on re-entry to spawn the player at the stairs they arrived through
-        // (rather than always at the leftmost room).
+ // "down" | "portal" | null — set by goDown/goToFloor. v5 is one-way descent,
+        // so there is no "up": arrival is always the starting room.
+
         this.lastTransition = null
         // Explicit arrival tile/room for a cross-floor portal jump (§15.9 slice
         // 2b). { room:areaId } | { tile:{x,y} } | null — consumed by
@@ -123,7 +123,6 @@ class Run {
         this._floorSeconds = 0      // current floor's accrued real time
         this._floorRoundBase = tm.tickCount   // round baseline snapshot at floor entry
 
-        floorMemory.clear()
     }
 
     // --- Play-time tracking -------------------------------------------------------
@@ -236,57 +235,15 @@ class Run {
         if (!this.learnedAbilities.includes(key)) this.learnedAbilities.push(key)
     }
 
-    // --- Hero-roster commit machinery (rebuild phase 2; doc §4) ------------------
-    // HEADLESS MACHINERY: these methods are self-contained + tested but are NOT yet
-    // called by the live run-start / EndScreen flow. They wire in during the Guild
-    // Hall UI phase (doc §13 phase 6), once hero SELECTION exists. `account` is
-    // PASSED IN (not imported) so Run.js stays decoupled and the methods stay pure
-    // enough to test headlessly. The current flat-account book (commitLearned /
-    // applyAccountBook) is untouched, so ability-drawing into runs never regresses.
-
-    // Establish the in-flight hero for this run: CONTINUE a stored roster hero
-    // (`spec.continue` = a Character) or MINT a fresh one from a class
-    // (`spec.heroClass`/`name`/`motivation`/`lore`). Sets this.character (the run's
-    // working copy); roster lookups later key off its stable id.
-    beginCharacter(spec = {}) {
-        this.character = makeInFlightCharacter(spec)
-        return this.character
-    }
-
-    // Assemble a RunRecord (data on the hero, doc §3.3) from the current run state.
-    // `extra` supplies what the run state can't self-derive (seed, killedBy).
-    buildRunRecord(outcome, extra = {}) {
-        const time = typeof this.timeSummary === "function" ? this.timeSummary() : null
-        return buildRunRecord({ stats: this.stats, time, seed: this.seed }, outcome, extra)
-    }
-
-    // Extraction commit on a WIN (doc §4.1): merge the run's learned kit onto the
-    // in-flight hero + append a win RunRecord, then UPDATE it on the roster (a
-    // continued hero) or ADD it (a newly-saved hero, slot permitting). Returns the
-    // committed character, or null (no in-flight hero / roster full on a new save).
-    commitOnWin(account, extra = {}) {
-        return commitWin(
-            account,
-            this.character,
-            { learnedAbilities: this.learnedAbilities, learnedTraits: this.learnedTraits },
-            this.buildRunRecord("win", extra),
-        )
-    }
-
-    // Permadeath commit on a DEATH (doc §4.2): a continued roster hero is moved to
-    // the Fallen wall with a death record — its run gains are DROPPED, so the
-    // STORED/pristine copy falls, not the in-flight one. A fresh never-saved hero
-    // vanishes (nothing on the roster to move). Returns the fallen character, or null.
-    commitOnDeath(account, extra = {}) {
-        return commitDeath(account, this.character, this.buildRunRecord("death", extra))
-    }
-
     goDown() {
         if (this.transitioning) return
         this.transitioning = true
 
+        // Descent stinger, played on the way out rather than on arrival so it
+        // covers the camera fade instead of colliding with the new floor's music.
+        audio.play('descend')
+
         dungeon.scene.cameras.main.once('camerafadeoutcomplete', () => {
-            floorMemory.save(mapState.levelManager.currentLevel, floorMemory.snapshot())
             dungeon.cleanup()
             // Record the finishing floor's play-time BEFORE the level index advances
             // (currentLevel still points at the floor being left). tm.tickCount is
@@ -311,24 +268,10 @@ class Run {
         dungeon.scene.cameras.main.fadeOut(1000, 0, 0, 0)
     }
 
-    goUp() {
-        if (this.transitioning) return
-        this.transitioning = true
-
-        dungeon.scene.cameras.main.once('camerafadeoutcomplete', () => {
-            floorMemory.save(mapState.levelManager.currentLevel, floorMemory.snapshot())
-            dungeon.cleanup()
-            mapState.levelManager.goUp()
-            this.lastTransition = "up"
-            dungeon.scene.events.emit('dungeon-changed')
-        }, this)
-        dungeon.scene.cameras.main.fadeOut(1000, 0, 0, 0)
-    }
-
     // Cross-floor portal jump (§15.9 slice 2b): descend/ascend to an ARBITRARY
     // floor and land at an authored arrival (a room or tile on the destination
     // floor), vs stairs' ±1 + auto anchor. `arrival` = { room:areaId } | { tile }.
-    // Mirrors goDown/goUp; the deeper-floor milestone (skill points + draft) fires
+    // Mirrors goDown; the deeper-floor milestone (skill points + draft) fires
     // only on a NEW deepest floor, same as goDown, so a portal can't be farmed.
     goToFloor(targetIndex, arrival = null) {
         if (this.transitioning) return
@@ -343,7 +286,6 @@ class Run {
         }
         this.transitioning = true
         dungeon.scene.cameras.main.once('camerafadeoutcomplete', () => {
-            floorMemory.save(lm.currentLevel, floorMemory.snapshot())
             dungeon.cleanup()
             // Commit the finishing floor's play-time before the index moves, and
             // only when going deeper (ascending revisits don't close a record).
@@ -365,7 +307,6 @@ class Run {
     }
 
     endRun(outcome) {
-        floorMemory.clear()
         router.bind(dungeon.scene)
         router.endRun(outcome)
     }

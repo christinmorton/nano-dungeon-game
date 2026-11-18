@@ -5,11 +5,6 @@ import Taggable from "../Taggable.js"
 import items, { applyDefaultRandomTags } from "../Items.js"
 import { kindOf, isShelled } from "./enemyKinds.js"
 import ENEMY_ART from "../../data/enemyArt.js"
-import speech from "../SpeechBubble.js"
-import { aggroBark } from "../dialog/aggroBarks.js"
-import { maybeChatter } from "../dialog/idleChatter.js"
-import { maybeCombatTaunt } from "../dialog/combatBarks.js"
-import { reactEnemyStatus } from "../dialog/enemyReactions.js"
 import { shouldForceHunter } from "../debugFlags.js"
 import GenericItem from "../items/GenericItem.js"
 import Container from "../items/Container.js"
@@ -19,17 +14,12 @@ import gameLog from "../GameLog.js"
 import { detects, inVisionCone } from "../Perception.js"
 import archetypes from "../archetypes/index.js"
 import { updateFlee } from "../archetypes/fleeing.js"
-import { mindControlTurn } from "../archetypes/mindControl.js"
-import { territorialReturnTurn } from "../archetypes/territorial.js"
-// Ally-archetype entities (Followers, tamed beasts) pace combat off the shared
-// follower leash decision — see isEngaged below.
-import { guardTargetFor } from "../archetypes/ally.js"
 import Stats from "../classes/Stats.js"
 import { statusesOnEntity } from "../tags/Status.js"
 import { syncEntityStatusFX } from "../Animations.js"
-// Side-effect import: registers every status's metadata so the badge row
-// can resolve valence for any status, regardless of which class is in play.
-import "../tags/statusList.js"
+// v3 side-effect-imported tags/statusList.js here to register every status's
+// metadata for the badge row. v5 does not need it: Taggable imports Tags.js,
+// which imports all ten statuses, so the same chain registers them already.
 
 const PERCEPTION_PASSIVE_FILL = 0x666666
 const PERCEPTION_PASSIVE_STROKE = 0x888888
@@ -88,12 +78,19 @@ const ENEMY_SLOT_NAMES = ['mainhand', 'body', 'accessory']
 
 // Dispatch map: enemy kind -> function(enemy) returning {item, log?} or null.
 // Adding a new kind's drop table is one entry here plus the method on
-// BaseEnemy. Kinds with no entry drop nothing beyond quest items
-// (today: spirit, slime, creature).
+// BaseEnemy.
+//
+// EVERY KIND IN THE v5 ROSTER NOW HAS AN ENTRY (2026-09-22). Before this, kinds
+// with no entry dropped nothing at all — which cost Ghost and Slime any reward,
+// and made the camp's shopkeeper (scope doc §10.11) unaffordable on a floor that
+// happened to spawn them. Now that coins have a SINK, an enemy that drops
+// nothing is a floor's income missing rather than a cosmetic gap.
 const DROP_TABLES_BY_KIND = {
     humanoid: (enemy) => enemy._rollHumanoidDrop(),
     animal: (enemy) => enemy._rollAnimalDrop(),
     insect: (enemy) => enemy._rollInsectDrop(),
+    spirit: (enemy) => enemy._rollSparseDrop("a wisp of ectoplasm"),
+    creature: (enemy) => enemy._rollSparseDrop("a spatter of residue"),
 }
 
 export default class BaseEnemy extends Taggable {
@@ -556,16 +553,6 @@ export default class BaseEnemy extends Taggable {
         return Math.min(0.5, this.stat('block') * 0.03)
     }
 
-    // Override Taggable.addTag to give the enemy a voice when a NEW negative
-    // status lands. reactEnemyStatus filters to negative-valence statuses on
-    // a visible enemy, so material/role tags and offscreen gen stay quiet.
-    addTag(template) {
-        const isNew = !(this._tags && this._tags.includes(template.name))
-        super.addTag(template)
-        if (isNew) reactEnemyStatus(this, template.name)
-        return this
-    }
-
     turn() {
         // Stun skips the archetype call AND zeros AP/MP so over() returns
         // true after this call — TurnManager keeps calling turn() until
@@ -600,31 +587,27 @@ export default class BaseEnemy extends Taggable {
         // turn until it's clear. See documents/v3_objective_driven_encounters.md.
         if (updateFlee(this)) return
 
-        // Mind-control overrides (Fear = flee the player, Confuse = stumble
-        // randomly), same slot/pattern as the flee check. Charm is NOT here — it
-        // flips archetype to 'ally', handled by the normal dispatch below.
-        if (mindControlTurn(this)) return
-
-        // Territorial return-home (§16 Stage 2): a disengaged territorial enemy
-        // that strayed out of its zone heads back instead of roaming. General
-        // gate; skips the archetype turn when it takes the step.
-        if (territorialReturnTurn(this)) return
-
-        // Ambient flavor: an idle, unalerted humanoid may mutter or trade a
-        // quick joke with a nearby buddy. Self-throttled and a no-op for
-        // anything not eligible — see dialog/idleChatter.js. Doesn't touch
-        // MP/AP, so it never affects the actual turn.
-        maybeChatter(this)
-        // And the combat counterpart: an engaged rank-and-file enemy may
-        // shout a battle cry. Self-throttled; no-op when not fighting.
-        maybeCombatTaunt(this)
-
         // Dispatch to the archetype's turn function. Archetypes are now
         // objects (turn, statTemplate, hpFormula); the hunter / patrolling
         // / goingSomewhere AI that used to live on tags moved here too.
         const arche = archetypes[this.archetype]
         if (arche && typeof arche.turn === "function") {
             arche.turn(this)
+        } else if (!this._archetypeWarned) {
+            // An unresolved archetype is not a harmless no-op: this enemy will
+            // never spend its points, so tm.over() never goes true, the round
+            // never refreshes, and the PLAYER silently loses the ability to move.
+            // v3 could afford to swallow it (ten archetypes registered, spawns
+            // driven by recipes); v5 registers five, so a pool naming anything
+            // else deadlocks the game with nothing in the console. Warn once per
+            // entity rather than every frame.
+            this._archetypeWarned = true
+            console.warn(
+                `[BaseEnemy] ${this.name} has no usable archetype (got "${this.archetype}"). ` +
+                `It will never take a turn, which stalls the round. ` +
+                `Registered: ${Object.keys(archetypes).join(", ")}. ` +
+                `Was finalizeSpawn() called on it?`
+            )
         }
     }
 
@@ -698,21 +681,11 @@ export default class BaseEnemy extends Taggable {
     updatePerception(target) {
         const wasAlerted = this.alerted
 
-        // Committed to a battle: this is a designated fight, so the enemy has
-        // clear perception of the target regardless of facing or range. Skip
-        // the cone+radius gate entirely — it can't "lose" the player inside
-        // the arena; the fight ends by win/flee, not by the enemy forgetting.
-        if (this.isEngaged()) {
-            this.alerted = true
-            this.lastSeenX = target.x
-            this.lastSeenY = target.y
-            this.lastInteractionTick = tm.tickCount
-            this._turnsSinceLastSight = 0
-            if (this.state !== "alerted" && this.state !== "engaging") {
-                this.transitionState("alerted")
-            }
-            return
-        }
+        // v3 short-circuited perception here for an enemy committed to a Battle:
+        // inside an arena it cannot "lose" the player. v5 has no encounter manager,
+        // so that gate is permanently false and the cone+radius detection below
+        // always runs — which is what lets an enemy lose track of you again, and
+        // what makes Stealth mean something.
 
         // Phased out: passing through an active arena this enemy isn't part of.
         // It can't perceive the fight at all — drop any alert and skip detection
@@ -774,12 +747,7 @@ export default class BaseEnemy extends Taggable {
         }
         if (this.alerted && !wasAlerted) {
             this._flashAlert()
-            // Growl / roar / shout as it spots the hero — varied by kind (and
-            // undead). Shown as a floating bubble above its head AND folded
-            // into the persistent game log so it survives the bubble fade.
-            const bark = aggroBark(this)
-            gameLog.log(`The ${this.name} notices you — ${bark}`)
-            speech.say(this, bark)
+            gameLog.log(`The ${this.name} notices you.`)
         }
         if (!this.alerted && wasAlerted) {
             gameLog.log(`The ${this.name} is confused as you vanish.`)
@@ -853,10 +821,6 @@ export default class BaseEnemy extends Taggable {
     }
 
     isEngaged() {
-        // Ally-archetype entities (summoned Followers, tamed beasts) aren't part
-        // of the enemy Battle / free-for-all system; they pace off the shared
-        // follower leash decision so their swings throttle one-at-a-time too.
-        if (this.archetype === 'ally') return !!guardTargetFor(this)
         // "Engaged" now means committed to a live Battle, not merely alerted.
         // The encounter manager promotes nearby alerted enemies into a battle;
         // until then an alerted-but-uncommitted enemy falls through to its
@@ -864,6 +828,18 @@ export default class BaseEnemy extends Taggable {
         // This is the single gate that stops the whole floor swarming. The 4
         // combat archetypes, the TurnManager throttle, blitz's ally count, and
         // the summoner tag all read through here, so they stay consistent.
+        // v5: BOTH halves of v3's test are permanently false. `battle` is set only
+        // by the encounter manager and `freeForAll` only by its syncPhasing — both
+        // cut — so isEngaged() always returned false, no enemy ever ran its combat
+        // AI, and they only ever swung at you if you happened to stand adjacent.
+        //
+        // v5 restores the pre-arena rule the comment above describes as the
+        // fallback: engaged means alerted. There is no arena to be admitted to, so
+        // there is nothing for the gate to wait for. The gate's original job —
+        // stopping the whole floor swarming at once — now falls to perception:
+        // an enemy pursues only while it has actually noticed you, and the cone +
+        // radius detection can still lose you.
+        if (this.alerted === true) return true
         if (this.battle != null && this.battle.active) return true
         // Free-for-all fallback: enemies the encounter manager opts out of the
         // arena system (squads, while GROUPS_USE_ARENAS is off) never get a
@@ -1044,7 +1020,18 @@ export default class BaseEnemy extends Taggable {
             out.push(this._rollHumanoidGear())
         } else {
             const mainhand = this.equippedSlots.mainhand
-            if (mainhand && !mainhand.virtual) {
+            // `droppable: false` opts a weapon out of this branch — for a conduit
+            // that belongs to the caster rather than to the loot table (the Dark
+            // Sorcerer's Dark Bolt). Without it the player is handed a caster
+            // weapon no v5 class is built to use.
+            //
+            // Read off `.profile`, not the instance: the weapon classes copy only
+            // a named subset of profile fields onto `this`, and droppable is not
+            // among them. The instance keeps its profile, which is how damage()
+            // and range() read their own numbers.
+            const undroppable = mainhand
+                && (mainhand.droppable === false || mainhand.profile?.droppable === false)
+            if (mainhand && !mainhand.virtual && !undroppable) {
                 this.equippedSlots.mainhand = null
                 out.push(mainhand)
             } else {
@@ -1078,7 +1065,7 @@ export default class BaseEnemy extends Taggable {
             items.Sword,
             items.Axe,
             items.LongSword,
-            items.Hammer,
+            items.Mace,
             items.Spear,
             items.Bow,
             items.Shield,
@@ -1110,6 +1097,20 @@ export default class BaseEnemy extends Taggable {
             ? applyDefaultRandomTags(new items.Gem())
             : applyDefaultRandomTags(new items.DungeonKey())
         return { items: [item], log: `${this.name} drops a ${part}.` }
+    }
+
+    // Ghosts and slimes: things that carry no gear and have no pockets. A
+    // coin-only drop at a lower rate than the animal table's 90%, so they are
+    // worth killing without being as profitable as something that could
+    // plausibly be looted. No keys and no gear — an incorporeal spirit handing
+    // over a helmet reads wrong, which is why this is its own table rather than
+    // a third caller of the animal one.
+    _rollSparseDrop(flavor) {
+        if (Math.random() > 0.55) return null
+        return {
+            items: [applyDefaultRandomTags(new items.Gem())],
+            log: `${this.name} leaves ${flavor}.`,
+        }
     }
 
     // Placeholder insect drop — same structure as animal, different

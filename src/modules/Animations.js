@@ -1009,6 +1009,179 @@ export function playBeam(fromTileX, fromTileY, toTileX, toTileY,
     }
 }
 
+/** A HELD beam — the sustained sibling of playBeam.
+ *
+ *  playBeam is a one-shot: every call spawns a bar that immediately tweens to
+ *  alpha 0 and destroys itself, so a beam "kept alive" by repeated calls is a
+ *  string of flashes with gaps between them. That is what made a charged beam
+ *  read as blinking however fast it was ticked (2026-09-20) — the flicker was in
+ *  the primitive, not in the tick loop.
+ *
+ *  This returns a HANDLE that stays on screen until something ends it:
+ *     const b = playHeldBeam(...)     // lit, and stays lit
+ *     b.update(fromX, fromY, toX, toY) // re-aim/re-length in place (steering)
+ *     b.release()                      // fade out once, then destroy
+ *  The bar itself never re-spawns, so there is nothing to blink. A slow shimmer
+ *  (alpha + thickness) is tweened on the body so a held beam still reads as live
+ *  energy rather than a painted rectangle.
+ *
+ *  `release()` is idempotent and safe to call on a beam whose scene has gone. If
+ *  the caller loses the handle the bar would persist forever, so every caller
+ *  must hold it and release it — see ManaBeam's _heldBeam. */
+export function playHeldBeam(fromTileX, fromTileY, toTileX, toTileY,
+    { color = 0xffffff, width = 0.5, alpha = 0.55, core = true, fadeMs = 220 } = {}) {
+    const ctx = getSceneContext()
+    if (!ctx) return { update() {}, release() {} }
+    const { scene, map, tileSize } = ctx
+
+    const outerThickness = tileSize * width
+    const innerThickness = Math.max(2, tileSize * width * 0.4)
+    const outer = scene.add.rectangle(0, 0, 1, outerThickness, color, alpha)
+        .setOrigin(0.5).setDepth(16)
+    const inner = core
+        ? scene.add.rectangle(0, 0, 1, innerThickness, 0xffffff, Math.min(1, alpha + 0.35))
+            .setOrigin(0.5).setDepth(17)
+        : null
+    // Each bar remembers its own perpendicular thickness, because setSize needs
+    // both dimensions and the two bars differ (the core is thinner).
+    outer._laneThickness = outerThickness
+    if (inner) inner._laneThickness = innerThickness
+
+    // The angle the bar is DRAWN at, eased toward the aim rather than snapped to
+    // it — this is what makes a steered beam sweep instead of jumping between the
+    // eight compass directions. null until the first place() seeds it, so the
+    // opening shot appears already pointing the right way instead of swinging
+    // into position from angle zero.
+    let drawnAngle = null
+    let targetAngle = 0
+    let originTile = { x: fromTileX, y: fromTileY }
+    let reachPx = 0
+
+    // Record where the beam is AIMED. The drawn angle chases this separately, in
+    // draw(), so the caller can re-aim as abruptly as it likes and the bar still
+    // sweeps there rather than teleporting.
+    const aimAt = (fx, fy, tx, ty) => {
+        const cx1 = map.tileToWorldX(fx) + tileSize / 2
+        const cy1 = map.tileToWorldY(fy) + tileSize / 2
+        const cx2 = map.tileToWorldX(tx) + tileSize / 2
+        const cy2 = map.tileToWorldY(ty) + tileSize / 2
+        originTile = { x: fx, y: fy }
+        targetAngle = Math.atan2(cy2 - cy1, cx2 - cx1)
+        // How far the beam reaches, as a LENGTH rather than an endpoint — the
+        // endpoint moves with the drawn angle while it sweeps, so only the
+        // distance survives the re-aim.
+        reachPx = Math.hypot(cx2 - cx1, cy2 - cy1)
+        if (drawnAngle === null) drawnAngle = targetAngle
+    }
+
+    // Draw the bar at its CURRENT angle, having eased it toward the target. The
+    // geometry is recomputed rather than re-created, so a sweeping beam moves the
+    // same rectangle instead of spawning a second one.
+    const draw = () => {
+        const cx1 = map.tileToWorldX(originTile.x) + tileSize / 2
+        const cy1 = map.tileToWorldY(originTile.y) + tileSize / 2
+        const angle = drawnAngle ?? targetAngle
+
+        // The beam is EMITTED by the caster, so it starts at the forward edge of
+        // their tile — not at their centre, and certainly not half a tile BEHIND
+        // it. playBeam extends half a tile past both ends because it paints a
+        // lane that includes the origin square; doing that here drew the bar
+        // back across the wizard's own tile and read as the beam starting
+        // underneath them (2026-09-20). Only the FAR end keeps the half-tile
+        // extension, so the beam still fills the last tile it reaches.
+        const half = tileSize / 2
+        const x1 = cx1 + Math.cos(angle) * half
+        const y1 = cy1 + Math.sin(angle) * half
+        // The far end is projected along the DRAWN angle at the aim's reach, so a
+        // mid-sweep beam is a straight bar pointing somewhere between the old and
+        // new directions — not a bar bent toward a fixed endpoint.
+        const x2 = cx1 + Math.cos(angle) * (reachPx + half)
+        const y2 = cy1 + Math.sin(angle) * (reachPx + half)
+
+        // A zero-length beam (the aim resolved to the caster's own tile, e.g. a
+        // wall immediately ahead) would otherwise draw a one-tile stub pointing
+        // nowhere. Hide it instead.
+        const span = Math.hypot(x2 - x1, y2 - y1)
+        for (const bar of [outer, inner]) {
+            if (!bar) continue
+            bar.setVisible(reachPx > 1)
+            bar.setPosition((x1 + x2) / 2, (y1 + y2) / 2)
+            // setSize, NOT `bar.width = span`. On a Phaser Shape, assigning
+            // .width sets the DISPLAY width against geometry that is never
+            // rebuilt, so a rectangle constructed 1px wide stayed about that
+            // long however far the beam actually reached — the "beam only goes
+            // two and a half tiles" bug (2026-09-20). setSize rebuilds geom and
+            // calls updateDisplayOrigin itself, so the 0.5 origin set at
+            // construction survives the resize.
+            bar.setSize(Math.max(1, span), bar._laneThickness)
+            bar.rotation = angle
+        }
+    }
+    aimAt(fromTileX, fromTileY, toTileX, toTileY)
+    draw()
+
+    // Live shimmer: a shallow, looping pulse so the held bar breathes. This is a
+    // yoyo on the EXISTING objects — not a respawn — so it cannot read as a blink.
+    const shimmer = scene.tweens.add({
+        targets: inner ? [outer, inner] : [outer],
+        alpha: { from: alpha, to: Math.min(1, alpha + 0.25) },
+        scaleY: { from: 1, to: 1.18 },
+        duration: 260,
+        yoyo: true,
+        repeat: -1,
+        ease: 'Sine.easeInOut',
+    })
+
+    let released = false
+    // A destroyed GameObject keeps the handle alive but loses its `scene`, which
+    // is how a stale handle is detected: the ability instance outlives a floor
+    // change (it lives on the hero) while these objects do not, so every method
+    // checks before touching them.
+    return {
+        get alive() { return !released && !!outer.scene },
+        update(fx, fy, tx, ty) {
+            if (released || !outer.scene) return
+            aimAt(fx, fy, tx, ty)
+            draw()
+        },
+        /** Ease the drawn angle toward the aim and repaint. Call once per frame
+         *  while the beam is live; `turnRate` is radians per second.
+         *
+         *  Rotation takes the SHORT way around: without normalising the delta to
+         *  [-PI, PI], a beam turning from just under half a turn to just over
+         *  (west-north-west to west-south-west, say) sweeps the long way round
+         *  through east, which looks like the beam flailing. */
+        step(deltaMs, turnRate = 7) {
+            if (released || !outer.scene || drawnAngle === null) return
+            let diff = targetAngle - drawnAngle
+            diff = Math.atan2(Math.sin(diff), Math.cos(diff))
+            if (Math.abs(diff) < 1e-3) {
+                drawnAngle = targetAngle
+                return
+            }
+            const maxStep = turnRate * (Math.min(deltaMs, 100) / 1000)
+            drawnAngle += Math.sign(diff) * Math.min(Math.abs(diff), maxStep)
+            draw()
+        },
+        release() {
+            if (released) return
+            released = true
+            shimmer?.stop()
+            const bars = inner ? [outer, inner] : [outer]
+            // The scene can be gone (floor change, death) before a release lands;
+            // destroy directly rather than tweening objects with no scene.
+            if (!outer.scene) { for (const b of bars) b.destroy(); return }
+            scene.tweens.add({
+                targets: bars,
+                alpha: 0,
+                duration: fadeMs,
+                ease: 'Quad.easeOut',
+                onComplete: () => { for (const b of bars) b.destroy() },
+            })
+        },
+    }
+}
+
 /** Charging particles drawn INWARD to a caster's tile — energy being gathered /
  *  absorbed during a wind-up (charged beams, big spells). A handful of motes spawn
  *  on a ring around the caster and rush in, shrinking + fading as they converge,
@@ -1089,6 +1262,45 @@ export function playChargeArrow(caster, dx, dy, { color = 0xffffff, reach = 1 } 
         duration: 320,
         ease: 'Quad.easeOut',
         onComplete: () => arrow.destroy()
+    })
+}
+
+/** A SHORT streak that travels along with a projectile — the motion blur behind
+ *  an arrow in flight.
+ *
+ *  Distinct from playTrail below, which draws the entire path at once: that is
+ *  right for a dash (where the movement is instantaneous) and wrong for a
+ *  projectile, because a full-length bar appearing across the screen reads as an
+ *  energy beam rather than something travelling. Same reason playBeam is not
+ *  used here — a beam is a beam.
+ *
+ *  `duration` should match the projectile's flight time (playProjectile uses
+ *  180ms) so the streak and the arrow stay together. Default colour is the pale
+ *  wood/fletching tone, deliberately not a glow. */
+export function playProjectileTrail(fromTileX, fromTileY, toTileX, toTileY,
+    { color = 0xd8cfc0, duration = 180, length = 0.8, thickness = 2, alpha = 0.55 } = {}) {
+    const ctx = getSceneContext()
+    if (!ctx) return
+    const { scene, map, tileSize } = ctx
+
+    const x1 = map.tileToWorldX(fromTileX) + tileSize / 2
+    const y1 = map.tileToWorldY(fromTileY) + tileSize / 2
+    const x2 = map.tileToWorldX(toTileX) + tileSize / 2
+    const y2 = map.tileToWorldY(toTileY) + tileSize / 2
+    if (Math.hypot(x2 - x1, y2 - y1) < 1) return
+
+    const streak = scene.add.rectangle(x1, y1, tileSize * length, thickness, color, alpha)
+        .setOrigin(0.5).setDepth(14)
+    streak.rotation = Math.atan2(y2 - y1, x2 - x1)
+
+    scene.tweens.add({
+        targets: streak,
+        x: x2,
+        y: y2,
+        alpha: 0,
+        ease: 'Power2',
+        duration,
+        onComplete: () => streak.destroy()
     })
 }
 

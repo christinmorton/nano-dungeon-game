@@ -26,12 +26,6 @@ tells a future maintainer which pack a file came from and under what terms.
 build) are original work made for this project, and ship with their own
 manifests. Three of the five appear in the game.
 
-**[32rogues](https://sethbb.itch.io/32rogues)** by Seth Boyles — weapons,
-armour and item icons. Commercial use permitted; redistribution and resale are
-not. The pack also forbids use as input to generative-AI or machine-learning
-systems, which is a live constraint on how this art is worked on, not only on
-how it ships.
-
 **[Kenney 1-Bit Pack](https://kenney.nl/assets/1-bit-pack)** — CC0 1.0, public
 domain. Registered as the fallback tileset for anything without dedicated art.
 
